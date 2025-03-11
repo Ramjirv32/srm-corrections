@@ -65,6 +65,7 @@ const Navbar: React.FC = () => {
             </button>
 
             {/* Desktop Navigation */}
+<<<<<<< HEAD
             <div className="hidden md:block">
               <ul className="flex items-center space-x-1 lg:space-x-4">
                 <li><Link to="/" className="py-2 px-2 hover:text-[#F5A051] transition-colors text-sm lg:text-base">Home</Link></li>
@@ -83,6 +84,18 @@ const Navbar: React.FC = () => {
               <Link to="/login" className="py-1 px-3 bg-transparent border border-[#F5A051] text-[#F5A051] rounded-md hover:bg-[#F5A051] hover:text-white transition-colors text-sm">Log In</Link>
               <Link to="/signin" className="py-1 px-3 bg-[#F5A051] text-white rounded-md hover:bg-[#e08c3e] transition-colors text-sm">Sign Up</Link>
             </div>
+=======
+            <ul className="hidden md:flex items-center space-x-6">
+              <li><Link to="/" className="py-2 px-2 hover:text-[#F5A051] transition-colors">Home</Link></li>
+              <li><Link to="/call-for-papers" className="py-2 px-2 hover:text-[#F5A051] transition-colors">Call For Papers</Link></li>
+              <li><a href="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors">Paper Submission</a></li>
+              <li><a href="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors">Registrations</a></li>
+              <li><a href="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors">Committee</a></li>
+              <li><a href="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors">Keynote speakers</a></li>
+              <li><Link to="/contact" className="py-2 px-2 hover:text-[#F5A051] transition-colors">Contact</Link></li>
+              <li><a href="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors">Venue</a></li>
+            </ul>
+>>>>>>> 28c1fe5b9175edab16a5b539675f7989ba8a4899
           </div>
 
           {/* Mobile Navigation */}
