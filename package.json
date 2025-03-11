@@ -13,7 +13,6 @@
     "@tailwindcss/vite": "^4.0.12",
     "animate.css": "^4.1.1",
     "aos": "^2.3.4",
-<<<<<<< HEAD
     "axios": "^1.6.2",
     "firebase": "^10.6.0",
     "framer-motion": "^10.16.4",
@@ -21,12 +20,6 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-feather": "^2.0.10",
-=======
-    "framer-motion": "^12.4.11",
-    "lucide-react": "^0.479.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
->>>>>>> 28c1fe5b9175edab16a5b539675f7989ba8a4899
     "react-icons": "^5.5.0",
     "react-router-dom": "^6.19.0",
     "sweetalert2": "^11.10.1",
@@ -35,18 +28,9 @@
   "devDependencies": {
     "@eslint/js": "^9.21.0",
     "@types/aos": "^3.0.7",
-<<<<<<< HEAD
-    "@types/react": "^18.2.37",
-    "@types/react-dom": "^18.2.15",
-    "@typescript-eslint/eslint-plugin": "^6.10.0",
-    "@typescript-eslint/parser": "^6.10.0",
-    "@vitejs/plugin-react": "^4.2.0",
-    "autoprefixer": "^10.4.16",
-=======
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
->>>>>>> 28c1fe5b9175edab16a5b539675f7989ba8a4899
     "eslint": "^9.21.0",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",
