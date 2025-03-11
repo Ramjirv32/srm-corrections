@@ -1,8 +1,17 @@
 import React from 'react';
 import { Calendar, MapPin, Users, Target, Compass, Globe, Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
-import CountdownTimer from './CountdownTimer';
-import { FadeUp } from './ui/animation';
-const home: React.FC = () => {
+import Timeline from './Timeline';
+
+// Create a simple countdown timer if the original is causing issues
+const SimpleCountdownTimer = () => {
+  return (
+    <div className="text-white font-bold text-xl">
+      Coming Soon: April 26-27, 2025
+    </div>
+  );
+};
+
+const Home = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gray-100 text-gray-900">
       {/* Hero Section */}
@@ -12,7 +21,9 @@ const home: React.FC = () => {
           <h1 className="text-3xl md:text-5xl font-bold mb-4 leading-tight">
             International Conference on Multidisciplinary Breakthroughs and NextGen Technologies
           </h1>
-        
+          <h2 className="text-2xl md:text-3xl font-semibold mb-6">
+            (ICMBNT–2025)
+          </h2>
           
           <div className="flex flex-col md:flex-row justify-center items-center gap-4 mb-8">
             <div className="flex items-center">
@@ -35,12 +46,12 @@ const home: React.FC = () => {
             Puducherry – India
           </p>
           
-          <button className="bg-[#F5A051] hover:bg-[#F5A051] text-white font-bold py-3 px-8 rounded-md transition-colors duration-300 text-lg">
+          <button className="bg-[#F5A051] hover:bg-[#e08c3e] text-white font-bold py-3 px-8 rounded-md transition-colors duration-300 text-lg">
             REGISTER NOW
           </button>
           
-          <div className="mt-8 animate-pulse" >
-            <CountdownTimer />
+          <div className="mt-8">
+            <SimpleCountdownTimer />
           </div>
         </div>
       </div>
@@ -128,50 +139,19 @@ const home: React.FC = () => {
         </div>
       </section>
 
-      {/* Important Dates Section */}
-      <section className="py-12 bg-white">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-8 text-[#F5A051]">Important Dates</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <DateCard 
-              date="31" 
-              month="JAN" 
-              year="2025" 
-              title="Abstract Submission Deadline"
-            />
-            <DateCard 
-              date="15" 
-              month="FEB" 
-              year="2025" 
-              title="Notification of Acceptance"
-            />
-            <DateCard 
-              date="15" 
-              month="MAR" 
-              year="2025" 
-              title="Full Paper Submission"
-            />
-            <DateCard 
-              date="10" 
-              month="APR" 
-              year="2025" 
-              title="Registration Deadline"
-            />
-          </div>
-        </div>
-      </section>
+      {/* Important Dates Section using Timeline Design */}
+      <Timeline />
 
       {/* Footer */}
       <footer className="bg-[#0B1829] text-white py-12">
         <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Conference Title Section */}
           <div>
-            <h2 className="text-2xl font-bold mb-4">IC2E3-2025</h2>
+            <h2 className="text-2xl font-bold mb-4">ICMBNT-2025</h2>
             <p className="text-gray-300 mb-6">
               The vision behind organising this conference is to provide an excellent forum for
               researchers, scientists and industrialists from interdisciplinary areas to showcase
-              their current contributions in the area of Physical Sciences.
+              their current contributions.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="hover:text-[#F5A051] transition-colors">
@@ -197,7 +177,7 @@ const home: React.FC = () => {
             </div>
           </div>
 
-          {/* Updated Useful Links Section */}
+          {/* Useful Links Section */}
           <div>
             <h3 className="text-xl font-bold mb-4">Useful Links</h3>
             <ul className="space-y-2">
@@ -230,7 +210,7 @@ const home: React.FC = () => {
 
           {/* Contact Us Section */}
           <div>
-          <h3 className="text-xl font-bold mb-4">Contact Us</h3>
+            <h3 className="text-xl font-bold mb-4">Contact Us</h3>
             <div className="text-gray-300">
               <p className="mb-2">Society for Cyber Intelligent Systems</p>
               <p className="mb-2">Puducherry– India</p>
@@ -247,8 +227,8 @@ const home: React.FC = () => {
         {/* Copyright Section */}
         <div className="container mx-auto px-4 mt-8 pt-8 border-t border-gray-800">
           <div className="text-center text-gray-400 text-sm">
-            <p>© Copyright 2023. All Rights Reserved</p>
-            <p>Designed by Central Computer Centre, NIT Uttarakhand</p>
+            <p>© Copyright 2025. All Rights Reserved</p>
+            <p>Society for Cyber Intelligent Systems</p>
           </div>
         </div>
       </footer>
@@ -256,27 +236,5 @@ const home: React.FC = () => {
   );
 };
 
-// Date card component
-interface DateCardProps {
-  date: string;
-  month: string;
-  year: string;
-  title: string;
-}
-
-const DateCard: React.FC<DateCardProps> = ({ date, month, year, title }) => {
-  return (
-    <div className="flex flex-col bg-gray-50 rounded-lg shadow-md overflow-hidden">
-      <div className="bg-[#F5A051] text-white p-4 flex flex-col items-center justify-center">
-        <span className="text-3xl font-bold">{date}</span>
-        <span className="text-sm">{month} {year}</span>
-      </div>
-      <div className="p-4 text-center">
-        <span className="font-medium">{title}</span>
-      </div>
-    </div>
-  );
-};
-
-export default home;
+export default Home;
 
