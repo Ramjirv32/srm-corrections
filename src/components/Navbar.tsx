@@ -64,12 +64,13 @@ const Navbar: React.FC = () => {
             {/* Desktop Navigation */}
             <ul className="hidden md:flex items-center space-x-6">
               <li><a href="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors">Home</a></li>
-              <li><a href="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors">About</a></li>
-              <li><a href="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors">Add Event</a></li>
-              <li><a href="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors">Subscribe</a></li>
+              <li><a href="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors">Call For Papers</a></li>
+              <li><a href="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors">Paper Submission</a></li>
+              <li><a href="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors">Registrations</a></li>
+              <li><a href="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors">Committee</a></li>
+              <li><a href="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors">Keynote speakers</a></li>
               <li><a href="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors">Contact</a></li>
-              <li><a href="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors">Blog</a></li>
-              <li><a href="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors">Login</a></li>
+              <li><a href="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors">Venue</a></li>
             </ul>
           </div>
 
@@ -78,12 +79,13 @@ const Navbar: React.FC = () => {
             <div className="md:hidden">
               <ul className="flex flex-col">
                 <li><a href="#" className="block py-2 px-4 hover:bg-gray-800">Home</a></li>
-                <li><a href="#" className="block py-2 px-4 hover:bg-gray-800">About</a></li>
-                <li><a href="#" className="block py-2 px-4 hover:bg-gray-800">Add Event</a></li>
-                <li><a href="#" className="block py-2 px-4 hover:bg-gray-800">Subscribe</a></li>
+                <li><a href="#" className="block py-2 px-4 hover:bg-gray-800">Call For Papers</a></li>
+                <li><a href="#" className="block py-2 px-4 hover:bg-gray-800">Paper Submission</a></li>
+                <li><a href="#" className="block py-2 px-4 hover:bg-gray-800">Registrations</a></li>
+                <li><a href="#" className="block py-2 px-4 hover:bg-gray-800">Committee</a></li>
+                <li><a href="#" className="block py-2 px-4 hover:bg-gray-800">Keynote speakers</a></li>
                 <li><a href="#" className="block py-2 px-4 hover:bg-gray-800">Contact</a></li>
-                <li><a href="#" className="block py-2 px-4 hover:bg-gray-800">Blog</a></li>
-                <li><a href="#" className="block py-2 px-4 hover:bg-gray-800">Login</a></li>
+                <li><a href="#" className="block py-2 px-4 hover:bg-gray-800">Venue</a></li>
               </ul>
               
               {/* Mobile Social Icons */}

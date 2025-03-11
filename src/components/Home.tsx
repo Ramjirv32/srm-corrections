@@ -1,19 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Calendar, MapPin, Users, BookOpen, Target, Compass, Globe } from 'lucide-react';
-
-// Define the Conference component
+import React from 'react';
+import { Calendar, MapPin, Users, Target, Compass, Globe } from 'lucide-react';
+import CountdownTimer from './CountdownTimer';
+import { FadeUp } from './ui/animation';
 const home: React.FC = () => {
-  const [daysLeft, setDaysLeft] = useState<number>(0);
-
-  // Calculate days left until conference
-  useEffect(() => {
-    const conferenceDate = new Date('2025-04-26');
-    const today = new Date();
-    const diffTime = conferenceDate.getTime() - today.getTime();
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    setDaysLeft(diffDays > 0 ? diffDays : 0);
-  }, []);
-
   return (
     <div className="min-h-screen flex flex-col bg-gray-100 text-gray-900">
       {/* Hero Section */}
@@ -23,9 +12,7 @@ const home: React.FC = () => {
           <h1 className="text-3xl md:text-5xl font-bold mb-4 leading-tight">
             International Conference on Multidisciplinary Breakthroughs and NextGen Technologies
           </h1>
-          <h2 className="text-2xl md:text-3xl font-semibold mb-6">
-            (ICMBNT–2025)
-          </h2>
+        
           
           <div className="flex flex-col md:flex-row justify-center items-center gap-4 mb-8">
             <div className="flex items-center">
@@ -52,23 +39,21 @@ const home: React.FC = () => {
             REGISTER NOW
           </button>
           
-          {daysLeft > 0 && (
-            <p className="mt-4 text-lg">
-              {daysLeft} days left until the conference
-            </p>
-          )}
+          <div className="mt-8 animate-pulse" >
+            <CountdownTimer />
+          </div>
         </div>
       </div>
 
       {/* Society Section */}
-      <section className="py-12 bg-white">
+      <section className="py-12">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12 text-[#F5A051]">
             Society for Cyber Intelligent Systems
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-            <div className="bg-gray-50 p-6 rounded-lg shadow-md">
+            <div className="p-6 rounded-lg">
               <div className="flex items-center mb-4">
                 <Target className="w-8 h-8 text-[#F5A051] mr-3" />
                 <h3 className="text-2xl font-bold text-[#F5A051]">Vision</h3>
@@ -80,7 +65,7 @@ const home: React.FC = () => {
               </p>
             </div>
             
-            <div className="bg-gray-50 p-6 rounded-lg shadow-md">
+            <div className="p-6 rounded-lg">
               <div className="flex items-center mb-4">
                 <Compass className="w-8 h-8 text-[#F5A051] mr-3" />
                 <h3 className="text-2xl font-bold text-[#F5A051]">Mission</h3>
