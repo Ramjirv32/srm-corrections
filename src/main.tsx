@@ -1,10 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
-import './styles/globals.css'
+import './index.css'
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import "./index.css"
+
 // Initialize AOS
 AOS.init({
   duration: 800,
@@ -12,8 +12,14 @@ AOS.init({
   easing: 'ease-in-out'
 });
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-)
+// Make sure we're mounting to the correct element
+const rootElement = document.getElementById('root');
+if (!rootElement) {
+  console.error("Root element not found! Check your index.html");
+} else {
+  ReactDOM.createRoot(rootElement).render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>,
+  );
+}
