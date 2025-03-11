@@ -17,7 +17,7 @@ const home: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gray-100 text-gray-900">
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-r from-blue-900 to-purple-900 text-white">
+      <div className="relative bg-gradient-to-r from-blue-900 to-[#F5A051] text-white">
         <div className="absolute inset-0 bg-black opacity-50"></div>
         <div className="relative z-10 container mx-auto px-4 py-16 text-center">
           <h1 className="text-3xl md:text-5xl font-bold mb-4 leading-tight">
@@ -48,7 +48,7 @@ const home: React.FC = () => {
             Puducherry – India
           </p>
           
-          <button className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-md transition-colors duration-300 text-lg">
+          <button className="bg-[#F5A051] hover:bg-[#F5A051] text-white font-bold py-3 px-8 rounded-md transition-colors duration-300 text-lg">
             REGISTER NOW
           </button>
           
@@ -63,15 +63,15 @@ const home: React.FC = () => {
       {/* Society Section */}
       <section className="py-12 bg-white">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12 text-purple-800">
+          <h2 className="text-3xl font-bold text-center mb-12 text-[#F5A051]">
             Society for Cyber Intelligent Systems
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
             <div className="bg-gray-50 p-6 rounded-lg shadow-md">
               <div className="flex items-center mb-4">
-                <Target className="w-8 h-8 text-purple-700 mr-3" />
-                <h3 className="text-2xl font-bold text-purple-800">Vision</h3>
+                <Target className="w-8 h-8 text-[#F5A051] mr-3" />
+                <h3 className="text-2xl font-bold text-[#F5A051]">Vision</h3>
               </div>
               <p className="text-gray-700 leading-relaxed">
                 The Vision of the society is to be a global leader in advancing cybersecurity and intelligent
@@ -82,8 +82,8 @@ const home: React.FC = () => {
             
             <div className="bg-gray-50 p-6 rounded-lg shadow-md">
               <div className="flex items-center mb-4">
-                <Compass className="w-8 h-8 text-purple-700 mr-3" />
-                <h3 className="text-2xl font-bold text-purple-800">Mission</h3>
+                <Compass className="w-8 h-8 text-[#F5A051] mr-3" />
+                <h3 className="text-2xl font-bold text-[#F5A051]">Mission</h3>
               </div>
               <p className="text-gray-700 leading-relaxed">
                 The primary mission is to advance cybersecurity and intelligent systems by promoting cutting-edge 
@@ -105,8 +105,8 @@ const home: React.FC = () => {
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-center mb-8">
-            <Globe className="w-10 h-10 text-purple-700 mr-4" />
-            <h2 className="text-3xl font-bold text-purple-800">SCOPE OF THE CONFERENCE</h2>
+            <Globe className="w-10 h-10 text-[#F5A051] mr-4" />
+            <h2 className="text-3xl font-bold text-[#F5A051]">SCOPE OF THE CONFERENCE</h2>
           </div>
           
           <div className="bg-white p-6 rounded-lg shadow-md">
@@ -146,7 +146,7 @@ const home: React.FC = () => {
       {/* Important Dates Section */}
       <section className="py-12 bg-white">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-8 text-purple-800">Important Dates</h2>
+          <h2 className="text-3xl font-bold text-center mb-8 text-[#F5A051]">Important Dates</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <DateCard 
@@ -202,7 +202,7 @@ interface DateCardProps {
 const DateCard: React.FC<DateCardProps> = ({ date, month, year, title }) => {
   return (
     <div className="flex flex-col bg-gray-50 rounded-lg shadow-md overflow-hidden">
-      <div className="bg-purple-700 text-white p-4 flex flex-col items-center justify-center">
+      <div className="bg-[#F5A051] text-white p-4 flex flex-col items-center justify-center">
         <span className="text-3xl font-bold">{date}</span>
         <span className="text-sm">{month} {year}</span>
       </div>
