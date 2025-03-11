@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Facebook, Twitter, Linkedin, Instagram, Youtube, MessageCircle } from 'lucide-react';
 import Logo from "./images/lo.png"
+import { Link } from 'react-router-dom';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -63,13 +64,13 @@ const Navbar: React.FC = () => {
 
             {/* Desktop Navigation */}
             <ul className="hidden md:flex items-center space-x-6">
-              <li><a href="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors">Home</a></li>
-              <li><a href="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors">Call For Papers</a></li>
+              <li><Link to="/" className="py-2 px-2 hover:text-[#F5A051] transition-colors">Home</Link></li>
+              <li><Link to="/call-for-papers" className="py-2 px-2 hover:text-[#F5A051] transition-colors">Call For Papers</Link></li>
               <li><a href="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors">Paper Submission</a></li>
               <li><a href="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors">Registrations</a></li>
               <li><a href="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors">Committee</a></li>
               <li><a href="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors">Keynote speakers</a></li>
-              <li><a href="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors">Contact</a></li>
+              <li><Link to="/contact" className="py-2 px-2 hover:text-[#F5A051] transition-colors">Contact</Link></li>
               <li><a href="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors">Venue</a></li>
             </ul>
           </div>
