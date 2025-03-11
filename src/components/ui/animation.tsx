@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 import React from 'react';
 
 export const FadeUp = ({ 
@@ -9,13 +8,13 @@ export const FadeUp = ({
   delay?: number;
 }) => {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay }}
+    <div
+      data-aos="fade-up"
+      data-aos-delay={delay * 1000}
+      data-aos-duration="1000"
+      data-aos-once="true"
     >
       {children}
-    </motion.div>
+    </div>
   );
 };

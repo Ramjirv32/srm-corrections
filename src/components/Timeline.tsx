@@ -1,85 +1,73 @@
-import React from "react";
-import { FaCalendarAlt } from "react-icons/fa";
-
-const timelineData = [
-  {
-    date: "15.3.2025",
-    title: "Manuscript Submission Deadline",
-    description: "Last day to submit your research papers",
-  },
-  {
-    date: "25.3.2025",
-    title: "Acceptance",
-    description: "Authors will be notified of acceptance decisions",
-  },
-  {
-    date: "5.4.2025",
-    title: "Registration Date",
-    description: "Registration Date for the conference",
-  },
-  {
-    date: "26.4.2025 & 27.4.2025",
-    title: "Conference Date",
-    description: "ICMBNT begins",
-  },
-];
+import React from 'react';
+import { Calendar } from 'lucide-react';
 
 const Timeline = () => {
   return (
-    <div className="flex flex-col items-center w-full py-16 bg-white">
-      <h2 className="text-3xl font-bold text-center mb-12 text-[#F5A051]">Important Dates</h2>
-      <div className="relative w-full max-w-2xl px-4">
-        {/* Timeline line */}
-        <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-[#F5A051]/20 via-[#F5A051] to-[#F5A051]/20"></div>
-        
-        {timelineData.map((item, index) => (
-          <div
-            key={index}
-            className={`relative mb-16 flex items-center w-full`}
-          >
-            {index % 2 === 0 ? (
-              <>
-                <div className="w-1/2 flex justify-end px-4">
-                  <div 
-                    className="bg-white shadow-lg p-5 rounded-lg w-64 text-left hover:shadow-xl transition-all duration-300 hover:-translate-y-1 hover:border-l-4 hover:border-[#F5A051] group"
-                  >
-                    <div className="flex items-center text-[#F5A051] font-semibold mb-2 group-hover:text-[#e08c3e] transition-colors">
-                      <FaCalendarAlt className="mr-2" />
-                      <span>{item.date}</span>
-                    </div>
-                    <h3 className="text-lg font-semibold group-hover:text-[#F5A051] transition-colors">{item.title}</h3>
-                    <p className="text-gray-600 text-sm mt-1">{item.description}</p>
-                  </div>
+    <section className="py-12 bg-white">
+      <div className="container mx-auto px-4">
+        <h2 className="text-3xl font-bold text-center mb-12 text-[#F5A051]">Important Dates</h2>
+
+        <div className="relative max-w-3xl mx-auto">
+          {/* Timeline line */}
+          <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-[#F5A051]/20"></div>
+
+          {/* Timeline items */}
+          <div className="space-y-16">
+            {/* Item 1 */}
+            <div className="relative">
+              <div className="absolute left-1/2 transform -translate-x-1/2 -mt-1 w-4 h-4 rounded-full bg-[#F5A051]"></div>
+              <div className="ml-auto mr-8 md:mr-16 w-full md:w-5/12 bg-white rounded-lg shadow-md p-5 relative">
+                <div className="flex items-center text-[#F5A051] mb-2">
+                  <Calendar className="h-4 w-4 mr-2" />
+                  <span className="font-medium">31.1.2025</span>
                 </div>
-                <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center justify-center">
-                  <div className="w-5 h-5 bg-[#F5A051] rounded-full z-10 shadow-lg hover:scale-110 transition-transform duration-300"></div>
+                <h3 className="font-bold text-gray-800">Abstract Submission Deadline</h3>
+                <p className="text-sm text-gray-600 mt-1">Last day to submit your research abstract</p>
+              </div>
+            </div>
+
+            {/* Item 2 */}
+            <div className="relative">
+              <div className="absolute left-1/2 transform -translate-x-1/2 -mt-1 w-4 h-4 rounded-full bg-[#F5A051]"></div>
+              <div className="mr-auto ml-8 md:ml-16 w-full md:w-5/12 bg-white rounded-lg shadow-md p-5 relative">
+                <div className="flex items-center text-[#F5A051] mb-2">
+                  <Calendar className="h-4 w-4 mr-2" />
+                  <span className="font-medium">15.2.2025</span>
                 </div>
-                <div className="w-1/2"></div>
-              </>
-            ) : (
-              <>
-                <div className="w-1/2"></div>
-                <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center justify-center">
-                  <div className="w-5 h-5 bg-[#F5A051] rounded-full z-10 shadow-lg hover:scale-110 transition-transform duration-300"></div>
+                <h3 className="font-bold text-gray-800">Notification of Acceptance</h3>
+                <p className="text-sm text-gray-600 mt-1">Authors will be notified of acceptance decisions</p>
+              </div>
+            </div>
+
+            {/* Item 3 */}
+            <div className="relative">
+              <div className="absolute left-1/2 transform -translate-x-1/2 -mt-1 w-4 h-4 rounded-full bg-[#F5A051]"></div>
+              <div className="ml-auto mr-8 md:mr-16 w-full md:w-5/12 bg-white rounded-lg shadow-md p-5 relative">
+                <div className="flex items-center text-[#F5A051] mb-2">
+                  <Calendar className="h-4 w-4 mr-2" />
+                  <span className="font-medium">15.3.2025</span>
                 </div>
-                <div className="w-1/2 flex justify-start px-4">
-                  <div 
-                    className="bg-white shadow-lg p-5 rounded-lg w-64 text-left hover:shadow-xl transition-all duration-300 hover:-translate-y-1 hover:border-r-4 hover:border-[#F5A051] group"
-                  >
-                    <div className="flex items-center text-[#F5A051] font-semibold mb-2 group-hover:text-[#e08c3e] transition-colors">
-                      <FaCalendarAlt className="mr-2" />
-                      <span>{item.date}</span>
-                    </div>
-                    <h3 className="text-lg font-semibold group-hover:text-[#F5A051] transition-colors">{item.title}</h3>
-                    <p className="text-gray-600 text-sm mt-1">{item.description}</p>
-                  </div>
+                <h3 className="font-bold text-gray-800">Full Paper Submission</h3>
+                <p className="text-sm text-gray-600 mt-1">Last day to submit your research papers</p>
+              </div>
+            </div>
+
+            {/* Item 4 */}
+            <div className="relative">
+              <div className="absolute left-1/2 transform -translate-x-1/2 -mt-1 w-4 h-4 rounded-full bg-[#F5A051]"></div>
+              <div className="mr-auto ml-8 md:ml-16 w-full md:w-5/12 bg-white rounded-lg shadow-md p-5 relative">
+                <div className="flex items-center text-[#F5A051] mb-2">
+                  <Calendar className="h-4 w-4 mr-2" />
+                  <span className="font-medium">10.4.2025</span>
                 </div>
-              </>
-            )}
+                <h3 className="font-bold text-gray-800">Registration Deadline</h3>
+                <p className="text-sm text-gray-600 mt-1">Registration Date for the conference</p>
+              </div>
+            </div>
           </div>
-        ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 
