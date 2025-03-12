@@ -27,7 +27,7 @@ export default function Signup() {
         username: email ? email.split('@')[0] : 'newuser'
       }));
       
-      navigate('/dashboard');
+      navigate('/');
       window.location.reload();
       setIsSubmitting(false);
     }, 800);

@@ -29,7 +29,7 @@ const Login = () => {
         username: email ? email.split('@')[0] : 'user'
       }));
       
-      navigate('/dashboard');
+      navigate('/');
       window.location.reload();
       // No need to reload the whole page
       setIsLoading(false);
