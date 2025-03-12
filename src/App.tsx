@@ -57,7 +57,7 @@ const RouteWithLoading = ({
 // Removed the duplicate RouteChangeTracker component definition
 // Use the imported component instead
 
-// Separate component for the routes
+
 const AppRoutes = () => {
   
   return (
