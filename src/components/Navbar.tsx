@@ -68,8 +68,8 @@ const Navbar: React.FC = () => {
             <div className="hidden md:block">
               <ul className="flex items-center space-x-1 lg:space-x-4">
                 <li><Link to="/" className="py-2 px-2 hover:text-[#F5A051] transition-colors text-sm lg:text-base">Home</Link></li>
-                <li><a href="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors text-sm lg:text-base">Call For Papers</a></li>
-                <li><a href="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors text-sm lg:text-base">Paper Submission</a></li>
+                <li><a href="/call-for-papers" className="py-2 px-2 hover:text-[#F5A051] transition-colors text-sm lg:text-base">Call For Papers</a></li>
+                <li><a href="/paper-submission" className="py-2 px-2 hover:text-[#F5A051] transition-colors text-sm lg:text-base">Paper Submission</a></li>
                 <li><a href="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors text-sm lg:text-base">Registrations</a></li>
                 <li><Link to="/commitee" className="py-2 px-2 hover:text-[#F5A051] transition-colors text-sm lg:text-base">Committee</Link></li>
                 <li><a href="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors text-sm lg:text-base">Keynote speakers</a></li>

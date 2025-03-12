@@ -73,7 +73,7 @@ const CallForPapers = () => {
 
             <div className="mt-8 text-center">
               <a 
-                href="mailto:icmbnt2025@gmail.com" 
+                href="/submit-paper" 
                 className="inline-flex items-center bg-[#F5A051] text-white px-6 py-3 rounded-md hover:bg-[#e08c3e] transition-colors duration-300"
               >
                 <FaEnvelope className="mr-2" />
