@@ -13,6 +13,7 @@ import Dashboard from "./components/Dashboard";
 // Fixed the broken import statement
 import RouteChangeTracker from "./components/RouteChangeTracker";
 import VerifyEmail from "./components/auth/VerifyEmail";
+import Registrations from "./components/Registrations";
 
 // The App component should contain BrowserRouter
 const App = () => {
@@ -121,6 +122,11 @@ const AppRoutes = () => {
           </ProtectedRoute>
         } />
         <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="/registrations" element={
+          <ProtectedRoute>
+            <RouteWithLoading element={<Registrations />} />
+          </ProtectedRoute>
+        } />
       </Routes>
     </>
   );
