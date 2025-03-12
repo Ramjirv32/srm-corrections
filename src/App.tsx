@@ -9,6 +9,7 @@ import Commitee from "./components/Commitee";
 import CallForPapers from "./components/CallforPaper";
 import Papersubmission from "./components/Papersubmission";
 import SubmitPaperForm from "./components/SubmitPaperForm";
+import Dashboard from "./components/Dashboard";
 import RouteChangeTracker from "./components/RouteChangeTracker";
 
 // The App component should contain BrowserRouter
@@ -88,6 +89,13 @@ const AppRoutes = () => {
         
         <Route path="/commitee" element={
           <RouteWithLoading element={<Commitee />} />
+        } />
+        
+        {/* Dashboard - only for authenticated users */}
+        <Route path="/dashboard" element={
+          <ProtectedRoute>
+            <RouteWithLoading element={<Dashboard />} />
+          </ProtectedRoute>
         } />
         
         {/* Protected routes - only accessible when logged in */}

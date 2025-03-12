@@ -13,6 +13,7 @@ export default function Signup() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     AOS.init({ duration: 1000, once: true });
@@ -20,6 +21,7 @@ export default function Signup() {
 
   const handleSignup = async (e: any) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     try {
       if (!email || !password) {
@@ -29,10 +31,11 @@ export default function Signup() {
           text: 'Please enter email and password',
           timer: 2000,
         });
+        setIsSubmitting(false);
         return;
       }
 
-      const response = await fetch('https://lynx-fun-normally.ngrok-free.app/signin', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/signin`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -45,13 +48,14 @@ export default function Signup() {
       if (data.success) {
         Swal.fire({
           icon: 'success',
-          title: 'Success!',
-          text: 'Please check your email to verify your account',
-          timer: 2000,
+          title: 'Account Created Successfully!',
+          text: 'A verification email has been sent to your email address. Please check your inbox and follow the verification link to complete the registration process.',
+          confirmButtonColor: '#F5A051',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            navigate('/login');
+          }
         });
-        if (data.token) {
-          localStorage.setItem('token', data.token);
-        }
       } else {
         // Check if error is due to existing user
         if (data.message && data.message.includes("User already exists")) {
@@ -84,6 +88,8 @@ export default function Signup() {
         text: 'Unable to connect to the server. Please try again.',
         timer: 2000,
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -160,6 +166,14 @@ export default function Signup() {
               <p className="text-gray-600">Join our community today</p>
             </div>
 
+            {/* Add verification info banner */}
+            <div className="mb-6 p-3 bg-blue-50 border border-blue-200 rounded-md">
+              <p className="text-sm text-blue-800">
+                <strong>Note:</strong> After signing up, you'll need to verify your email address before logging in. 
+                Please check your inbox for a verification link.
+              </p>
+            </div>
+
             <div className="mb-6">
               <button
                 onClick={handleGoogleSignIn}
@@ -216,9 +230,19 @@ export default function Signup() {
 
               <button
                 type="submit"
-                className="w-full flex justify-center items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-[#F5A051] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                disabled={isSubmitting}
+                className={`w-full flex justify-center items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-[#F5A051] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 ${
+                  isSubmitting ? 'opacity-70 cursor-not-allowed' : 'hover:bg-[#e08c3e]'
+                }`}
               >
-                Create account
+                {isSubmitting ? (
+                  <>
+                    <span className="animate-spin inline-block h-4 w-4 border-t-2 border-b-2 border-white rounded-full mr-2"></span>
+                    Creating account...
+                  </>
+                ) : (
+                  'Create account'
+                )}
               </button>
             </form>
 
