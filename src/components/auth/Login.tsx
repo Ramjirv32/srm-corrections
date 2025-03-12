@@ -1,346 +1,55 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Mail, Lock, Check, AlertCircle } from 'react-feather';
+import { Link, useNavigate } from 'react-router-dom';
+import { Mail, Lock } from 'react-feather';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import Swal from 'sweetalert2';
-import axios from 'axios';
 import PageTransition from '../PageTransition';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isVerifying, setIsVerifying] = useState(false);
-  const [verificationStatus, setVerificationStatus] = useState<{
-    success?: boolean;
-    message?: string;
-  }>({});
   
-  const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
     AOS.init({ duration: 1000, once: true });
-
-    // Check if there's a verification token in the URL - improve token extraction
-    const params = new URLSearchParams(location.search);
-    const token = params.get('token');
-    
-    if (token) {
-      console.log("Found token in URL:", token);
-      setIsVerifying(true);
-      verifyEmail(token);
-    }
-  }, [location]);
-
-
-
-  const verifyEmail = async (token: string) => {
-    try {
-      setVerificationStatus({});
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-      
-      // Log request details for debugging
-      console.log(`Sending verification request to ${apiUrl}/verify-email with token: ${token}`);
-      
-      const response = await axios.get(`${apiUrl}/verify-email`, {
-        params: { token }
-      });
-      
-      console.log("Verification API response:", response.data);
-      
-      if (response.data.success) {
-        setVerificationStatus({
-          success: true,
-          message: response.data.message || 'Email verified successfully!'
-        });
-        
-        Swal.fire({
-          icon: 'success',
-          title: 'Email Verified',
-          text: 'Your email has been verified successfully. You can now log in.',
-          confirmButtonColor: '#F5A051'
-        });
-      } else {
-        throw new Error(response.data.message || 'Verification failed');
-      }
-    } catch (error: any) {
-      console.error("Verification error details:", {
-        error,
-        response: error.response?.data,
-        status: error.response?.status
-      });
-      
-      // setVerificationStatus({
-      //   success: false,
-      //   message: error.response?.data?.message || 'Invalid or expired verification link'
-      // });
-      
-     
-    } finally {
-      setIsVerifying(false);
-      // Remove the token from URL to avoid confusion if page is refreshed
-      window.history.replaceState({}, document.title, '/login');
-    }
-  };
+  }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
-    try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-      const response = await axios.post(`${apiUrl}/login`, {
-        email,
-        password
-      });
-
-      // If login was successful but verification is needed
-      if (response.data.needsVerification) {
-        Swal.fire({
-          icon: 'warning',
-          title: 'Email Not Verified',
-          text: 'Please verify your email before logging in',
-          confirmButtonColor: '#F5A051',
-          showCancelButton: true,
-          cancelButtonText: 'Cancel',
-          confirmButtonText: 'Resend Verification Email'
-        }).then((result) => {
-          if (result.isConfirmed) {
-            resendVerificationEmail(email);
-          }
-        });
-        setIsLoading(false);
-        return;
-      }
-
-      // If login was successful and user is verified
-      if (response.data.success && response.data.verified) {
-        localStorage.setItem('token', response.data.token);
-        localStorage.setItem('user', JSON.stringify({
-          email: response.data.email,
-          username: response.data.username
-        }));
-        
-        Swal.fire({
-          icon: 'success',
-          title: 'Login Successful',
-          text: 'You are now logged in',
-          timer: 1500,
-          showConfirmButton: false
-        });
-
-        navigate('/dashboard');
-        window.location.reload();
-      } else {
-        throw new Error(response.data.message || 'Login failed');
-      }
-    } catch (error: any) {
-      console.error("Login error:", error);
+    // Simulate loading for a better UX
+    setTimeout(() => {
+      // For now, skip backend integration and just navigate to dashboard
+      localStorage.setItem('token', 'temporary-mock-token');
+      localStorage.setItem('user', JSON.stringify({
+        email: email || 'user@example.com',
+        username: email ? email.split('@')[0] : 'user'
+      }));
       
-      // Show specific message for verification requirement
-      if (error.response?.data?.needsVerification) {
-        Swal.fire({
-          icon: 'warning',
-          title: 'Email Not Verified',
-          text: 'Please verify your email before logging in',
-          confirmButtonColor: '#F5A051',
-          showCancelButton: true,
-          cancelButtonText: 'Cancel',
-          confirmButtonText: 'Resend Verification Email'
-        }).then((result) => {
-          if (result.isConfirmed) {
-            resendVerificationEmail(email);
-          }
-        });
-      } else {
-;
-      }
-    } finally {
+      navigate('/dashboard');
+      // No need to reload the whole page
       setIsLoading(false);
-    }
+    }, 800);
   };
-
-  const resendVerificationEmail = async (email: string) => {
-    setIsLoading(true);
-    try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-      const response = await axios.post(`${apiUrl}/resend-verification`, { email });
-
-      if (response.data.success) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Verification Email Sent',
-          text: 'Please check your inbox and follow the verification link',
-          confirmButtonColor: '#F5A051'
-        });
-      } else {
-        throw new Error(response.data.message || 'Failed to send verification email');
-      }
-    } catch (error: any) {
-      console.error("Resend verification error:", error);
-      Swal.fire({
-        icon: 'error',
-        title: 'Failed to Resend',
-        text: error.response?.data?.message || 'Could not send verification email',
-        confirmButtonColor: '#F5A051'
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleForgotPassword = () => {
-    Swal.fire({
-      title: 'Reset Password',
-      input: 'email',
-      inputLabel: 'Enter your email address',
-      inputPlaceholder: 'Email',
-      confirmButtonColor: '#F5A051',
-      showCancelButton: true,
-      inputValidator: (value) => {
-        if (!value) {
-          return 'Please enter your email';
-        }
-      }
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          const response = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/forgot-password`, {
-            email: result.value
-          });
-          
-          if (response.data.success) {
-            Swal.fire({
-              icon: 'success',
-              title: 'OTP Sent',
-              text: 'Check your email for the password reset OTP',
-              confirmButtonColor: '#F5A051'
-            });
-            
-            // Show OTP input dialog
-            setTimeout(() => {
-              promptForOTP(result.value);
-            }, 1000);
-          }
-        } catch (error:any ) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Request Failed',
-            text: error.response?.data?.message || 'Failed to send password reset email',
-            confirmButtonColor: '#F5A051'
-          });
-        }
-      }
-    });
-  };
-
-  const promptForOTP = (email:any ) => {
-    Swal.fire({
-      title: 'Enter OTP',
-      input: 'text',
-      inputLabel: 'OTP sent to your email',
-      inputPlaceholder: '6-digit OTP',
-      confirmButtonColor: '#F5A051',
-      showCancelButton: true,
-      inputValidator: (value) => {
-        if (!value) {
-          return 'Please enter the OTP';
-        }
-        if (value.length !== 6 || !/^\d+$/.test(value)) {
-          return 'OTP must be 6 digits';
-        }
-      }
-    }).then((result) => {
-      if (result.isConfirmed) {
-        promptForNewPassword(email, result.value);
-      }
-    });
-  };
-
-  const promptForNewPassword = (email:any , otp:any) => {
-    Swal.fire({
-      title: 'New Password',
-      input: 'password',
-      inputLabel: 'Enter your new password',
-      inputPlaceholder: 'Password',
-      confirmButtonColor: '#F5A051',
-      showCancelButton: true,
-      inputValidator: (value) => {
-        if (!value) {
-          return 'Please enter a new password';
-        }
-        if (value.length < 6) {
-          return 'Password must be at least 6 characters long';
-        }
-      }
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          const response = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/reset-password`, {
-            email,
-            otp,
-            newPassword: result.value
-          });
-          
-          if (response.data.success) {
-            Swal.fire({
-              icon: 'success',
-              title: 'Password Reset Successful',
-              text: 'You can now log in with your new password',
-              confirmButtonColor: '#F5A051'
-            });
-          }
-        } catch (error:any ) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Reset Failed',
-            text: error.response?.data?.message || 'Invalid or expired OTP',
-            confirmButtonColor: '#F5A051'
-          });
-        }
-      }
-    });
-  };
-
-  if (isVerifying) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-        <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8 text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#F5A051] mx-auto"></div>
-          <p className="mt-4 text-lg">Verifying your email address...</p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <PageTransition>
       <div className="min-h-screen bg-gradient-to-r from-red-50 to gray-50 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md mx-auto" data-aos="fade-up">
-          {/* Display verification status message if present */}
-          {verificationStatus.message && (
-            <div className={`mb-4 p-4 rounded-md ${
-              verificationStatus.success 
-                ? 'bg-green-50 border border-green-200 text-green-800' 
-                : 'bg-red-50 border border-red-200 text-red-800'
-            }`}>
-              <div className="flex">
-                {verificationStatus.success ? (
-                  <Check className="h-5 w-5 mr-2" />
-                ) : (
-                  <AlertCircle className="h-5 w-5 mr-2" />
-                )}
-                <p>{verificationStatus.message}</p>
-              </div>
-            </div>
-          )}
-
           <div className="bg-white rounded-lg shadow-md p-8">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome back</h2>
               <p className="text-gray-600">Sign in to your account</p>
+            </div>
+
+            {/* Add demo notice */}
+            <div className="mb-6 p-3 bg-blue-50 border border-blue-200 rounded-md">
+              <p className="text-sm text-blue-800 text-center">
+                <strong>Demo Mode:</strong> Enter any email and password to continue to dashboard.
+              </p>
             </div>
 
             <form onSubmit={handleLogin} className="space-y-6">
@@ -357,7 +66,6 @@ const Login = () => {
                     name="email"
                     type="email"
                     autoComplete="email"
-                    required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#F5A051] focus:border-[#F5A051]"
@@ -379,7 +87,6 @@ const Login = () => {
                     name="password"
                     type="password"
                     autoComplete="current-password"
-                    required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#F5A051] focus:border-[#F5A051]"
@@ -404,7 +111,6 @@ const Login = () => {
                 <button
                   type="button"
                   className="text-sm font-medium text-[#F5A051] hover:text-[#e08c3e]"
-                  onClick={handleForgotPassword}
                 >
                   Forgot password?
                 </button>
@@ -427,31 +133,6 @@ const Login = () => {
                 )}
               </button>
             </form>
-
-            {/* Verification help section */}
-            <div className="mt-6 pt-4 border-t border-gray-200">
-              <p className="text-sm text-gray-600 mb-2">
-                <b>Having trouble logging in?</b>
-              </p>
-              <button
-                onClick={() => {
-                  if (email) {
-                    resendVerificationEmail(email);
-                  } else {
-                    Swal.fire({
-                      icon: 'info',
-                      title: 'Email Required',
-                      text: 'Please enter your email address first',
-                      confirmButtonColor: '#F5A051'
-                    });
-                  }
-                }}
-                type="button"
-                className="w-full text-left text-sm text-[#F5A051] hover:text-[#e08c3e]"
-              >
-                Resend verification email
-              </button>
-            </div>
 
             {/* Sign up link section */}
             <div className="mt-6">
