@@ -3,15 +3,9 @@ import { Calendar, MapPin, Users, Target, Compass, Globe, Facebook, Twitter, Lin
 import Timeline from './Timeline';
 import { Link } from 'react-router-dom';
 import PageTransition from './PageTransition';
-
+import SimpleCountdownTimer  from "./CountdownTimer"
 // Create a simple countdown timer if the original is causing issues
-const SimpleCountdownTimer = () => {
-  return (
-    <div className="text-white font-bold text-xl">
-      Coming Soon: April 26-27, 2025
-    </div>
-  );
-};
+
 
 const Home = () => {
   return (
@@ -244,4 +238,3 @@ const Home = () => {
 };
 
 export default Home;
-
