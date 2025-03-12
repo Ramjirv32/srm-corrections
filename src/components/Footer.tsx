@@ -1,5 +1,5 @@
-import React from 'react'
-import { Calendar, MapPin, Users, Target, Compass, Globe, Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
+// import React from 'react'
+import { Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
 const Footer = () => {
   return (
     <div>
