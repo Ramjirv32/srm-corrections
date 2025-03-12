@@ -14,7 +14,7 @@ import Dashboard from "./components/Dashboard";
 import RouteChangeTracker from "./components/RouteChangeTracker";
 import VerifyEmail from "./components/auth/VerifyEmail";
 import Registrations from "./components/Registrations";
-
+import Footer from "./components/Footer"
 // The App component should contain BrowserRouter
 const App = () => {
   return (
@@ -128,6 +128,7 @@ const AppRoutes = () => {
           </ProtectedRoute>
         } />
       </Routes>
+      <Footer/>
     </>
   );
 };

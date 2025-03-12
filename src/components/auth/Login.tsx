@@ -72,10 +72,10 @@ const Login = () => {
         status: error.response?.status
       });
       
-      setVerificationStatus({
-        success: false,
-        message: error.response?.data?.message || 'Invalid or expired verification link'
-      });
+      // setVerificationStatus({
+      //   success: false,
+      //   message: error.response?.data?.message || 'Invalid or expired verification link'
+      // });
       
      
     } finally {
