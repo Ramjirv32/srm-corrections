@@ -30,6 +30,7 @@ const Login = () => {
       }));
       
       navigate('/dashboard');
+      window.location.reload();
       // No need to reload the whole page
       setIsLoading(false);
     }, 800);
