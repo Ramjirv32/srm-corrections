@@ -57,6 +57,7 @@ const RouteWithLoading = ({
 // Removed the duplicate RouteChangeTracker component definition
 // Use the imported component instead
 
+// Separate component for the routes
 const AppRoutes = () => {
   
   return (
@@ -80,11 +81,7 @@ const AppRoutes = () => {
         } />
         
         {/* Dashboard - only for authenticated users */}
-        <Route path="/dashboard" element={
-          <ProtectedRoute>
-            <RouteWithLoading element={<Dashboard />} />
-          </ProtectedRoute>
-        } />
+        <Route path="/dashboard" element={<Dashboard/>} />
         
         {/* Protected routes - only accessible when logged in */}
         <Route path="/paper-submission" element={
