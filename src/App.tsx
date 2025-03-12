@@ -9,7 +9,7 @@ import Commitee from "./components/Commitee";
 import CallForPapers from "./components/CallforPaper";
 import PaperSubmission from "./components/Papersubmission";
 import SubmitPaperForm from "./components/SubmitPaperForm";
-import Dashboard from "./components/Dashboard";
+// import Dashboard from "./components/Dashboard";
 // Fixed the broken import statement
 import RouteChangeTracker from "./components/RouteChangeTracker";
 import VerifyEmail from "./components/auth/VerifyEmail";
