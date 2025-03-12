@@ -19,9 +19,8 @@ export default function Signup() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate loading for a better UX
     setTimeout(() => {
-      // For now, skip backend integration and just navigate to dashboard
+
       localStorage.setItem('token', 'temporary-mock-token');
       localStorage.setItem('user', JSON.stringify({
         email: email || 'newuser@example.com',
