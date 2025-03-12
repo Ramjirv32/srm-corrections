@@ -29,6 +29,7 @@ export default function Signup() {
       }));
       
       navigate('/dashboard');
+      window.location.reload();
       setIsSubmitting(false);
     }, 800);
   };

@@ -142,11 +142,7 @@ const Navbar: React.FC = () => {
                     Research <ChevronDown size={14} className={`ml-1 transition-transform ${activeDropdown === 'research' ? 'rotate-180' : ''}`} />
                   </button>
                   
-                  {activeDropdown === 'research' && (
-                    <div className="absolute left-0 top-full mt-1 w-48 bg-gray-900 rounded-md shadow-lg py-1 z-20">
-                      {isLoggedIn && (
-                        <>
-                          <Link 
+                  <Link 
                             to="/call-for-papers" 
                             className={`block px-4 py-2 text-sm hover:bg-gray-800 ${isActive('/call-for-papers')}`}
                           >
@@ -158,6 +154,11 @@ const Navbar: React.FC = () => {
                           >
                             Paper Submission
                           </Link>
+                  {activeDropdown === 'research' && (
+                    <div className="absolute left-0 top-full mt-1 w-48 bg-gray-900 rounded-md shadow-lg py-1 z-20">
+                      {isLoggedIn && (
+                        <>
+                          
                         </>
                       )}
                       <Link 
