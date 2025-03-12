@@ -33,6 +33,7 @@ const Registrations: React.FC = () => {
   
   const bankDetailsRef = useRef<HTMLDivElement>(null);
   
+  // eslint-disable-next-line no-unused-vars
   const handleCopy = (text: string, field: string) => {
     navigator.clipboard.writeText(text);
     setCopiedField(field);
