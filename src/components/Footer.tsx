@@ -1,11 +1,9 @@
-<<<<<<< HEAD
+
 import React from 'react'
 import { Calendar, MapPin, Users, Target, Compass, Globe, Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
-import SmallLogo from './images/lo.png';
-=======
-// import React from 'react'
-import { Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
->>>>>>> b91c9d7f29c4c183154483cc84fbcc68bcdd3899
+import SmallLogo from './images/lo.png'
+
+
 const Footer = () => {
   return (
     <div>
