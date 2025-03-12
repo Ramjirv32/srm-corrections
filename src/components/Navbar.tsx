@@ -1,10 +1,24 @@
-import React, { useState } from 'react';
-import { Facebook, Twitter, Linkedin, Instagram, Youtube, MessageCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Facebook, Twitter, Linkedin, Instagram, Youtube, MessageCircle, LogOut } from 'lucide-react';
 import Logo from "./images/lo.png"
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+
+    const token = localStorage.getItem('token');
+    setIsLoggedIn(!!token);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
+    navigate('/');
+  };
 
   return (
     <header className="w-full shadow-sm bg-white">
@@ -68,20 +82,35 @@ const Navbar: React.FC = () => {
             <div className="hidden md:block">
               <ul className="flex items-center space-x-1 lg:space-x-4">
                 <li><Link to="/" className="py-2 px-2 hover:text-[#F5A051] transition-colors text-sm lg:text-base">Home</Link></li>
-                <li><a href="/call-for-papers" className="py-2 px-2 hover:text-[#F5A051] transition-colors text-sm lg:text-base">Call For Papers</a></li>
-                <li><a href="/paper-submission" className="py-2 px-2 hover:text-[#F5A051] transition-colors text-sm lg:text-base">Paper Submission</a></li>
-                <li><a href="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors text-sm lg:text-base">Registrations</a></li>
+                {isLoggedIn && (
+                  <>
+                    <li><Link to="/call-for-papers" className="py-2 px-2 hover:text-[#F5A051] transition-colors text-sm lg:text-base">Call For Papers</Link></li>
+                    <li><Link to="/paper-submission" className="py-2 px-2 hover:text-[#F5A051] transition-colors text-sm lg:text-base">Paper Submission</Link></li>
+                    <li><Link to="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors text-sm lg:text-base">Registrations</Link></li>
+                  </>
+                )}
                 <li><Link to="/commitee" className="py-2 px-2 hover:text-[#F5A051] transition-colors text-sm lg:text-base">Committee</Link></li>
-                <li><a href="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors text-sm lg:text-base">Keynote speakers</a></li>
+                <li><Link to="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors text-sm lg:text-base">Keynote speakers</Link></li>
                 <li><Link to="/contact" className="py-2 px-2 hover:text-[#F5A051] transition-colors text-sm lg:text-base">Contact</Link></li>
-                <li><a href="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors text-sm lg:text-base">Venue</a></li>
+                <li><Link to="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors text-sm lg:text-base">Venue</Link></li>
               </ul>
             </div>
 
             {/* Auth Buttons - Desktop */}
             <div className="hidden md:flex items-center space-x-2">
-              <Link to="/login" className="py-1 px-3 bg-transparent border border-[#F5A051] text-[#F5A051] rounded-md hover:bg-[#F5A051] hover:text-white transition-colors text-sm">Log In</Link>
-              <Link to="/signin" className="py-1 px-3 bg-[#F5A051] text-white rounded-md hover:bg-[#e08c3e] transition-colors text-sm">Sign Up</Link>
+              {isLoggedIn ? (
+                <button 
+                  onClick={handleLogout}
+                  className="py-1 px-3 flex items-center bg-[#F5A051] text-white rounded-md hover:bg-[#e08c3e] transition-colors text-sm"
+                >
+                  <LogOut size={16} className="mr-1" /> Log Out
+                </button>
+              ) : (
+                <>
+                  <Link to="/login" className="py-1 px-3 bg-transparent border border-[#F5A051] text-[#F5A051] rounded-md hover:bg-[#F5A051] hover:text-white transition-colors text-sm">Log In</Link>
+                  <Link to="/signin" className="py-1 px-3 bg-[#F5A051] text-white rounded-md hover:bg-[#e08c3e] transition-colors text-sm">Sign Up</Link>
+                </>
+              )}
             </div>
           </div>
 
@@ -90,19 +119,34 @@ const Navbar: React.FC = () => {
             <div className="md:hidden pt-4">
               <ul className="flex flex-col space-y-2 pb-3 border-b border-gray-700">
                 <li><Link to="/" className="block py-2 px-4 hover:bg-gray-800 rounded">Home</Link></li>
-                <li><a href="#" className="block py-2 px-4 hover:bg-gray-800 rounded">Call For Papers</a></li>
-                <li><a href="#" className="block py-2 px-4 hover:bg-gray-800 rounded">Paper Submission</a></li>
-                <li><a href="#" className="block py-2 px-4 hover:bg-gray-800 rounded">Registrations</a></li>
+                {isLoggedIn && (
+                  <>
+                    <li><Link to="/call-for-papers" className="block py-2 px-4 hover:bg-gray-800 rounded">Call For Papers</Link></li>
+                    <li><Link to="/paper-submission" className="block py-2 px-4 hover:bg-gray-800 rounded">Paper Submission</Link></li>
+                    <li><Link to="#" className="block py-2 px-4 hover:bg-gray-800 rounded">Registrations</Link></li>
+                  </>
+                )}
                 <li><Link to="/commitee" className="block py-2 px-4 hover:bg-gray-800 rounded">Committee</Link></li>
-                <li><a href="#" className="block py-2 px-4 hover:bg-gray-800 rounded">Keynote speakers</a></li>
+                <li><Link to="#" className="block py-2 px-4 hover:bg-gray-800 rounded">Keynote speakers</Link></li>
                 <li><Link to="/contact" className="block py-2 px-4 hover:bg-gray-800 rounded">Contact</Link></li>
-                <li><a href="#" className="block py-2 px-4 hover:bg-gray-800 rounded">Venue</a></li>
+                <li><Link to="#" className="block py-2 px-4 hover:bg-gray-800 rounded">Venue</Link></li>
               </ul>
               
               {/* Auth buttons - Mobile */}
               <div className="flex space-x-2 mt-4 mb-2">
-                <Link to="/login" className="flex-1 py-2 px-3 border border-[#F5A051] text-[#F5A051] bg-transparent rounded text-center">Log In</Link>
-                <Link to="/signin" className="flex-1 py-2 px-3 bg-[#F5A051] text-white rounded text-center">Sign Up</Link>
+                {isLoggedIn ? (
+                  <button 
+                    onClick={handleLogout}
+                    className="flex-1 flex justify-center items-center py-2 px-3 bg-[#F5A051] text-white rounded text-center"
+                  >
+                    <LogOut size={16} className="mr-2" /> Log Out
+                  </button>
+                ) : (
+                  <>
+                    <Link to="/login" className="flex-1 py-2 px-3 border border-[#F5A051] text-[#F5A051] bg-transparent rounded text-center">Log In</Link>
+                    <Link to="/signin" className="flex-1 py-2 px-3 bg-[#F5A051] text-white rounded text-center">Sign Up</Link>
+                  </>
+                )}
               </div>
               
               {/* Mobile Social Icons */}

@@ -80,6 +80,7 @@ const Login = () => {
         });
 
         navigate('/dashboard');
+        window.location.reload();
       }
     } catch (error:any ) {
       Swal.fire({
