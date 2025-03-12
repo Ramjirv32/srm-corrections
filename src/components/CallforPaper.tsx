@@ -1,5 +1,6 @@
 import React from "react";
 import { FaCalendarAlt, FaFileAlt, FaEnvelope, FaExclamationTriangle } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const CallForPapers = () => {
   return (
@@ -71,14 +72,24 @@ const CallForPapers = () => {
               domains. Submit your work and be a part of the transformative dialogue at ICMBNT 2025.
             </p>
 
-            <div className="mt-8 text-center">
-              <a 
-                href="/submit-paper" 
+            <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+              {/* Link to the form page */}
+              <Link 
+                to="/submit-paper" 
                 className="inline-flex items-center bg-[#F5A051] text-white px-6 py-3 rounded-md hover:bg-[#e08c3e] transition-colors duration-300"
               >
                 <FaEnvelope className="mr-2" />
-                Submit Your Paper
-              </a>
+                Quick Abstract Submission
+              </Link>
+              
+              {/* Link to the full submission page */}
+              <Link 
+                to="/paper-submission" 
+                className="inline-flex items-center bg-blue-900 text-white px-6 py-3 rounded-md hover:bg-blue-800 transition-colors duration-300"
+              >
+                <FaFileAlt className="mr-2" />
+                Full Paper Submission
+              </Link>
             </div>
           </div>
         </section>

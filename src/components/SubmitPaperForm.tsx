@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaTimes, FaUpload } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 interface SubmitPaperFormProps {
   isOpen: boolean;
@@ -9,6 +9,14 @@ interface SubmitPaperFormProps {
 
 const SubmitPaperForm: React.FC<SubmitPaperFormProps> = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [isStandalone, setIsStandalone] = useState(false);
+  
+  // Determine if this is being used as a standalone page
+  useEffect(() => {
+    setIsStandalone(location.pathname === '/submit-paper');
+  }, [location]);
+  
   const [formData, setFormData] = useState({
     paperTitle: "",
     salutation: "",
@@ -73,26 +81,29 @@ const SubmitPaperForm: React.FC<SubmitPaperFormProps> = ({ isOpen, onClose }) =>
 
   // Handle the back button
   const handleBack = () => {
-    if (onClose) {
+    if (isStandalone) {
+      navigate('/call-for-papers');
+    } else if (onClose) {
       onClose();
     } else {
       navigate(-1); // fallback to browser history
     }
   };
 
-  if (!isOpen) return null;
+  // Don't render if not open and not standalone
+  if (!isOpen && !isStandalone) return null;
 
   return (
-    <div className="min-h-screen bg-gray-100 pt-8 pb-16">
-      <div className="container mx-auto px-4">
-        <div className="bg-white rounded-lg shadow-xl max-w-3xl w-full mx-auto">
-          <div className="bg-[#F5A051] text-white p-4 rounded-t-lg flex justify-between items-center">
+    <div className={`${isStandalone ? 'min-h-screen bg-gray-100 pt-8 pb-16' : 'fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50 overflow-y-auto'}`}>
+      <div className={`container mx-auto px-4 ${!isStandalone && 'py-8'}`}>
+        <div className={`bg-white rounded-lg shadow-xl ${isStandalone ? 'max-w-3xl w-full mx-auto' : 'max-w-3xl w-full mx-auto max-h-[90vh] overflow-y-auto'}`}>
+          <div className="bg-[#F5A051] text-white p-4 rounded-t-lg flex justify-between items-center sticky top-0 z-10">
             <h2 className="text-xl font-bold">Submit Abstract</h2>
             <button 
               onClick={handleBack}
               className="text-white hover:text-gray-200 transition-colors"
             >
-{/*               <FaTimes size={24} /> */}
+              <FaTimes size={24} />
             </button>
           </div>
           

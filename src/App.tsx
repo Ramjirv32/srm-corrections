@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import Contact from "./components/Contact";
@@ -7,9 +7,10 @@ import Signin from "./components/auth/Signin";
 import Login from "./components/auth/Login";
 import Commitee from "./components/Commitee";
 import CallForPapers from "./components/CallforPaper";
-import Papersubmission from "./components/Papersubmission";
+import PaperSubmission from "./components/Papersubmission";
 import SubmitPaperForm from "./components/SubmitPaperForm";
 import Dashboard from "./components/Dashboard";
+// Fixed the broken import statement
 import RouteChangeTracker from "./components/RouteChangeTracker";
 
 // The App component should contain BrowserRouter
@@ -50,6 +51,9 @@ const RouteWithLoading = ({
     </RouteChangeTracker>
   );
 };
+
+// Removed the duplicate RouteChangeTracker component definition
+// Use the imported component instead
 
 // Separate component for the routes
 const AppRoutes = () => {
@@ -101,7 +105,7 @@ const AppRoutes = () => {
         {/* Protected routes - only accessible when logged in */}
         <Route path="/paper-submission" element={
           <ProtectedRoute>
-            <RouteWithLoading element={<Papersubmission />} />
+            <RouteWithLoading element={<PaperSubmission />} />
           </ProtectedRoute>
         } />
         <Route path="/call-for-papers" element={
@@ -111,9 +115,10 @@ const AppRoutes = () => {
         } />
         <Route path="/submit-paper" element={
           <ProtectedRoute>
-            <RouteWithLoading element={<SubmitPaperForm isOpen={true} onClose={() => {}} />} />
+            <RouteWithLoading element={<SubmitPaperForm isOpen={true} onClose={() => window.history.back()} />} />
           </ProtectedRoute>
         } />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>
   );

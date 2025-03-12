@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
+import React, { useState, useEffect } from "react";
 import { useLocation } from 'react-router-dom';
-import LoadingScreen from './LoadingScreen';
 
 interface RouteChangeTrackerProps {
   children: React.ReactNode;
@@ -15,8 +14,6 @@ const RouteChangeTracker: React.FC<RouteChangeTrackerProps> = ({
   const location = useLocation();
   
   useEffect(() => {
-    setIsLoading(true);
-    
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, loadingTime);
@@ -24,11 +21,13 @@ const RouteChangeTracker: React.FC<RouteChangeTrackerProps> = ({
     return () => clearTimeout(timer);
   }, [location.pathname, loadingTime]);
   
-  if (isLoading) {
-    return <LoadingScreen />;
-  }
-  
-  return <>{children}</>;
+  return isLoading ? (
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#F5A051]"></div>
+    </div>
+  ) : (
+    <>{children}</>
+  );
 };
 
 export default RouteChangeTracker;

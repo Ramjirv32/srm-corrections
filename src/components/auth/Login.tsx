@@ -148,13 +148,7 @@ const Login = () => {
           }
         });
       } else {
-        // Generic error message
-        Swal.fire({
-          icon: 'error',
-          title: 'Login Failed',
-          text: error.response?.data?.message || 'Invalid email or password',
-          confirmButtonColor: '#F5A051'
-        });
+;
       }
     } finally {
       setIsLoading(false);
