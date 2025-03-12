@@ -1,13 +1,18 @@
 import React from 'react'
 import { Calendar, MapPin, Users, Target, Compass, Globe, Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
+import SmallLogo from './images/lo.png';
 const Footer = () => {
   return (
     <div>
-      <footer className="bg-[#0B1829] text-white py-12">
+              {/* Footer */}
+              <footer className="bg-[#0B1829] text-white py-12">
           <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Conference Title Section */}
             <div>
-              <h2 className="text-2xl font-bold mb-4">ICMBNT-2025</h2>
+              <div className="flex items-center mb-4">
+                <img src={SmallLogo} alt="ICMBNT Logo" className="h-12 mr-3" />
+                <h2 className="text-2xl font-bold">ICMBNT-2025</h2>
+              </div>
               <p className="text-gray-300 mb-6">
                 The vision behind organising this conference is to provide an excellent forum for
                 researchers, scientists and industrialists from interdisciplinary areas to showcase
