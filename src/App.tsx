@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import Contact from "./components/Contact";
@@ -59,24 +59,6 @@ const RouteWithLoading = ({
 
 // Separate component for the routes
 const AppRoutes = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  
-  useEffect(() => {
-    // Check authentication on mount and whenever localStorage changes
-    const checkAuth = () => {
-      const token = localStorage.getItem('token');
-      setIsAuthenticated(!!token);
-    };
-    
-    checkAuth();
-    
-    // Listen for storage events (in case token is changed in another tab)
-    window.addEventListener('storage', checkAuth);
-    
-    return () => {
-      window.removeEventListener('storage', checkAuth);
-    };
-  }, []);
   
   return (
     <>
