@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import Contact from "./components/Contact";
@@ -9,7 +9,7 @@ import Commitee from "./components/Commitee";
 import CallForPapers from "./components/CallforPaper";
 import PaperSubmission from "./components/Papersubmission";
 import SubmitPaperForm from "./components/SubmitPaperForm";
-import Dashboard from "./components/Dashboard";
+// import Dashboard from "./components/Dashboard";
 // Fixed the broken import statement
 import RouteChangeTracker from "./components/RouteChangeTracker";
 import VerifyEmail from "./components/auth/VerifyEmail";
@@ -59,24 +59,6 @@ const RouteWithLoading = ({
 
 // Separate component for the routes
 const AppRoutes = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  
-  useEffect(() => {
-    // Check authentication on mount and whenever localStorage changes
-    const checkAuth = () => {
-      const token = localStorage.getItem('token');
-      setIsAuthenticated(!!token);
-    };
-    
-    checkAuth();
-    
-    // Listen for storage events (in case token is changed in another tab)
-    window.addEventListener('storage', checkAuth);
-    
-    return () => {
-      window.removeEventListener('storage', checkAuth);
-    };
-  }, []);
   
   return (
     <>
@@ -99,11 +81,7 @@ const AppRoutes = () => {
         } />
         
         {/* Dashboard - only for authenticated users */}
-        <Route path="/dashboard" element={
-          <ProtectedRoute>
-            <RouteWithLoading element={<Dashboard />} />
-          </ProtectedRoute>
-        } />
+        {/* <Route path="/" element={<Dashboard/>} /> */}
         
         {/* Protected routes - only accessible when logged in */}
         <Route path="/paper-submission" element={

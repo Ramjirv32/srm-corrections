@@ -1,4 +1,3 @@
-import React from "react";
 import { Calendar } from "lucide-react";
 // Only import if installed
 try {

@@ -2,10 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import Swal from 'sweetalert2';
-import { auth } from "../config/firebase"
-import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import axios from 'axios';
 import { Mail, Lock } from 'react-feather'; 
 import PageTransition from '../PageTransition';
 
@@ -19,141 +15,22 @@ export default function Signup() {
     AOS.init({ duration: 1000, once: true });
   }, []);
 
-  const handleSignup = async (e: any) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    try {
-      if (!email || !password) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Please enter email and password',
-          timer: 2000,
-        });
-        setIsSubmitting(false);
-        return;
-      }
+    setTimeout(() => {
 
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/signin`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email, password })
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Account Created Successfully!',
-          text: 'A verification email has been sent to your email address. Please check your inbox and follow the verification link to complete the registration process.',
-          confirmButtonColor: '#F5A051',
-        }).then((result) => {
-          if (result.isConfirmed) {
-            navigate('/login');
-          }
-        });
-      } else {
-        // Check if error is due to existing user
-        if (data.message && data.message.includes("User already exists")) {
-          Swal.fire({
-            icon: 'info',
-            title: 'Account Already Exists',
-            text: 'An account with this email already exists. Redirecting you to login.',
-            timer: 3000,
-            showConfirmButton: false
-          });
-          
-          // Redirect to login page after a short delay
-          setTimeout(() => {
-            navigate('/login');
-          }, 3000);
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Signup Failed',
-            text: data.message || 'Unable to create account',
-            timer: 2000,
-          });
-        }
-      }
-    } catch (error) {
-      console.error("Error in connecting:", error);
-      Swal.fire({
-        icon: 'error',
-        title: 'Connection Error',
-        text: 'Unable to connect to the server. Please try again.',
-        timer: 2000,
-      });
-    } finally {
+      localStorage.setItem('token', 'temporary-mock-token');
+      localStorage.setItem('user', JSON.stringify({
+        email: email || 'newuser@example.com',
+        username: email ? email.split('@')[0] : 'newuser'
+      }));
+      
+      navigate('/');
+      window.location.reload();
       setIsSubmitting(false);
-    }
-  };
-
-  const handleGoogleSignIn = async () => {
-    try {
-      const provider = new GoogleAuthProvider();
-      provider.setCustomParameters({
-        prompt: 'select_account'
-      });
-      
-      const result = await signInWithPopup(auth, provider);
-      
-      const response = await axios.post(`https://lynx-fun-normally.ngrok-free.app/signin`, {
-        email: result.user.email,
-        password: result.user.uid
-      });
-
-
-      if (response.data.success) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Signed in with Google!',
-          text: `Please Login to continue`,
-          timer: 1500,
-        });
-        if (response.data.token) {
-          localStorage.setItem('token', response.data.token);
-        }
-        navigate('/membership-form');
-      } else {
-        throw new Error(response.data.message || 'Login failed');
-      }
-    } catch (error) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Google Sign-In Failed',
-        text: getErrorMessage(error),
-        timer: 3000,
-      });
-    }
-  };
-
-  const getErrorMessage = (error: any) => {
-    if (axios.isAxiosError(error)) {
-      console.error("Axios Error Response:", error.response);
-      return `API Error: ${error.response?.data?.message || error.message}`;
-    }
-    
-    switch (error.code) {
-      case 'auth/user-not-found':
-      case 'auth/wrong-password':
-        return 'Invalid email or password';
-      case 'auth/too-many-requests':
-        return 'Too many failed login attempts. Please try again later.';
-      case 'auth/operation-not-allowed':
-        return 'This sign-in method is not enabled. Please contact the administrator.';
-      case 'auth/popup-blocked':
-        return 'The sign-in popup was blocked by your browser. Please allow popups for this site.';
-      case 'auth/popup-closed-by-user':
-      case 'auth/cancelled-popup-request':
-        return 'The sign-in popup was closed before authentication could complete. Please try again.';
-      default:
-        return `An unexpected error occurred: ${error.message}. Please try again.`;
-    }
+    }, 800);
   };
 
   return (
@@ -166,31 +43,11 @@ export default function Signup() {
               <p className="text-gray-600">Join our community today</p>
             </div>
 
-            {/* Add verification info banner */}
+            {/* Add demo notice */}
             <div className="mb-6 p-3 bg-blue-50 border border-blue-200 rounded-md">
-              <p className="text-sm text-blue-800">
-                <strong>Note:</strong> After signing up, you'll need to verify your email address before logging in. 
-                Please check your inbox for a verification link.
+              <p className="text-sm text-blue-800 text-center">
+                <strong>Demo Mode:</strong> Enter any email and password to continue to dashboard.
               </p>
-            </div>
-
-            <div className="mb-6">
-              <button
-                onClick={handleGoogleSignIn}
-                className="w-full flex justify-center items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-base font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-              >
-                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5 mr-2" />
-                Sign up with Google
-              </button>
-            </div>
-
-            <div className="relative mb-6">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">Or sign up with email</span>
-              </div>
             </div>
 
             <form onSubmit={handleSignup} className="space-y-6">
@@ -206,7 +63,6 @@ export default function Signup() {
                     onChange={(e) => setEmail(e.target.value)}
                     className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
                     placeholder="Enter your email"
-                    required
                   />
                 </div>
               </div>
@@ -223,7 +79,6 @@ export default function Signup() {
                     onChange={(e) => setPassword(e.target.value)}
                     className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
                     placeholder="Create a password"
-                    required
                   />
                 </div>
               </div>

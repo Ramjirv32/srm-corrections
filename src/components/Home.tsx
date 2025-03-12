@@ -1,3 +1,4 @@
+import React from 'react';
 import { Calendar, MapPin, Users, Target, Compass, Globe, Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
 import Timeline from './Timeline';
 import { Link } from 'react-router-dom';
