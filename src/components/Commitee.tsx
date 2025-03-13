@@ -1,6 +1,6 @@
 "use client"
 
-import type React from "react"
+// import type React from "react"
 import { useState } from "react"
 import { Users, Globe, Mail, Linkedin, Twitter, ExternalLink } from "lucide-react"
 import PageTransition from './PageTransition';

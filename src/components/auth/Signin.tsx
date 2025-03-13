@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import Swal from 'sweetalert2';
-import { auth } from "../config/firebase"
+import { auth } from "../config/firebase";
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import axios from 'axios';
 import { Mail, Lock } from 'react-feather'; 
@@ -19,7 +19,7 @@ export default function Signup() {
     AOS.init({ duration: 1000, once: true });
   }, []);
 
-  const handleSignup = async (e: any) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
@@ -122,7 +122,7 @@ export default function Signup() {
       } else {
         throw new Error(response.data.message || 'Login failed');
       }
-    } catch (error) {
+    } catch (error: any) {
       Swal.fire({
         icon: 'error',
         title: 'Google Sign-In Failed',

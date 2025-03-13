@@ -1,11 +1,11 @@
-import React from 'react';
-import { Calendar, MapPin, Users, Target, Compass, Globe, Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
+// import React from 'react';
+import { Calendar, MapPin, Users, Target, Compass, Globe } from 'lucide-react';
 import Timeline from './Timeline';
 import { Link } from 'react-router-dom';
 import PageTransition from './PageTransition';
 import SimpleCountdownTimer  from "./CountdownTimer"
 // Import images
-import Logo from './images/logo.jpeg';
+// import Logo from './images/logo.jpeg';
 import VenuePic from './images/srm_venue.jpeg'; // Changed to srm_venue.jpeg
 import SmallLogo from './images/lo.png';
 import MadrasHighCourt from './images/Madras_High_Court.jpg';
