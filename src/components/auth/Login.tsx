@@ -23,7 +23,7 @@ const Login = () => {
   useEffect(() => {
     AOS.init({ duration: 1000, once: true });
 
-    // Check if there's a verification token in the URL - improve token extraction
+
     const params = new URLSearchParams(location.search);
     const token = params.get('token');
     
