@@ -68,14 +68,9 @@ const VerifyEmail: React.FC = () => {
         
       
         // Show error message
-        Swal.fire({
-          icon: 'error',
-          title: 'Verification Failed',
-          text: error.response?.data?.message || error.message || 'Invalid or expired verification link.',
-          confirmButtonColor: '#F5A051'
-        }).then(() => {
-          navigate('/login');
-        });
+       
+        navigate('/login');
+      
       } finally {
         setIsVerifying(false);
       }
