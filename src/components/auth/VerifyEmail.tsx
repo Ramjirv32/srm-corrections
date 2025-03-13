@@ -52,14 +52,8 @@ const VerifyEmail: React.FC = () => {
           });
           
           // Show success message
-          Swal.fire({
-            icon: 'success',
-            title: 'Email Verified',
-            text: 'Your email has been verified successfully. You can now log in.',
-            confirmButtonColor: '#F5A051'
-          }).then(() => {
-            navigate('/login');
-          });
+          navigate('/login');
+         
         } else {
           throw new Error(response.data.message || 'Verification failed');
         }
