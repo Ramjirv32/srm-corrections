@@ -39,7 +39,7 @@ const VerifyEmail: React.FC = () => {
         });
         
         // Send verification request to server
-        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        const apiUrl = import.meta.env.VITE_API_URL || 'https://srm-back.vercel.app';
         const response = await axios.post(`${apiUrl}/verify-email-token`, {
           token: verificationData.token,
           email: verificationData.email
@@ -66,11 +66,7 @@ const VerifyEmail: React.FC = () => {
       } catch (error: any) {
         console.error("Verification error:", error);
         
-        setVerificationStatus({
-          success: false,
-          message: error.response?.data?.message || error.message || 'Invalid or expired verification link'
-        });
-        
+      
         // Show error message
         Swal.fire({
           icon: 'error',

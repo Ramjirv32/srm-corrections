@@ -14,11 +14,14 @@ import Dashboard from "./components/Dashboard";
 import RouteChangeTracker from "./components/RouteChangeTracker";
 import VerifyEmail from "./components/auth/VerifyEmail";
 import Registrations from "./components/Registrations";
-import Footer from "./components/Footer"
+import Footer from "./components/Footer";
+import ScrollToTop from "./components/ScrollToTop";
+
 // The App component should contain BrowserRouter
 const App = () => {
   return (
     <BrowserRouter>
+      <ScrollToTop /> {/* Add ScrollToTop component here */}
       <AppRoutes />
     </BrowserRouter>
   );
