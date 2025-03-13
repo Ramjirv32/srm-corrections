@@ -4,8 +4,11 @@ import Timeline from './Timeline';
 import { Link } from 'react-router-dom';
 import PageTransition from './PageTransition';
 import SimpleCountdownTimer  from "./CountdownTimer"
-// Create a simple countdown timer if the original is causing issues
-
+// Import images
+import Logo from './images/logo.jpeg';
+import VenuePic from './images/srm_venue.jpeg'; // Changed to srm_venue.jpeg
+import SmallLogo from './images/lo.png';
+import MadrasHighCourt from './images/Madras_High_Court.jpg';
 
 const Home = () => {
   return (
@@ -15,6 +18,11 @@ const Home = () => {
         <div className="relative bg-gradient-to-r from-blue-900 to-[#F5A051] text-white">
           <div className="absolute inset-0 bg-black opacity-50"></div>
           <div className="relative z-10 container mx-auto px-4 py-16 text-center">
+            {/* Add logo at the top of hero section */}
+            <div className="flex justify-center mb-6">
+              <img src={SmallLogo} alt="Conference Logo" className="h-32 object-contain rounded-lg" />
+            </div>
+            
             <h1 className="text-3xl md:text-5xl font-bold mb-4 leading-tight">
               International Conference on Multidisciplinary Breakthroughs and NextGen Technologies
             </h1>
@@ -56,12 +64,52 @@ const Home = () => {
           </div>
         </div>
 
+        {/* Venue Images Section - Now with Grid of Two Images */}
+        <section className="py-12 bg-white">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold text-center mb-8 text-[#F5A051]">Conference Venue</h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* SRM Hotel Image */}
+              <div className="relative overflow-hidden rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300 group">
+                <img 
+                  src={VenuePic} 
+                  alt="SRM Hotel - Conference Venue" 
+                  className="w-full object-cover h-80 group-hover:scale-105 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent group-hover:opacity-75 transition-opacity duration-300"></div>
+                <div className="absolute bottom-0 left-0 right-0 p-6 text-white transform group-hover:-translate-y-2 transition-transform duration-300">
+                  <h3 className="text-2xl font-bold mb-1">SRM HOTEL</h3>
+                  <p>Maraimalai Nagar, Chennai</p>
+                </div>
+              </div>
+
+              {/* Madras High Court Image */}
+              <div className="relative overflow-hidden rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300 group">
+                <img 
+                  src={MadrasHighCourt} 
+                  alt="Madras High Court" 
+                  className="w-full object-cover h-80 group-hover:scale-105 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent group-hover:opacity-75 transition-opacity duration-300"></div>
+                <div className="absolute bottom-0 left-0 right-0 p-6 text-white transform group-hover:-translate-y-2 transition-transform duration-300">
+                  <h3 className="text-2xl font-bold mb-1">Madras High Court</h3>
+                  <p>Chennai, Tamil Nadu</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Society Section */}
         <section className="py-12">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center mb-12 text-[#F5A051]">
-              Society for Cyber Intelligent Systems
-            </h2>
+            <div className="flex items-center justify-center mb-8">
+              <img src={SmallLogo} alt="Society Logo" className="h-16 mr-4" />
+              <h2 className="text-3xl font-bold text-[#F5A051]">
+                Society for Cyber Intelligent Systems
+              </h2>
+            </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <div className="p-6 rounded-lg">
@@ -142,8 +190,7 @@ const Home = () => {
         {/* Important Dates Section using Timeline Design */}
         <Timeline />
 
-        {/* Footer */}
-        
+
       </div>
     </PageTransition>
   );

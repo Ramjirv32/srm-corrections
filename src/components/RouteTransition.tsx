@@ -1,5 +1,4 @@
-import React from 'react';
-import { Loader } from 'lucide-react';
+// import React from 'react';
 
 interface RouteTransitionProps {
   children: React.ReactNode;
