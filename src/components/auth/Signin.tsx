@@ -2,10 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import Swal from 'sweetalert2';
-import { auth } from "../config/firebase"
-import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import axios from 'axios';
 import { Mail, Lock } from 'react-feather'; 
 import PageTransition from '../PageTransition';
 
@@ -19,22 +15,13 @@ export default function Signup() {
     AOS.init({ duration: 1000, once: true });
   }, []);
 
-  const handleSignup = async (e: any) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    try {
-      if (!email || !password) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Please enter email and password',
-          timer: 2000,
-        });
-        setIsSubmitting(false);
-        return;
-      }
+    setTimeout(() => {
 
+<<<<<<< HEAD
       const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://srm-back.vercel.app'}/signin`, {
         method: 'POST',
         headers: {
@@ -154,6 +141,18 @@ export default function Signup() {
       default:
         return `An unexpected error occurred: ${error.message}. Please try again.`;
     }
+=======
+      localStorage.setItem('token', 'temporary-mock-token');
+      localStorage.setItem('user', JSON.stringify({
+        email: email || 'newuser@example.com',
+        username: email ? email.split('@')[0] : 'newuser'
+      }));
+      
+      navigate('/');
+      window.location.reload();
+      setIsSubmitting(false);
+    }, 800);
+>>>>>>> 6ad456a682a69322268e1514e86fbd275b88bad9
   };
 
   return (
@@ -166,31 +165,11 @@ export default function Signup() {
               <p className="text-gray-600">Join our community today</p>
             </div>
 
-            {/* Add verification info banner */}
+            {/* Add demo notice */}
             <div className="mb-6 p-3 bg-blue-50 border border-blue-200 rounded-md">
-              <p className="text-sm text-blue-800">
-                <strong>Note:</strong> After signing up, you'll need to verify your email address before logging in. 
-                Please check your inbox for a verification link.
+              <p className="text-sm text-blue-800 text-center">
+                <strong>Demo Mode:</strong> Enter any email and password to continue to dashboard.
               </p>
-            </div>
-
-            <div className="mb-6">
-              <button
-                onClick={handleGoogleSignIn}
-                className="w-full flex justify-center items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-base font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-              >
-                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5 mr-2" />
-                Sign up with Google
-              </button>
-            </div>
-
-            <div className="relative mb-6">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">Or sign up with email</span>
-              </div>
             </div>
 
             <form onSubmit={handleSignup} className="space-y-6">
@@ -206,7 +185,6 @@ export default function Signup() {
                     onChange={(e) => setEmail(e.target.value)}
                     className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
                     placeholder="Enter your email"
-                    required
                   />
                 </div>
               </div>
@@ -223,7 +201,6 @@ export default function Signup() {
                     onChange={(e) => setPassword(e.target.value)}
                     className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
                     placeholder="Create a password"
-                    required
                   />
                 </div>
               </div>

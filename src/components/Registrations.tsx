@@ -33,11 +33,12 @@ const Registrations: React.FC = () => {
   
   const bankDetailsRef = useRef<HTMLDivElement>(null);
   
-  const handleCopy = (text: string, field: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedField(field);
-    setTimeout(() => setCopiedField(null), 2000);
-  };
+  // eslint-disable-next-line no-unused-vars
+  // const handleCopy = (text: string, field: string) => {
+  //   navigator.clipboard.writeText(text);
+  //   setCopiedField(field);
+  //   setTimeout(() => setCopiedField(null), 2000);
+  // };
   
   const copyAllBankDetails = () => {
     if (bankDetailsRef.current) {
