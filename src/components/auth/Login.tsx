@@ -1,29 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Mail, Lock, Check, AlertCircle } from 'react-feather';
+import { Link, useNavigate } from 'react-router-dom';
+import { Mail, Lock } from 'react-feather';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import Swal from 'sweetalert2';
-import axios from 'axios';
 import PageTransition from '../PageTransition';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isVerifying, setIsVerifying] = useState(false);
-  const [verificationStatus, setVerificationStatus] = useState<{
-    success?: boolean;
-    message?: string;
-  }>({});
   
-  const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
     AOS.init({ duration: 1000, once: true });
+<<<<<<< HEAD
 
-    // Check if there's a verification token in the URL - improve token extraction
+
     const params = new URLSearchParams(location.search);
     const token = params.get('token');
     
@@ -84,11 +77,15 @@ const Login = () => {
       window.history.replaceState({}, document.title, '/login');
     }
   };
+=======
+  }, []);
+>>>>>>> 6ad456a682a69322268e1514e86fbd275b88bad9
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
+<<<<<<< HEAD
     try {
       const apiUrl = import.meta.env.VITE_API_URL || 'https://srm-back.vercel.app';
       const response = await axios.post(`${apiUrl}/login`, {
@@ -138,30 +135,25 @@ const Login = () => {
       }
     } catch (error: any) {
       console.error("Login error:", error);
+=======
+    // Simulate loading for a better UX
+    setTimeout(() => {
+      // For now, skip backend integration and just navigate to dashboard
+      localStorage.setItem('token', 'temporary-mock-token');
+      localStorage.setItem('user', JSON.stringify({
+        email: email || 'user@example.com',
+        username: email ? email.split('@')[0] : 'user'
+      }));
+>>>>>>> 6ad456a682a69322268e1514e86fbd275b88bad9
       
-      // Show specific message for verification requirement
-      if (error.response?.data?.needsVerification) {
-        Swal.fire({
-          icon: 'warning',
-          title: 'Email Not Verified',
-          text: 'Please verify your email before logging in',
-          confirmButtonColor: '#F5A051',
-          showCancelButton: true,
-          cancelButtonText: 'Cancel',
-          confirmButtonText: 'Resend Verification Email'
-        }).then((result) => {
-          if (result.isConfirmed) {
-            resendVerificationEmail(email);
-          }
-        });
-      } else {
-;
-      }
-    } finally {
+      navigate('/');
+      window.location.reload();
+      // No need to reload the whole page
       setIsLoading(false);
-    }
+    }, 800);
   };
 
+<<<<<<< HEAD
   const resendVerificationEmail = async (email: string) => {
     setIsLoading(true);
     try {
@@ -315,32 +307,23 @@ const Login = () => {
     );
   }
 
+=======
+>>>>>>> 6ad456a682a69322268e1514e86fbd275b88bad9
   return (
     <PageTransition>
       <div className="min-h-screen bg-gradient-to-r from-red-50 to gray-50 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md mx-auto" data-aos="fade-up">
-          {/* Display verification status message if present */}
-          {verificationStatus.message && (
-            <div className={`mb-4 p-4 rounded-md ${
-              verificationStatus.success 
-                ? 'bg-green-50 border border-green-200 text-green-800' 
-                : 'bg-red-50 border border-red-200 text-red-800'
-            }`}>
-              <div className="flex">
-                {verificationStatus.success ? (
-                  <Check className="h-5 w-5 mr-2" />
-                ) : (
-                  <AlertCircle className="h-5 w-5 mr-2" />
-                )}
-                <p>{verificationStatus.message}</p>
-              </div>
-            </div>
-          )}
-
           <div className="bg-white rounded-lg shadow-md p-8">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome back</h2>
               <p className="text-gray-600">Sign in to your account</p>
+            </div>
+
+            {/* Add demo notice */}
+            <div className="mb-6 p-3 bg-blue-50 border border-blue-200 rounded-md">
+              <p className="text-sm text-blue-800 text-center">
+                <strong>Demo Mode:</strong> Enter any email and password to continue to dashboard.
+              </p>
             </div>
 
             <form onSubmit={handleLogin} className="space-y-6">
@@ -357,7 +340,6 @@ const Login = () => {
                     name="email"
                     type="email"
                     autoComplete="email"
-                    required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#F5A051] focus:border-[#F5A051]"
@@ -379,7 +361,6 @@ const Login = () => {
                     name="password"
                     type="password"
                     autoComplete="current-password"
-                    required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#F5A051] focus:border-[#F5A051]"
@@ -404,7 +385,6 @@ const Login = () => {
                 <button
                   type="button"
                   className="text-sm font-medium text-[#F5A051] hover:text-[#e08c3e]"
-                  onClick={handleForgotPassword}
                 >
                   Forgot password?
                 </button>
@@ -427,31 +407,6 @@ const Login = () => {
                 )}
               </button>
             </form>
-
-            {/* Verification help section */}
-            <div className="mt-6 pt-4 border-t border-gray-200">
-              <p className="text-sm text-gray-600 mb-2">
-                <b>Having trouble logging in?</b>
-              </p>
-              <button
-                onClick={() => {
-                  if (email) {
-                    resendVerificationEmail(email);
-                  } else {
-                    Swal.fire({
-                      icon: 'info',
-                      title: 'Email Required',
-                      text: 'Please enter your email address first',
-                      confirmButtonColor: '#F5A051'
-                    });
-                  }
-                }}
-                type="button"
-                className="w-full text-left text-sm text-[#F5A051] hover:text-[#e08c3e]"
-              >
-                Resend verification email
-              </button>
-            </div>
 
             {/* Sign up link section */}
             <div className="mt-6">
