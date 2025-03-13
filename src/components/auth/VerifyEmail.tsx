@@ -1,4 +1,4 @@
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import axios from 'axios';
@@ -20,57 +20,72 @@ const VerifyEmail: React.FC = () => {
   useEffect(() => {
     const verifyEmailToken = async () => {
       try {
-        // Get the encoded data from URL
+        // Get the data parameter from URL
         const params = new URLSearchParams(location.search);
         const encodedData = params.get('data');
         
         if (!encodedData) {
           throw new Error('Verification data is missing');
         }
-        
+
         // Decode the base64 data
         const decodedString = atob(encodedData);
         const verificationData = JSON.parse(decodedString);
-        
-        console.log("Decoded verification data:", {
-          token: verificationData.token ? `${verificationData.token.substring(0, 10)}...` : 'missing',
-          email: verificationData.email || 'missing',
-          timestamp: verificationData.timestamp ? new Date(verificationData.timestamp).toLocaleString() : 'missing'
-        });
+
+        // Validate required fields
+        if (!verificationData.token || !verificationData.email || !verificationData.timestamp) {
+          throw new Error('Invalid verification data format');
+        }
+
+        // Check if verification link has expired (24 hours)
+        const tokenTimestamp = new Date(verificationData.timestamp).getTime();
+        const currentTime = new Date().getTime();
+        const tokenAge = currentTime - tokenTimestamp;
+        const maxAge = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+        if (tokenAge > maxAge) {
+          throw new Error('Verification link has expired');
+        }
         
         // Send verification request to server
         const apiUrl = import.meta.env.VITE_API_URL || 'https://srm-back.vercel.app';
         const response = await axios.post(`${apiUrl}/verify-email-token`, {
           token: verificationData.token,
-          email: verificationData.email
+          email: verificationData.email,
+          timestamp: verificationData.timestamp
         });
-        
+
         if (response.data.success) {
           setVerificationStatus({
             success: true,
             message: 'Your email has been verified successfully!'
           });
           
-          // Show success message
-          Swal.fire({
+          await Swal.fire({
             icon: 'success',
             title: 'Email Verified',
             text: 'Your email has been verified successfully. You can now log in.',
             confirmButtonColor: '#F5A051'
-          }).then(() => {
-            navigate('/login');
           });
+          
+          navigate('/login');
         } else {
           throw new Error(response.data.message || 'Verification failed');
         }
       } catch (error: any) {
         console.error("Verification error:", error);
         
-      
-        // Show error message
-       
-        navigate('/login');
-      
+        setVerificationStatus({
+          success: false,
+          message: error.message || 'An error occurred during verification'
+        });
+
+        await Swal.fire({
+          icon: 'error',
+          title: 'Verification Failed',
+          text: error.message || 'An error occurred during verification',
+          confirmButtonColor: '#F5A051'
+        });
       } finally {
         setIsVerifying(false);
       }
