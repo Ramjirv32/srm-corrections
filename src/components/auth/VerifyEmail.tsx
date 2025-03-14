@@ -48,7 +48,7 @@ const VerifyEmail: React.FC = () => {
         }
         
         // Send verification request to server
-        const apiUrl = import.meta.env.VITE_API_URL || 'https://srm-back.vercel.app';
+        const apiUrl = 'http://localhost:5000';
         const response = await axios.post(`${apiUrl}/verify-email-token`, {
           token: verificationData.token,
           email: verificationData.email,

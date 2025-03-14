@@ -39,12 +39,12 @@ const Login = () => {
   const verifyEmail = async (token: string) => {
     try {
       setVerificationStatus({});
-      const apiUrl = import.meta.env.VITE_API_URL || 'https://srm-back.vercel.app';
+      const apiUrl = 'http://localhost:5000';
       
       // Log request details for debugging
       console.log(`Sending verification request to ${apiUrl}/verify-email with token: ${token}`);
       
-      const response = await axios.get(`https://srm-back.vercel.app/verify-email`, {
+      const response = await axios.get(`${apiUrl}/verify-email`, {
         params: { token }
       });
       
@@ -72,12 +72,10 @@ const Login = () => {
         status: error.response?.status
       });
       
-      // setVerificationStatus({
-      //   success: false,
-      //   message: error.response?.data?.message || 'Invalid or expired verification link'
-      // });
-      
-     
+      setVerificationStatus({
+        success: false,
+        message: error.response?.data?.message || 'Invalid or expired verification link'
+      });
     } finally {
       setIsVerifying(false);
       // Remove the token from URL to avoid confusion if page is refreshed
@@ -90,7 +88,7 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'https://srm-back.vercel.app';
+      const apiUrl = 'http://localhost:5000';
       const response = await axios.post(`${apiUrl}/login`, {
         email,
         password
@@ -165,7 +163,7 @@ const Login = () => {
   const resendVerificationEmail = async (email: string) => {
     setIsLoading(true);
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'https://srm-back.vercel.app';
+      const apiUrl = 'http://localhost:5000';
       const response = await axios.post(`${apiUrl}/resend-verification`, { email });
 
       if (response.data.success) {
@@ -207,7 +205,7 @@ const Login = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const response = await axios.post(`${import.meta.env.VITE_API_URL || 'https://srm-back.vercel.app'}/forgot-password`, {
+          const response = await axios.post(`http://localhost:5000/forgot-password`, {
             email: result.value
           });
           
@@ -278,7 +276,7 @@ const Login = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const response = await axios.post(`${import.meta.env.VITE_API_URL || 'https://srm-back.vercel.app'}/reset-password`, {
+          const response = await axios.post(`http://localhost:5000/reset-password`, {
             email,
             otp,
             newPassword: result.value

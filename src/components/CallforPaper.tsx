@@ -1,5 +1,5 @@
 import React from "react";
-import { FaCalendarAlt, FaFileAlt, FaEnvelope, FaExclamationTriangle } from "react-icons/fa";
+import { FaCalendarAlt, FaFileAlt, FaExclamationTriangle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const CallForPapers = () => {
@@ -27,6 +27,18 @@ const CallForPapers = () => {
             diverse disciplines. Propose engaging sessions and tracks that align with the conference
             themes, fostering a collaborative environment.
           </p>
+          
+          <div className="mt-8 space-y-2">
+            <h3 className="text-xl font-bold text-gray-800 mb-4">Subject Domains:</h3>
+            <ul className="list-disc pl-6 space-y-2 text-gray-700">
+              <li>STEM (Science, Technology, Engineering & Mathematics)</li>
+              <li>Education, Teaching, Learning & Assessment</li>
+              <li>Arts, Humanities & Social Sciences</li>
+              <li>Finance, Business, Management, Economics & Accounting</li>
+              <li>Health and Life Sciences</li>
+              <li>Sports and Physiotherapy</li>
+            </ul>
+          </div>
         </section>
 
         {/* Important Dates Section */}
@@ -39,16 +51,16 @@ const CallForPapers = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <DateCard 
               title="Manuscript Submission Deadline" 
-              date="15 March 2025" 
+              date="25 March 2025" 
               isHighlighted={true} 
             />
             <DateCard 
               title="Acceptance" 
-              date="25 March 2025" 
+              date="5 April 2025" 
             />
             <DateCard 
               title="Registration Date" 
-              date="05 April 2025" 
+              date="12 April 2025" 
             />
             <DateCard 
               title="Date of Conference" 
@@ -73,16 +85,6 @@ const CallForPapers = () => {
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-              {/* Link to the form page */}
-{/*               <Link 
-                to="/submit-paper" 
-                className="inline-flex items-center bg-[#F5A051] text-white px-6 py-3 rounded-md hover:bg-[#e08c3e] transition-colors duration-300"
-              >
-                <FaEnvelope className="mr-2" />
-                Quick Abstract Submission
-              </Link> */}
-              
-              {/* Link to the full submission page */}
               <Link 
                 to="/paper-submission" 
                 className="inline-flex items-center bg-blue-900 text-white px-6 py-3 rounded-md hover:bg-blue-800 transition-colors duration-300"
@@ -94,8 +96,7 @@ const CallForPapers = () => {
           </div>
         </section>
 
-        {/* Instructions to Authors Section */}
-{/*         <section className="mb-16">
+        <section className="mb-16">
           <div className="flex items-center mb-6">
             <FaExclamationTriangle className="text-[#F5A051] text-2xl mr-4" />
             <h2 className="text-3xl font-bold text-[#F5A051]">INSTRUCTION TO AUTHORS</h2>
@@ -137,7 +138,7 @@ const CallForPapers = () => {
               <p><strong>Manuscript Submission Deadline:</strong> 15 March 2025</p>
             </div>
           </div>
-        </section> */}
+        </section>
       </div>
     </div>
   );

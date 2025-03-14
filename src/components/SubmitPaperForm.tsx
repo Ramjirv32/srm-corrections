@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { FaTimes, FaUpload, FaLayerGroup, FaListUl } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Add the categories data
 const categories = [
@@ -63,6 +67,18 @@ interface SubmitPaperFormProps {
   embedded: boolean;
   onSubmissionSuccess: () => void;
 }
+
+interface SubmissionResponse {
+  success: boolean;
+  message: string;
+  submissionId?: string;
+  paperDetails?: {
+    title: string;
+    category: string;
+    status: string;
+  };
+}
+
 const SubmitPaperForm: React.FC<SubmitPaperFormProps> = ({ isOpen, onClose, embedded = false, onSubmissionSuccess }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -104,20 +120,72 @@ const SubmitPaperForm: React.FC<SubmitPaperFormProps> = ({ isOpen, onClose, embe
   const [abstractFileName, setAbstractFileName] = useState("Click to browse files");
   const [photoFileName, setPhotoFileName] = useState("Click to browse files");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Form submission logic would go here
-    console.log(formData);
-    console.log("Abstract file:", abstractFile);
-    console.log("Photo file:", photoFile);
     
-    // Show success message and call the success callback
-    if (onSubmissionSuccess) {
-      onSubmissionSuccess();
-    } else {
-      alert("Abstract submitted successfully!");
-      // Navigate back to call for papers page if no callback provided
-      navigate("/call-for-papers");
+    // Validate emails match
+    if (formData.email !== formData.confirmEmail) {
+      toast.error("Email addresses do not match!");
+      return;
+    }
+  
+    // Create FormData object for file upload
+    const submissionFormData = new FormData();
+    
+    // Append all form fields
+    Object.keys(formData).forEach(key => {
+      if (key !== 'confirmEmail') { // Don't send confirmEmail to server
+        submissionFormData.append(key, formData[key as keyof typeof formData]);
+      }
+    });
+  
+    // Append abstract file if exists
+    if (abstractFile) {
+      submissionFormData.append('abstract', abstractFile);
+    }
+  
+    try {
+      const response = await axios.post<SubmissionResponse>(
+        'http://localhost:5000/submit-paper',
+        submissionFormData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+  
+      if (response.data.success) {
+        toast.success(response.data.message);
+        
+        // Store submission ID in localStorage for future reference
+        if (response.data.submissionId) {
+          localStorage.setItem('lastSubmissionId', response.data.submissionId);
+        }
+  
+        // Call success callback or navigate
+        if (onSubmissionSuccess) {
+          onSubmissionSuccess();
+        } else {
+          navigate('/submission-success', { 
+            state: { 
+              submissionId: response.data.submissionId,
+              paperDetails: response.data.paperDetails
+            }
+          });
+        }
+      } else {
+        toast.error(response.data.message || "Submission failed");
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const errorMessage = error.response?.data?.message || "Error submitting paper";
+        toast.error(errorMessage);
+        console.error('Submission error:', error.response?.data);
+      } else {
+        toast.error("An unexpected error occurred");
+        console.error('Submission error:', error);
+      }
     }
   };
 
@@ -134,6 +202,20 @@ const SubmitPaperForm: React.FC<SubmitPaperFormProps> = ({ isOpen, onClose, embe
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, fileType: 'abstract' | 'photo') => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
+      
+      // Validate file size
+      if (file.size > 3 * 1024 * 1024) {
+        toast.error('File size must be less than 3MB');
+        return;
+      }
+  
+      // Validate file type
+      const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+      if (!allowedTypes.includes(file.type)) {
+        toast.error('Please upload a PDF or Word document');
+        return;
+      }
+  
       if (fileType === 'abstract') {
         setAbstractFile(file);
         setAbstractFileName(file.name);
@@ -546,28 +628,7 @@ const SubmitPaperForm: React.FC<SubmitPaperFormProps> = ({ isOpen, onClose, embe
               </label>
             </div>
           </div>
-          
-          {/* File Upload - Photo with improved UI */}
-          <div className="form-group">
-            <label className="block mb-2 font-medium text-gray-700">
-              Upload your photo *
-              <span className="block text-sm font-normal text-gray-500">(Maximum Upload File Size 5MB & Please upload in (jpeg/png) format)</span>
-            </label>
-            <div className="border-2 border-dashed border-gray-300 rounded-md p-4 text-center hover:bg-gray-50">
-              <input
-                type="file"
-                id="photoFile"
-                accept=".jpeg,.jpg,.png"
-                required
-                className="hidden"
-                onChange={(e) => handleFileChange(e, 'photo')}
-              />
-              <label htmlFor="photoFile" className="cursor-pointer flex flex-col items-center">
-                <FaUpload className="text-[#F5A051] text-3xl mb-2" />
-                <span className="text-gray-500">{photoFileName}</span>
-              </label>
-            </div>
-          </div>
+         
           
           {/* Communication Mode */}
           <div className="form-group">
@@ -590,20 +651,7 @@ const SubmitPaperForm: React.FC<SubmitPaperFormProps> = ({ isOpen, onClose, embe
             </select>
           </div>
           
-          {/* Promo Code */}
-          <div className="form-group">
-            <label htmlFor="promoCode" className="block mb-2 font-medium text-gray-700">
-              Abstract Promo Code
-            </label>
-            <input
-              type="text"
-              id="promoCode"
-              name="promoCode"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#F5A051]"
-              value={formData.promoCode}
-              onChange={handleChange}
-            />
-          </div>
+        
           
           {/* Referral Source */}
           <div className="form-group">
@@ -702,6 +750,7 @@ const SubmitPaperForm: React.FC<SubmitPaperFormProps> = ({ isOpen, onClose, embe
           </div>
         </div>
       </div>
+      <ToastContainer position="top-right" autoClose={5000} />
     </div>
   );
 };

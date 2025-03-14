@@ -35,7 +35,7 @@ export default function Signup() {
         return;
       }
 
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://srm-back.vercel.app'}/signin`, {
+      const response = await fetch(`http://localhost:5000/signin`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -102,7 +102,7 @@ export default function Signup() {
       
       const result = await signInWithPopup(auth, provider);
       
-      const response = await axios.post(`https://srm-back.vercel.app/signin`, {
+      const response = await axios.post(`http://localhost:5000/signin`, {
         email: result.user.email,
         password: result.user.uid
       });

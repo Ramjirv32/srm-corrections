@@ -8,25 +8,25 @@ try {
 
 const timelineData = [
   {
-    date: "15.3.2025",
+    date: "25 March 2025",
     title: "Manuscript Submission Deadline",
-    description: "Last day to submit your research papers",
+    description: "Last date to submit your research papers and manuscripts"
   },
   {
-    date: "25.3.2025",
-    title: "Acceptance",
-    description: "Authors will be notified of acceptance decisions",
+    date: "5 April 2025",
+    title: "Acceptance Notification",
+    description: "Authors will be notified about the acceptance of their papers"
   },
   {
-    date: "5.4.2025",
-    title: "Registration Date",
-    description: "Registration Date for the conference",
+    date: "12 April 2025",
+    title: "Registration Deadline",
+    description: "Last date for conference registration"
   },
   {
-    date: "26.4.2025 & 27.4.2025",
-    title: "Conference Date",
-    description: "ICMBNT begins",
-  },
+    date: "26-27 April 2025",
+    title: "Conference Dates",
+    description: "Main conference days"
+  }
 ];
 
 const Timeline = () => {
