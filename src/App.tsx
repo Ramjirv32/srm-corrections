@@ -83,7 +83,7 @@ const AppRoutes = () => {
           <RouteWithLoading element={<Commitee />} />
         } />
         
-        {/* Dashboard - only for authenticated users */}
+       
         <Route path="/dashboard" element={<Dashboard/>} />
         
         {/* Protected routes - only accessible when logged in */}

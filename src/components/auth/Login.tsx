@@ -137,7 +137,7 @@ const Login = () => {
     } catch (error: any) {
       console.error("Login error:", error);
       
-      // Show specific message for verification requirement
+     
       if (error.response?.data?.needsVerification) {
         Swal.fire({
           icon: 'warning',
