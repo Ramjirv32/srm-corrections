@@ -1,27 +1,30 @@
 "use client"
 
-// import type React from "react"
+import type React from "react"
 import { useState } from "react"
-import { Users, Globe, Mail, Linkedin, Twitter, ExternalLink } from "lucide-react"
+import { Users, Globe, Mail, Linkedin, Twitter, ExternalLink, Building, MapPin } from "lucide-react"
 import PageTransition from './PageTransition';
 
 // Define types for committee members
 type MemberRole =
-  | "Chair"
-  | "Co-Chair"
+  | "Conference Chair"
+  | "Conference Co-Chair"
+  | "Organizing Chair"
   | "Technical Program Chair"
-  | "Publications Chair"
+  | "Publication Chair"
   | "Publicity Chair"
-  | "Local Arrangements Chair"
-  | "Member"
+  | "Local Arrangement Chair"
+  | "Advisory Board"
+  | "Conference Coordinators"
+  | "Committee Members"
 
 interface CommitteeMember {
   id: number
   name: string
   role: MemberRole
   affiliation: string
-  country: string
-  bio: string
+  country?: string
+  designation?: string
   image: string
   links?: {
     email?: string
@@ -31,123 +34,378 @@ interface CommitteeMember {
   }
 }
 
-// Sample committee members data
+// Committee members data - already correctly defined
 const committeeMembers: CommitteeMember[] = [
   {
     id: 1,
-    name: "Dr. Sarah Chen",
-    role: "Chair",
-    affiliation: "Stanford University",
-    country: "United States",
-    bio: "Dr. Chen specializes in advanced cryptography and secure systems design with over 15 years of experience in the field.",
+    name: "Prof. Dr. Azham Hussain",
+    role: "Conference Chair",
+    affiliation: "School of Computing, Universiti Utara Malaysia",
+    country: "Malaysia",
     image: "/placeholder.svg?height=300&width=300",
-    links: {
-      email: "sarah.chen@example.com",
-      website: "https://example.com/schen",
-      linkedin: "https://linkedin.com/in/sarahchen",
-    },
+    designation: "Professor"
   },
   {
     id: 2,
-    name: "Prof. Raj Patel",
-    role: "Co-Chair",
-    affiliation: "MIT",
-    country: "United States",
-    bio: "Professor Patel leads the Cyber Defense Research Group and has published extensively on threat intelligence systems.",
-    image: "/placeholder.svg?height=300&width=300",
-    links: {
-      email: "raj.patel@example.com",
-      linkedin: "https://linkedin.com/in/rajpatel",
-      twitter: "https://twitter.com/rajpatel",
-    },
+    name: "Dr. S. Sridhar",
+    role: "Conference Co-Chair",
+    affiliation: "Department of Computing Technologies, SRM Institute of Science and Technology",
+    country: "India",
+    image: "/placeholder.svg?height=300&width=300"
   },
   {
     id: 3,
-    name: "Dr. Elena Volkov",
-    role: "Technical Program Chair",
-    affiliation: "Moscow State University",
-    country: "Russia",
-    bio: "Dr. Volkov is renowned for her work in AI-driven threat detection and has led several international research collaborations.",
-    image: "/placeholder.svg?height=300&width=300",
-    links: {
-      email: "elena.volkov@example.com",
-      website: "https://example.com/evolkov",
-    },
+    name: "Dr. K. Ganesh Kumar",
+    role: "Conference Co-Chair",
+    affiliation: "Department of Data Science and Business Systems, SRM Institute of Science and Technology",
+    country: "India",
+    image: "/placeholder.svg?height=300&width=300"
   },
   {
     id: 4,
-    name: "Dr. Jamal Ibrahim",
-    role: "Publications Chair",
-    affiliation: "University of Cairo",
-    country: "Egypt",
-    bio: "Dr. Ibrahim specializes in secure communications and has authored over 50 papers on encryption technologies.",
-    image: "/placeholder.svg?height=300&width=300",
-    links: {
-      email: "jamal.ibrahim@example.com",
-    },
+    name: "Dr. Vishnu Kumar Kaliappan",
+    role: "Conference Co-Chair",
+    affiliation: "School of Computer Science and Engineering, Konkuk University",
+    country: "South Korea",
+    designation: "Research Professor",
+    image: "/placeholder.svg?height=300&width=300"
   },
   {
     id: 5,
-    name: "Prof. Yuki Tanaka",
-    role: "Publicity Chair",
-    affiliation: "Tokyo Institute of Technology",
-    country: "Japan",
-    bio: "Professor Tanaka is a leading researcher in quantum cryptography and secure network protocols.",
-    image: "/placeholder.svg?height=300&width=300",
-    links: {
-      email: "yuki.tanaka@example.com",
-      twitter: "https://twitter.com/yukitanaka",
-    },
+    name: "Dr. Manikanthan S.V.",
+    role: "Organizing Chair",
+    affiliation: "Society for Cyber Intelligent System",
+    country: "India",
+    designation: "President",
+    image: "/placeholder.svg?height=300&width=300"
   },
   {
     id: 6,
-    name: "Dr. Maria Rodriguez",
-    role: "Local Arrangements Chair",
-    affiliation: "University of Barcelona",
-    country: "Spain",
-    bio: "Dr. Rodriguez focuses on privacy-preserving technologies and has extensive experience organizing international conferences.",
-    image: "/placeholder.svg?height=300&width=300",
-    links: {
-      email: "maria.rodriguez@example.com",
-      linkedin: "https://linkedin.com/in/mariarodriguez",
-    },
+    name: "Dr. Swetha Indudhar Goudar",
+    role: "Technical Program Chair",
+    affiliation: "KLS Gogte Institute of Technology, Belagavi",
+    country: "India",
+    designation: "Professor / Research Dean",
+    image: "/placeholder.svg?height=300&width=300"
   },
   {
     id: 7,
-    name: "Dr. Li Wei",
-    role: "Member",
-    affiliation: "Tsinghua University",
-    country: "China",
-    bio: "Dr. Wei is an expert in network security and has developed several innovative intrusion detection systems.",
-    image: "/placeholder.svg?height=300&width=300",
-    links: {
-      email: "li.wei@example.com",
-    },
+    name: "Dr. V. Sakthivel",
+    role: "Technical Program Chair",
+    affiliation: "Vellore Institute of Technology – Chennai Campus",
+    country: "India",
+    designation: "Associate Professor",
+    image: "/placeholder.svg?height=300&width=300"
   },
   {
     id: 8,
-    name: "Prof. David Smith",
-    role: "Member",
-    affiliation: "University of Oxford",
-    country: "United Kingdom",
-    bio: "Professor Smith specializes in cybersecurity policy and the ethical implications of surveillance technologies.",
-    image: "/placeholder.svg?height=300&width=300",
-    links: {
-      email: "david.smith@example.com",
-      website: "https://example.com/dsmith",
-    },
+    name: "Dr. Shanmugam Ramasamy",
+    role: "Technical Program Chair",
+    affiliation: "Vellore Institute of Technology, Vellore",
+    country: "India",
+    designation: "Assistant Professor",
+    image: "/placeholder.svg?height=300&width=300"
   },
+  {
+    id: 9,
+    name: "Dr. T. Padmapriya",
+    role: "Publication Chair",
+    affiliation: "Melange Publications",
+    country: "India",
+    designation: "Managing Director",
+    image: "/placeholder.svg?height=300&width=300"
+  },
+  {
+    id: 10,
+    name: "Dr. T. Karthick",
+    role: "Publicity Chair",
+    affiliation: "Department of Data Science and Business Systems, SRM Institute of Science and Technology",
+    country: "India",
+    designation: "Associate Professor",
+    image: "/placeholder.svg?height=300&width=300"
+  },
+  {
+    id: 11,
+    name: "Dr. R. Jeyaraj",
+    role: "Publicity Chair",
+    affiliation: "Department of Data Science and Business Systems, SRM Institute of Science and Technology",
+    country: "India",
+    designation: "Assistant Professor",
+    image: "/placeholder.svg?height=300&width=300"
+  },
+  {
+    id: 12,
+    name: "Mr. Christopher",
+    role: "Local Arrangement Chair",
+    affiliation: "Department of Computing Technologies, SRM Institute of Science and Technology",
+    country: "India",
+    designation: "Assistant Professor",
+    image: "/placeholder.svg?height=300&width=300"
+  },
+  {
+    id: 13,
+    name: "Dr. Susana Gómez Martínez",
+    role: "Advisory Board",
+    affiliation: "Universidad de Valladolid, Campus Universitario Duques de Soria",
+    country: "Spain",
+    designation: "Faculty",
+    image: "/placeholder.svg?height=300&width=300"
+  },
+  {
+    id: 14,
+    name: "Dr. Sam Goundar",
+    role: "Advisory Board",
+    affiliation: "RMIT University",
+    country: "Vietnam",
+    designation: "Senior Lecturer in Information Technology",
+    image: "/placeholder.svg?height=300&width=300"
+  },
+  {
+    id: 15,
+    name: "Ts. Dr. Tan Kian Lam",
+    role: "Advisory Board",
+    affiliation: "Wawasan Open University",
+    country: "Malaysia",
+    designation: "Associate Professor",
+    image: "/placeholder.svg?height=300&width=300"
+  },
+  {
+    id: 16,
+    name: "Dr. Dugki Min",
+    role: "Advisory Board",
+    affiliation: "School of Computer Science and Engineering, Konkuk University",
+    country: "South Korea",
+    designation: "Professor",
+    image: "/placeholder.svg?height=300&width=300"
+  },
+  {
+    id: 17,
+    name: "Dr. Sujit Jagtap",
+    role: "Advisory Board",
+    affiliation: "University of Illinois at Urbana-Champaign",
+    country: "United States",
+    designation: "Research Scientist",
+    image: "/placeholder.svg?height=300&width=300"
+  },
+  {
+    id: 18,
+    name: "Dr. Manish K. Tiwari",
+    role: "Advisory Board",
+    affiliation: "Novonesis",
+    country: "Denmark",
+    designation: "Senior Scientist",
+    image: "/placeholder.svg?height=300&width=300"
+  },
+  {
+    id: 19,
+    name: "Dr. Sajeesh Kappachery",
+    role: "Advisory Board",
+    affiliation: "United Arab Emirates University",
+    country: "UAE",
+    designation: "Postdoctoral Fellow",
+    image: "/placeholder.svg?height=300&width=300"
+  },
+  {
+    id: 20,
+    name: "Dr. K. Mohanasundaram",
+    role: "Advisory Board",
+    affiliation: "KPR Institute of Engineering and Technology",
+    country: "India",
+    designation: "Professor and Head",
+    image: "/placeholder.svg?height=300&width=300"
+  },
+  {
+    id: 21,
+    name: "Dr. M. Rajasekar",
+    role: "Advisory Board",
+    affiliation: "Saveetha School of Engineering, Saveetha University",
+    country: "India",
+    designation: "Associate Professor",
+    image: "/placeholder.svg?height=300&width=300"
+  },
+  {
+    id: 22,
+    name: "Dr. A. Murugan",
+    role: "Conference Coordinators",
+    affiliation: "Department of Data Science and Business Systems, SRM Institute of Science and Technology",
+    country: "India",
+    designation: "Professor",
+    image: "/placeholder.svg?height=300&width=300"
+  },
+  {
+    id: 23,
+    name: "Dr. A. Syed Ismail",
+    role: "Conference Coordinators",
+    affiliation: "Department of Data Science and Business Systems, SRM Institute of Science and Technology",
+    country: "India",
+    designation: "Assistant Professor",
+    image: "/placeholder.svg?height=300&width=300"
+  },
+  {
+    id: 24,
+    name: "Dr. John Deva Prasanna D S",
+    role: "Committee Members",
+    affiliation: "Department of Data Science and Business Systems, SRM Institute of Science and Technology",
+    country: "India",
+    designation: "Assistant Professor",
+    image: "/placeholder.svg?height=300&width=300"
+  },
+  {
+    id: 25,
+    name: "Dr. K. Priyadarshini",
+    role: "Committee Members",
+    affiliation: "Department of Data Science and Business Systems, SRM Institute of Science and Technology",
+    country: "India",
+    designation: "Associate Professor",
+    image: "/placeholder.svg?height=300&width=300"
+  },
+  {
+    id: 26,
+    name: "Dr. J. Jebasonia",
+    role: "Committee Members",
+    affiliation: "Department of Data Science and Business Systems, SRM Institute of Science and Technology",
+    country: "India",
+    designation: "Associate Professor",
+    image: "/placeholder.svg?height=300&width=300"
+  },
+  {
+    id: 27,
+    name: "Dr. Safa",
+    role: "Committee Members",
+    affiliation: "Department of Networking and Communications, SRM Institute of Science and Technology",
+    country: "India",
+    designation: "Assistant Professor",
+    image: "/placeholder.svg?height=300&width=300"
+  },
+  {
+    id: 28,
+    name: "Dr. Rajalakshmi",
+    role: "Committee Members",
+    affiliation: "Department of Networking and Communications, SRM Institute of Science and Technology",
+    country: "India",
+    image: "/placeholder.svg?height=300&width=300"
+  },
+  {
+    id: 29,
+    name: "Dr. P. Saravanan",
+    role: "Committee Members",
+    affiliation: "Department of Computing Technologies, SRM Institute of Science and Technology",
+    country: "India",
+    designation: "Assistant Professor",
+    image: "/placeholder.svg?height=300&width=300"
+  },
+  {
+    id: 30,
+    name: "Dr. Lubin Balasubramanian",
+    role: "Committee Members",
+    affiliation: "Department of Computing Technologies, SRM Institute of Science and Technology",
+    country: "India",
+    designation: "Assistant Professor",
+    image: "/placeholder.svg?height=300&width=300"
+  },
+  {
+    id: 31,
+    name: "Dr. B. Muruganantham",
+    role: "Committee Members",
+    affiliation: "Department of Computing Technologies, SRM Institute of Science and Technology",
+    country: "India",
+    designation: "Associate Professor",
+    image: "/placeholder.svg?height=300&width=300"
+  },
+  {
+    id: 32,
+    name: "Dr. T.K. Sivakumar",
+    role: "Committee Members",
+    affiliation: "Department of Computing Technologies, SRM Institute of Science and Technology",
+    country: "India",
+    designation: "Assistant Professor (Sr.Gr)",
+    image: "/placeholder.svg?height=300&width=300"
+  },
+  {
+    id: 33,
+    name: "Dr. Mukesh Krishnan",
+    role: "Committee Members",
+    affiliation: "Department of Networking and Communications, SRM Institute of Science and Technology",
+    country: "India",
+    designation: "Professor",
+    image: "/placeholder.svg?height=300&width=300"
+  },
+  {
+    id: 34,
+    name: "Dr. Saravanan",
+    role: "Committee Members",
+    affiliation: "Department of Computing Technologies, SRM Institute of Science and Technology",
+    country: "India",
+    designation: "Associate Professor",
+    image: "/placeholder.svg?height=300&width=300"
+  },
+  {
+    id: 35,
+    name: "Dr. Kowsigan M",
+    role: "Committee Members",
+    affiliation: "Department of Computing Technologies, SRM Institute of Science and Technology",
+    country: "India",
+    designation: "Associate Professor",
+    image: "/placeholder.svg?height=300&width=300"
+  },
+  {
+    id: 36,
+    name: "Dr. Fancy C",
+    role: "Committee Members",
+    affiliation: "Department of Networking and Communications, SRM Institute of Science and Technology",
+    country: "India",
+    designation: "Assistant Professor",
+    image: "/placeholder.svg?height=300&width=300"
+  },
+  {
+    id: 37,
+    name: "R. Indumathi",
+    role: "Committee Members",
+    affiliation: "Manakula Vinayagar Institute of Technology",
+    country: "India",
+    designation: "Assistant Professor",
+    image: "/placeholder.svg?height=300&width=300"
+  },
+  {
+    id: 38,
+    name: "M. Viji",
+    role: "Committee Members",
+    affiliation: "Manakula Vinayagar Institute of Technology",
+    country: "India",
+    image: "/placeholder.svg?height=300&width=300"
+  },
+  {
+    id: 39,
+    name: "Dr. Shobana Devi A",
+    role: "Committee Members",
+    affiliation: "Department of Data Science and Business Systems, SRM Institute of Science and Technology",
+    country: "India",
+    designation: "Associate Professor",
+    image: "/placeholder.svg?height=300&width=300"
+  },
+  {
+    id: 40,
+    name: "Dr. T. Veeramakali",
+    role: "Committee Members",
+    affiliation: "Department of Data Science and Business Systems, SRM Institute of Science and Technology",
+    country: "India",
+    designation: "Associate Professor",
+    image: "/placeholder.svg?height=300&width=300"
+  }
 ]
 
-// Filter options for committee roles
+// Updated filter options for committee roles
 const roleFilters: MemberRole[] = [
-  "Chair",
-  "Co-Chair",
+  "Conference Chair",
+  "Conference Co-Chair",
+  "Organizing Chair",
   "Technical Program Chair",
-  "Publications Chair",
+  "Publication Chair",
   "Publicity Chair",
-  "Local Arrangements Chair",
-  "Member",
+  "Local Arrangement Chair",
+  "Advisory Board",
+  "Conference Coordinators",
+  "Committee Members"
 ]
 
 const ConferenceCommittee: React.FC = () => {
@@ -165,7 +423,7 @@ const ConferenceCommittee: React.FC = () => {
           <div className="container mx-auto max-w-6xl">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">Conference Committee</h1>
             <p className="text-xl md:text-2xl opacity-90 max-w-3xl">
-              Society for Cyber Intelligence Systems - Leading experts in cybersecurity and intelligence systems
+              International Conference on Multidisciplinary Breakthroughs and NextGen Technologies - ICMBNT 2025
             </p>
           </div>
         </header>
@@ -179,10 +437,9 @@ const ConferenceCommittee: React.FC = () => {
               <h2 className="text-3xl font-bold text-gray-800">Our Committee</h2>
             </div>
             <p className="text-lg text-gray-600 max-w-4xl">
-              The organizing committee brings together leading experts from around the world in the fields of
-              cybersecurity, artificial intelligence, and intelligence systems. Our members represent top academic
-              institutions and industry organizations committed to advancing the state of the art in cyber intelligence
-              systems.
+              The organizing committee brings together leading experts from around the world in diverse academic fields. 
+              Our members represent top academic institutions and industry organizations committed to fostering 
+              innovation and collaboration in multidisciplinary research and education.
             </p>
           </div>
 
@@ -231,16 +488,24 @@ const ConferenceCommittee: React.FC = () => {
                       <div className="bg-[#F5A051]/20 text-[#F5A051] text-xs font-semibold px-2.5 py-0.5 rounded inline-block mb-1">
                         {member.role}
                       </div>
-                      <p className="text-gray-600 text-sm">
-                        {member.affiliation}, {member.country}
+                      {member.designation && (
+                        <p className="text-gray-700 text-sm font-medium">{member.designation}</p>
+                      )}
+                      <p className="text-gray-600 text-sm flex items-center mt-1">
+                        <Building className="w-3 h-3 mr-1" />
+                        {member.affiliation}
                       </p>
+                      {member.country && (
+                        <p className="text-gray-600 text-sm flex items-center mt-1">
+                          <MapPin className="w-3 h-3 mr-1" />
+                          {member.country}
+                        </p>
+                      )}
                     </div>
                   </div>
 
-                  <p className="mt-4 text-gray-600 text-sm">{member.bio}</p>
-
-                  {/* Social Links */}
-                  {member.links && (
+                  {/* Social Links - Only show if links are provided */}
+                  {member.links && Object.keys(member.links).length > 0 && (
                     <div className="mt-4 flex space-x-3">
                       {member.links.email && (
                         <a
@@ -293,17 +558,16 @@ const ConferenceCommittee: React.FC = () => {
 
           {/* Call to Action */}
           <div className="mt-16 bg-[#F5A051]/10 rounded-xl p-8 border border-[#F5A051]/20">
-            <h3 className="text-2xl font-bold text-gray-800 mb-4">Join Our Committee</h3>
+            <h3 className="text-2xl font-bold text-gray-800 mb-4">Contact the Committee</h3>
             <p className="text-gray-600 mb-6">
-              We're always looking for distinguished professionals to join our committee. If you're interested in
-              contributing to the advancement of cyber intelligence systems, please contact us.
+              For inquiries related to the conference, submissions, or other matters, please reach out to our committee at the email below.
             </p>
             <a
-              href="#contact"
+              href="mailto:icmbnt2025@gmail.com"
               className="inline-flex items-center px-6 py-3 bg-[#F5A051] text-white font-medium rounded-lg hover:bg-[#e08c3e] transition-colors"
             >
-              Contact Us
-              <ExternalLink className="ml-2 w-4 h-4" />
+              icmbnt2025@gmail.com
+              <Mail className="ml-2 w-4 h-4" />
             </a>
           </div>
         </main>
@@ -312,7 +576,7 @@ const ConferenceCommittee: React.FC = () => {
         <footer className="bg-gray-800 text-white py-8 px-4">
           <div className="container mx-auto max-w-6xl">
             <p className="text-center text-gray-400">
-              © {new Date().getFullYear()} Society for Cyber Intelligence Systems. All rights reserved.
+              © {new Date().getFullYear()} International Conference on Multidisciplinary Breakthroughs and NextGen Technologies. All rights reserved.
             </p>
           </div>
         </footer>

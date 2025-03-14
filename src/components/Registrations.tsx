@@ -18,6 +18,8 @@ import {
 const Registrations: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'fee' | 'form'>('fee');
   const [copiedField, setCopiedField] = useState<string | null>(null);
+  const [paymentProof, setPaymentProof] = useState<File | null>(null);
+  const [paymentProofName, setPaymentProofName] = useState("No file selected");
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [formData, setFormData] = useState({
     fullName: '',
@@ -30,6 +32,14 @@ const Registrations: React.FC = () => {
     date: '',
     amount: '',
   });
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      setPaymentProof(file);
+      setPaymentProofName(file.name);
+    }
+  };
   
   const bankDetailsRef = useRef<HTMLDivElement>(null);
   
@@ -253,39 +263,35 @@ const Registrations: React.FC = () => {
               </h2>
               
               <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200" ref={bankDetailsRef}>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center">
-                      <p className="text-gray-600">Bank A/C Name</p>
-                      <p className="font-medium text-gray-900">MELANGE PUBLICATIONS</p>
-                    </div>
-                    
-                    <div className="flex justify-between items-center">
-                      <p className="text-gray-600">Bank A/C No</p>
-                      <p className="font-medium text-gray-900">736805000791</p>
-                    </div>
-                    
-                    <div className="flex justify-between items-center">
-                      <p className="text-gray-600">Bank Name</p>
-                      <p className="font-medium text-gray-900">ICICI BANK</p>
-                    </div>
+                <div className="space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center p-2 border-b border-gray-100">
+                    <p className="text-gray-600 font-medium mb-1 sm:mb-0 w-36">Bank A/C Name:</p>
+                    <p className="font-medium text-gray-900">MELANGE PUBLICATIONS</p>
                   </div>
                   
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center">
-                      <p className="text-gray-600">Branch</p>
-                      <p className="font-medium text-gray-900">VILLIANUR, PUDUCHERRY</p>
-                    </div>
-                    
-                    <div className="flex justify-between items-center">
-                      <p className="text-gray-600">IFSC Code</p>
-                      <p className="font-medium text-gray-900">ICIC0007368</p>
-                    </div>
-                    
-                    <div className="flex justify-between items-center">
-                      <p className="text-gray-600">SWIFT Code</p>
-                      <p className="font-medium text-gray-900">ICICINBBCTS</p>
-                    </div>
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center p-2 border-b border-gray-100">
+                    <p className="text-gray-600 font-medium mb-1 sm:mb-0 w-36">Bank A/C No:</p>
+                    <p className="font-medium text-gray-900">736805000791</p>
+                  </div>
+                  
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center p-2 border-b border-gray-100">
+                    <p className="text-gray-600 font-medium mb-1 sm:mb-0 w-36">Bank Name:</p>
+                    <p className="font-medium text-gray-900">ICICI BANK</p>
+                  </div>
+                  
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center p-2 border-b border-gray-100">
+                    <p className="text-gray-600 font-medium mb-1 sm:mb-0 w-36">Branch:</p>
+                    <p className="font-medium text-gray-900">VILLIANUR, PUDUCHERRY</p>
+                  </div>
+                  
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center p-2 border-b border-gray-100">
+                    <p className="text-gray-600 font-medium mb-1 sm:mb-0 w-36">IFSC Code:</p>
+                    <p className="font-medium text-gray-900">ICIC0007368</p>
+                  </div>
+                  
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center p-2">
+                    <p className="text-gray-600 font-medium mb-1 sm:mb-0 w-36">SWIFT Code:</p>
+                    <p className="font-medium text-gray-900">ICICINBBCTS</p>
                   </div>
                 </div>
               </div>
@@ -543,6 +549,54 @@ const Registrations: React.FC = () => {
                         required
                         className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Payment Screenshot Upload */}
+                <div className="mt-6">
+                  <label className="block text-gray-700 font-medium mb-2">
+                    Payment Screenshot/Proof <span className="text-red-500">*</span>
+                    <span className="text-sm font-normal text-gray-500 ml-1">(JPG, PNG or PDF)</span>
+                  </label>
+                  
+                  <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:border-blue-500 transition-colors">
+                    <div className="space-y-1 text-center">
+                      <svg 
+                        className="mx-auto h-12 w-12 text-gray-400" 
+                        stroke="currentColor" 
+                        fill="none" 
+                        viewBox="0 0 48 48" 
+                        aria-hidden="true"
+                      >
+                        <path 
+                          d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" 
+                          strokeWidth={2} 
+                          strokeLinecap="round" 
+                          strokeLinejoin="round" 
+                        />
+                      </svg>
+                      <div className="flex text-sm text-gray-600">
+                        <label 
+                          htmlFor="payment-proof" 
+                          className="relative cursor-pointer bg-white rounded-md font-medium text-blue-800 hover:text-blue-700 focus-within:outline-none"
+                        >
+                          <span>Upload a file</span>
+                          <input 
+                            id="payment-proof" 
+                            name="payment-proof" 
+                            type="file" 
+                            accept=".jpg,.jpeg,.png,.pdf" 
+                            className="sr-only" 
+                            onChange={handleFileChange}
+                            required
+                          />
+                        </label>
+                        <p className="pl-1">or drag and drop</p>
+                      </div>
+                      <p className="text-xs text-gray-500">
+                        {paymentProof ? paymentProofName : "No file selected"}
+                      </p>
                     </div>
                   </div>
                 </div>
