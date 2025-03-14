@@ -114,11 +114,9 @@ const SubmitPaperForm: React.FC<SubmitPaperFormProps> = ({ isOpen, onClose, embe
   
   // File state handlers
   const [abstractFile, setAbstractFile] = useState<File | null>(null);
-  const [photoFile, setPhotoFile] = useState<File | null>(null);
   
   // File name display state
   const [abstractFileName, setAbstractFileName] = useState("Click to browse files");
-  const [photoFileName, setPhotoFileName] = useState("Click to browse files");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -219,9 +217,6 @@ const SubmitPaperForm: React.FC<SubmitPaperFormProps> = ({ isOpen, onClose, embe
       if (fileType === 'abstract') {
         setAbstractFile(file);
         setAbstractFileName(file.name);
-      } else {
-        setPhotoFile(file);
-        setPhotoFileName(file.name);
       }
     }
   };

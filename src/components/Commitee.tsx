@@ -1,8 +1,7 @@
 "use client"
 
-// import type React from "react"
 import { useState } from "react"
-import { Users, Globe, Mail, Linkedin, Twitter, ExternalLink, Building, MapPin } from "lucide-react"
+import { Users, Globe, Mail, Linkedin, Twitter, Building, MapPin } from "lucide-react"
 import PageTransition from './PageTransition';
 
 // Define types for committee members
