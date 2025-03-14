@@ -1,6 +1,6 @@
 export const submitPaper = async (formData: FormData) => {
   try {
-    const response = await fetch('http://localhost:5000/submit-paper', {
+    const response = await fetch('https://final-srm-back.vercel.app/submit-paper', {
       method: 'POST',
       body: formData,
     });

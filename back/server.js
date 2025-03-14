@@ -19,20 +19,23 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const secret = process.env.JWT_SECRET;
 
+// Updated CORS configuration to allow the frontend domain
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
-  'http://localhost:5000'
+  'http://localhost:5000',
+  'https://srm-corrections-hy91.vercel.app',
+  'https://societycis.org'
 ];
 
 app.use(cors({
   origin: function(origin, callback) {
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-      return callback(new Error(msg), false);
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      return callback(null, true);
     }
-    return callback(null, true);
+    console.log("Blocked CORS request from:", origin);
+    const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+    return callback(new Error(msg), false);
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -64,8 +67,7 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-// Update the sendVerificationEmail function
-
+// Update the sendVerificationEmail function to use the frontend URL from environment or the deployed URL
 const sendVerificationEmail = async (email, token) => {
     console.log(`Sending verification email to ${email} with token: ${token}`);
     
@@ -79,8 +81,9 @@ const sendVerificationEmail = async (email, token) => {
     // Encode the data as base64
     const encodedData = Buffer.from(JSON.stringify(verificationData)).toString('base64');
     
-    // Create verification URL using localhost
-    const verificationUrl = `http://localhost:5173/verify?data=${encodedData}`;
+    // Use frontend URL from environment or default to the deployed URL
+    const frontendUrl = process.env.FRONTEND_URL || 'https://srm-corrections-hy91.vercel.app';
+    const verificationUrl = `${frontendUrl}/verify?data=${encodedData}`;
     console.log("Verification URL created:", verificationUrl);
     
     const mailOptions = {
@@ -996,6 +999,7 @@ const generateBookingId = () => {
   return `BK${timestamp}${randomNum}`;
 };
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server is running on http://localhost:${PORT}`);
+    console.log('Allowed origins for CORS:', allowedOrigins);
 });

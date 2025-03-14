@@ -62,7 +62,7 @@ const EditSubmission: React.FC = () => {
     // Fetch the submission details
     const fetchSubmission = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/user-submission`, {
+        const response = await axios.get(`https://final-srm-back.vercel.app/user-submission`, {
           headers: { 'Authorization': token }
         });
         
@@ -162,7 +162,7 @@ const EditSubmission: React.FC = () => {
       }
       
       const response = await axios.put(
-        `http://localhost:5000/edit-submission/${submissionId}`, 
+        `https://final-srm-back.vercel.app/edit-submission/${submissionId}`, 
         formData,
         {
           headers: {
