@@ -11,6 +11,7 @@ import { PaperSubmission } from './models/Paper.js';  // Note the correct path a
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
+import { UserSubmission } from './models/UserSubmission.js';
 
 dotenv.config();
 
@@ -564,70 +565,101 @@ const storage = multer.diskStorage({
   };
   
   // Email sending function to be used by the paper submission route
-  const sendPaperSubmissionEmails = async (submissionData) => {
-    // Email to author with proper field validation
-    const authorMailOptions = {
-      from: process.env.EMAIL_USER,
-      to: submissionData.email,
-      subject: `Paper Submission Confirmation - ${submissionData.submissionId}`,
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <h2 style="color: #F5A051;">Paper Submission Confirmation</h2>
-          <p>Dear ${submissionData.authorName},</p>
-          <p>Your paper has been successfully submitted to ICMBNT 2025.</p>
-          <div style="background-color: #f5f5f5; padding: 15px; margin: 20px 0;">
-            <p><strong>Submission ID:</strong> ${submissionData.submissionId}</p>
-            <p><strong>Paper Title:</strong> ${submissionData.paperTitle}</p>
-            <p><strong>Category:</strong> ${submissionData.category}</p>
-            <p><strong>Status:</strong> Under Review</p>
-          </div>
-          <p>We will review your submission and notify you of any updates through this email address.</p>
-          <p>Best regards,<br>ICMBNT 2025 Committee</p>
+const sendPaperSubmissionEmails = async (submissionData) => {
+  // Create email options for author
+  const authorMailOptions = {
+    from: process.env.EMAIL_USER,
+    to: submissionData.email,
+    subject: `Paper Submission Confirmation - ${submissionData.submissionId}`,
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <h2 style="color: #F5A051;">Paper Submission Confirmation</h2>
+        <p>Dear ${submissionData.authorName},</p>
+        <p>Your paper has been successfully submitted to ICMBNT 2025.</p>
+        <div style="background-color: #f5f5f5; padding: 15px; margin: 20px 0;">
+          <p><strong>Submission ID:</strong> ${submissionData.submissionId}</p>
+          <p><strong>Paper Title:</strong> ${submissionData.paperTitle}</p>
+          <p><strong>Category:</strong> ${submissionData.category}</p>
+          <p><strong>Status:</strong> Under Review</p>
         </div>
-      `
-    };
-
-    // Email to admin with submission details
-    const adminMailOptions = {
-      from: process.env.EMAIL_USER,
-      to: process.env.ADMIN_EMAIL || process.env.EMAIL_USER,
-      subject: `New Paper Submission - ${submissionData.submissionId}`,
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <h2 style="color: #F5A051;">New Paper Submission Received</h2>
-          <div style="background-color: #f5f5f5; padding: 15px; margin: 20px 0;">
-            <p><strong>Submission ID:</strong> ${submissionData.submissionId}</p>
-            <p><strong>Author:</strong> ${submissionData.authorName}</p>
-            <p><strong>Email:</strong> ${submissionData.email}</p>
-            <p><strong>Paper Title:</strong> ${submissionData.paperTitle}</p>
-            <p><strong>Category:</strong> ${submissionData.category}</p>
-            ${submissionData.abstractFileUrl ? 
-              `<p><strong>Abstract File:</strong> ${submissionData.abstractFileUrl}</p>` : 
-              '<p><strong>Note:</strong> No abstract file uploaded</p>'}
-          </div>
-        </div>
-      `
-    };
-
-    // Send both emails and handle any errors
-    try {
-      const [authorEmail, adminEmail] = await Promise.all([
-        transporter.sendMail(authorMailOptions),
-        transporter.sendMail(adminMailOptions)
-      ]);
-      return { authorEmail, adminEmail };
-    } catch (error) {
-      console.error('Error sending emails:', error);
-      throw error;
-    }
+        <p>We will review your submission and notify you of any updates through this email address.</p>
+        <p>Best regards,<br>ICMBNT 2025 Committee</p>
+      </div>
+    `
   };
-  
-  // Update the paper submission route with schema validation and improved email handling
+
+  // Email to admin with submission details
+  const adminMailOptions = {
+    from: process.env.EMAIL_USER,
+    to: process.env.ADMIN_EMAIL || process.env.EMAIL_USER,
+    subject: `New Paper Submission - ${submissionData.submissionId}`,
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <h2 style="color: #F5A051;">New Paper Submission Received</h2>
+        <div style="background-color: #f5f5f5; padding: 15px; margin: 20px 0;">
+          <p><strong>Submission ID:</strong> ${submissionData.submissionId}</p>
+          <p><strong>Author:</strong> ${submissionData.authorName}</p>
+          <p><strong>Email:</strong> ${submissionData.email}</p>
+          <p><strong>Paper Title:</strong> ${submissionData.paperTitle}</p>
+          <p><strong>Category:</strong> ${submissionData.category}</p>
+          ${submissionData.topic ? `<p><strong>Topic:</strong> ${submissionData.topic}</p>` : ''}
+          <p><strong>Status:</strong> Under Review</p>
+        </div>
+      </div>
+    `
+  };
+
+  // Add attachment if file was uploaded
+  if (submissionData.filePath && fs.existsSync(submissionData.filePath)) {
+    console.log(`Attaching file: ${submissionData.filePath}`);
+    // Add attachment to both emails
+    adminMailOptions.attachments = [{
+      filename: submissionData.fileName,
+      path: submissionData.filePath
+    }];
+    // Also attach to author confirmation if needed
+    authorMailOptions.attachments = [{
+      filename: submissionData.fileName,
+      path: submissionData.filePath
+    }];
+  } else {
+    console.log('No file to attach or file does not exist');
+  }
+
+  // Send both emails and handle any errors
+  try {
+    const [authorEmail, adminEmail] = await Promise.all([
+      transporter.sendMail(authorMailOptions),
+      transporter.sendMail(adminMailOptions)
+    ]);
+    return { authorEmail, adminEmail };
+  } catch (error) {
+    console.error('Error sending emails:', error);
+    throw error;
+  }
+};
+
+// Update the paper submission route with file attachment handling
 app.post('/submit-paper', upload.single('abstract'), async (req, res) => {
   console.log('Received paper submission request:', req.body);
   console.log('File:', req.file);
   
   try {
+    const { email } = req.body;
+
+    // Check if user has already submitted a paper
+    const existingSubmission = await UserSubmission.findOne({ email });
+    if (existingSubmission) {
+      return res.status(400).json({
+        success: false,
+        message: "You have already submitted a paper. Please use the edit option in your dashboard if you need to make changes.",
+        existingSubmission: {
+          submissionId: existingSubmission.submissionId,
+          bookingId: existingSubmission.bookingId
+        }
+      });
+    }
+
     // Validate required fields based on schema
     const requiredFields = ['paperTitle', 'authorName', 'email', 'category'];
     const missingFields = requiredFields.filter(field => !req.body[field]);
@@ -644,9 +676,23 @@ app.post('/submit-paper', upload.single('abstract'), async (req, res) => {
       fs.mkdirSync('uploads', { recursive: true });
     }
 
-    // Generate submission ID
+    // Generate submission ID and booking ID
     const submissionId = await generateSubmissionId(req.body.category);
-    console.log('Generated submission ID:', submissionId);
+    const bookingId = generateBookingId();
+    
+    console.log('Generated IDs:', { submissionId, bookingId });
+
+    // Get file details for the database and email
+    let abstractFileUrl = null;
+    let filePath = null;
+    let fileName = null;
+    
+    if (req.file) {
+      abstractFileUrl = `/uploads/${req.file.filename}`;
+      filePath = req.file.path; // Full path to the file
+      fileName = req.file.originalname; // Original file name
+      console.log(`File saved at: ${filePath}, original name: ${fileName}`);
+    }
 
     // Create new submission object matching the schema
     const newSubmission = new PaperSubmission({
@@ -656,8 +702,15 @@ app.post('/submit-paper', upload.single('abstract'), async (req, res) => {
       email: req.body.email,
       category: req.body.category,
       topic: req.body.topic || '', // Optional field
-      abstractFileUrl: req.file ? `/uploads/${req.file.filename}` : null,
+      abstractFileUrl: abstractFileUrl,
       status: 'Under Review' // Default status from schema
+    });
+
+    // Create user submission tracking record
+    const userSubmission = new UserSubmission({
+      email: req.body.email,
+      submissionId,
+      bookingId
     });
 
     // Validate submission against schema
@@ -671,20 +724,27 @@ app.post('/submit-paper', upload.single('abstract'), async (req, res) => {
     }
 
     console.log('Saving submission:', newSubmission);
-    await newSubmission.save();
-    console.log('Submission saved successfully');
+    await Promise.all([
+      newSubmission.save(),
+      userSubmission.save()
+    ]);
+    console.log('Submission saved successfully with booking ID:', bookingId);
 
-    // Send confirmation emails with proper error handling
+    // Send confirmation emails with proper error handling and file attachment
     try {
-      console.log('Sending confirmation emails...');
+      console.log('Sending confirmation emails with attachment...');
       await sendPaperSubmissionEmails({
         submissionId,
+        bookingId,
         paperTitle: req.body.paperTitle,
         authorName: req.body.authorName,
         email: req.body.email,
         category: req.body.category,
-        salutation: req.body.salutation || 'Author', // Default salutation if not provided
-        abstractFileUrl: req.file ? `/uploads/${req.file.filename}` : null
+        topic: req.body.topic || '',
+        salutation: req.body.salutation || 'Author',
+        abstractFileUrl: abstractFileUrl,
+        filePath: filePath, // Pass the actual file path
+        fileName: fileName  // Pass the original file name
       });
       console.log('Confirmation emails sent successfully');
 
@@ -693,6 +753,7 @@ app.post('/submit-paper', upload.single('abstract'), async (req, res) => {
         success: true,
         message: "Paper submitted successfully and confirmation emails sent",
         submissionId,
+        bookingId,
         paperDetails: {
           title: req.body.paperTitle,
           category: req.body.category,
@@ -706,6 +767,7 @@ app.post('/submit-paper', upload.single('abstract'), async (req, res) => {
         success: true,
         message: "Paper submitted successfully but there was an issue sending confirmation emails",
         submissionId,
+        bookingId,
         paperDetails: {
           title: req.body.paperTitle,
           category: req.body.category,
@@ -777,6 +839,162 @@ app.get('/test-email', async (req, res) => {
     });
   }
 });
+
+app.get('/user-submission', verifyJWT, async (req, res) => {
+  try {
+    const { email } = req.user;
+    
+    const userSubmission = await UserSubmission.findOne({ email });
+    if (!userSubmission) {
+      return res.status(200).json({
+        success: true,
+        hasSubmission: false
+      });
+    }
+    
+    const paperSubmission = await PaperSubmission.findOne({ 
+      submissionId: userSubmission.submissionId 
+    });
+    
+    return res.status(200).json({
+      success: true,
+      hasSubmission: true,
+      submission: {
+        ...paperSubmission.toObject(),
+        bookingId: userSubmission.bookingId,
+        submissionDate: userSubmission.submissionDate
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching user submission:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error fetching submission details",
+      error: error.message
+    });
+  }
+});
+
+app.put('/edit-submission/:submissionId', verifyJWT, upload.single('abstract'), async (req, res) => {
+  try {
+    const { submissionId } = req.params;
+    const { email } = req.user;
+    
+    // Verify the submission belongs to the user
+    const userSubmission = await UserSubmission.findOne({ 
+      email,
+      submissionId 
+    });
+    
+    if (!userSubmission) {
+      return res.status(403).json({
+        success: false,
+        message: "You do not have permission to edit this submission"
+      });
+    }
+    
+    // Get the existing submission
+    const paperSubmission = await PaperSubmission.findOne({ submissionId });
+    if (!paperSubmission) {
+      return res.status(404).json({
+        success: false,
+        message: "Submission not found"
+      });
+    }
+    
+    // Update the fields
+    if (req.body.paperTitle) paperSubmission.paperTitle = req.body.paperTitle;
+    if (req.body.category) paperSubmission.category = req.body.category;
+    if (req.body.topic) paperSubmission.topic = req.body.topic;
+    if (req.body.authorName) paperSubmission.authorName = req.body.authorName;
+    
+    // Handle file upload if new file provided
+    if (req.file) {
+      // If there's an existing file, you might want to delete it
+      // Delete old file code would go here
+      
+      paperSubmission.abstractFileUrl = `/uploads/${req.file.filename}`;
+      
+      // Get file details for the email
+      filePath = req.file.path;
+      fileName = req.file.originalname;
+    }
+    
+    // Save the updated submission
+    await paperSubmission.save();
+    
+    // Send confirmation email for the update
+    try {
+      await sendUpdateConfirmationEmail({
+        submissionId,
+        bookingId: userSubmission.bookingId,
+        paperTitle: paperSubmission.paperTitle,
+        authorName: paperSubmission.authorName,
+        email,
+        category: paperSubmission.category,
+        filePath: req.file ? req.file.path : null,
+        fileName: req.file ? req.file.originalname : null
+      });
+    } catch (emailError) {
+      console.error("Failed to send update confirmation:", emailError);
+    }
+    
+    return res.status(200).json({
+      success: true,
+      message: "Submission updated successfully",
+      submission: paperSubmission
+    });
+  } catch (error) {
+    console.error("Error updating submission:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error updating submission",
+      error: error.message
+    });
+  }
+});
+
+const sendUpdateConfirmationEmail = async (submissionData) => {
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: submissionData.email,
+    subject: `Paper Submission Update - ${submissionData.submissionId}`,
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <h2 style="color: #F5A051;">Paper Submission Update</h2>
+        <p>Dear ${submissionData.authorName},</p>
+        <p>Your paper submission has been successfully updated.</p>
+        <div style="background-color: #f5f5f5; padding: 15px; margin: 20px 0;">
+          <p><strong>Submission ID:</strong> ${submissionData.submissionId}</p>
+          <p><strong>Booking ID:</strong> ${submissionData.bookingId}</p>
+          <p><strong>Paper Title:</strong> ${submissionData.paperTitle}</p>
+          <p><strong>Category:</strong> ${submissionData.category}</p>
+          <p><strong>Status:</strong> Under Review</p>
+        </div>
+        <p>Best regards,<br>ICMBNT 2025 Committee</p>
+      </div>
+    `
+  };
+  
+  // Add attachment if file was uploaded
+  if (submissionData.filePath && fs.existsSync(submissionData.filePath)) {
+    mailOptions.attachments = [{
+      filename: submissionData.fileName,
+      path: submissionData.filePath
+    }];
+  }
+  
+  return transporter.sendMail(mailOptions);
+};
+
+// Add this function in the server.js file if missing
+
+// Generate booking ID
+const generateBookingId = () => {
+  const timestamp = Date.now().toString().substring(6);
+  const randomNum = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+  return `BK${timestamp}${randomNum}`;
+};
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
