@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Facebook, Twitter, Linkedin, Instagram, Youtube, MessageCircle, LogOut, Menu, X, ChevronDown } from 'lucide-react';
 import Logo from "./images/lo.png"
 import { Link, useNavigate, useLocation } from 'react-router-dom';

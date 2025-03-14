@@ -1,18 +1,18 @@
-import React, { useState, useRef, useEffect } from "react";
+import  { useState,  useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { 
-  FaCloudUploadAlt, 
+ 
   FaFilePdf, 
-  FaFileWord, 
+ 
   FaFileAlt, 
   FaCheckCircle, 
   FaExclamationTriangle,
-  FaUser,
+  
   FaEnvelope,
-  FaHeading,
-  FaFileAlt as FaFileTextIcon,
+  
+
   FaQuoteRight,
   FaPaperPlane,
   FaEdit,

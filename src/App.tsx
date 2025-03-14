@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import React from "react";
+// import React from "react";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import Contact from "./components/Contact";
@@ -16,7 +16,7 @@ import VerifyEmail from "./components/auth/VerifyEmail";
 import Registrations from "./components/Registrations";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
-
+// import SubmitPaperForm from "./components/SubmitPaperForm";
 // The App component should contain BrowserRouter
 const App = () => {
   return (
@@ -99,7 +99,7 @@ const AppRoutes = () => {
         } />
         <Route path="/submit-paper" element={
           <ProtectedRoute>
-            <RouteWithLoading element={<SubmitPaperForm isOpen={true} onClose={() => {}} />} />
+            <RouteWithLoading element={<SubmitPaperForm isOpen={true} onClose={() => {}} embedded={false} onSubmissionSuccess={() => {}} />} />
           </ProtectedRoute>
         } />
         <Route path="*" element={<Navigate to="/" replace />} />
