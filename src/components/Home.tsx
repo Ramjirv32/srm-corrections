@@ -93,7 +93,7 @@ const Home = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent group-hover:opacity-75 transition-opacity duration-300"></div>
                 <div className="absolute bottom-0 left-0 right-0 p-6 text-white transform group-hover:-translate-y-2 transition-transform duration-300">
-                  <h3 className="text-2xl font-bold mb-1">Madras High Court</h3>
+                  <h3 className="text-2xl font-bold mb-1">Conference Held at</h3>
                   <p>Chennai, Tamil Nadu</p>
                 </div>
               </div>
