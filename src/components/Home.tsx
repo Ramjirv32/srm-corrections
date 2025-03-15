@@ -7,7 +7,7 @@ import SimpleCountdownTimer  from "./CountdownTimer"
 // Import images
 // import Logo from './images/logo.jpeg';
 import VenuePic from './images/srm_venue.jpeg'; // Changed to srm_venue.jpeg
-import SmallLogo from './images/lo.png';
+import SmallLogo from './images/final.png';
 import MadrasHighCourt from './images/Madras_High_Court.jpg';
 
 const Home = () => {
@@ -20,7 +20,7 @@ const Home = () => {
           <div className="relative z-10 container mx-auto px-4 py-16 text-center">
             {/* Add logo at the top of hero section */}
             <div className="flex justify-center mb-6">
-              <img src={SmallLogo} alt="Conference Logo" className="h-112 object-contain rounded-lg" />
+              <img src={SmallLogo} alt="Conference Logo" className="h-82 object-contain rounded-lg" />
             </div>
             
             <h1 className="text-3xl md:text-5xl font-bold mb-4 leading-tight">
