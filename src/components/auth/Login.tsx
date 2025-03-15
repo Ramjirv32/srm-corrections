@@ -121,23 +121,24 @@ const Login = () => {
           username: response.data.username
         }));
         
+        // Trigger the auth state change event
+        window.dispatchEvent(new Event('authStateChanged'));
+        
         Swal.fire({
           icon: 'success',
           title: 'Login Successful',
           text: 'You are now logged in',
           timer: 1500,
           showConfirmButton: false
+        }).then(() => {
+          navigate('/dashboard');
         });
-
-        navigate('/dashboard');
-        // window.location.reload();
       } else {
         throw new Error(response.data.message || 'Login failed');
       }
     } catch (error: any) {
       console.error("Login error:", error);
       
-     
       if (error.response?.data?.needsVerification) {
         Swal.fire({
           icon: 'warning',
@@ -152,8 +153,24 @@ const Login = () => {
             resendVerificationEmail(email);
           }
         });
+      } else if (error.response?.status === 400) {
+        // Handle incorrect password or invalid user
+        const errorMessage = error.response.data.message || 'Invalid credentials';
+        
+        Swal.fire({
+          icon: 'error',
+          title: 'Login Failed',
+          text: errorMessage,
+          confirmButtonColor: '#F5A051'
+        });
       } else {
-;
+        // Handle other errors
+        Swal.fire({
+          icon: 'error',
+          title: 'Login Failed',
+          text: 'An error occurred while logging in. Please try again later.',
+          confirmButtonColor: '#F5A051'
+        });
       }
     } finally {
       setIsLoading(false);
