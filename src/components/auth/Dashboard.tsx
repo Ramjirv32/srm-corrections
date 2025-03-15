@@ -85,6 +85,9 @@ const Dashboard = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
         
+        // Force a re-render of the navbar by triggering the custom event
+        window.dispatchEvent(new Event('authStateChanged'));
+        
         Swal.fire({
           icon: 'success',
           title: 'Logged Out',

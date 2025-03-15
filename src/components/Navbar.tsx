@@ -3,6 +3,27 @@ import { Facebook, Twitter, Linkedin, Instagram, Youtube, MessageCircle, LogOut,
 import Logo from "./images/lo.png"
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
+// Create a custom event for auth state changes
+const authStateChanged = new CustomEvent('authStateChanged');
+
+// Update localStorage setItem and removeItem to dispatch our custom event
+const originalSetItem = localStorage.setItem;
+const originalRemoveItem = localStorage.removeItem;
+
+localStorage.setItem = function(key, value) {
+  originalSetItem.call(this, key, value);
+  if (key === 'token' || key === 'user') {
+    window.dispatchEvent(authStateChanged);
+  }
+};
+
+localStorage.removeItem = function(key) {
+  originalRemoveItem.call(this, key);
+  if (key === 'token' || key === 'user') {
+    window.dispatchEvent(authStateChanged);
+  }
+};
+
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -11,11 +32,24 @@ const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Check if user is logged in
+  // Check if user is logged in on mount and when auth state changes
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    setIsLoggedIn(!!token);
-  }, []);
+    const checkAuthStatus = () => {
+      const token = localStorage.getItem('token');
+      setIsLoggedIn(!!token);
+    };
+    
+    // Check initial state
+    checkAuthStatus();
+    
+    // Listen for auth state changes
+    window.addEventListener('authStateChanged', checkAuthStatus);
+    
+    // Also check auth status on route change
+    return () => {
+      window.removeEventListener('authStateChanged', checkAuthStatus);
+    };
+  }, [location.pathname]);
 
   // Add scroll effect to navbar
   useEffect(() => {
@@ -56,6 +90,7 @@ const Navbar: React.FC = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
     setIsLoggedIn(false);
     navigate('/');
   };
