@@ -6,7 +6,7 @@ import SmallLogo from './images/lo.png'
 const Footer = () => {
   return (
     <div>
-              {/* Footer */}
+            
               <footer className="bg-[#0B1829] text-white py-12">
           <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Conference Title Section */}
