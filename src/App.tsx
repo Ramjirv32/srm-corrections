@@ -16,7 +16,7 @@ import VerifyEmail from "./components/auth/VerifyEmail";
 import Registrations from "./components/Registrations";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
-import EditSubmissionForm from "./components/EditSubmission";
+import EditSubmission from "./components/EditSubmission";
 // import SubmitPaperForm from "./components/SubmitPaperForm";
 // The App component should contain BrowserRouter
 const App = () => {
@@ -58,11 +58,8 @@ const RouteWithLoading = ({
   );
 };
 
-
-
-
+// Separate component for the routes
 const AppRoutes = () => {
-  
   return (
     <>
       <Navbar />
@@ -83,18 +80,20 @@ const AppRoutes = () => {
           <RouteWithLoading element={<Commitee />} />
         } />
         
-       
-        <Route path="/dashboard" element={<Dashboard/>} />
+        {/* Apply loading effect to Dashboard */}
+        <Route path="/dashboard" element={
+          <RouteWithLoading element={<Dashboard/>} />
+        } />
         
-        {/* Protected routes - only accessible when logged in */}
+        {/* Make Call for Papers accessible to all, but protect Paper Submission */}
+        <Route path="/call-for-papers" element={
+          <RouteWithLoading element={<CallForPapers />} />
+        } />
+        
+        {/* Protected routes with loading - only accessible when logged in */}
         <Route path="/paper-submission" element={
           <ProtectedRoute>
             <RouteWithLoading element={<PaperSubmission />} />
-          </ProtectedRoute>
-        } />
-        <Route path="/call-for-papers" element={
-          <ProtectedRoute>
-            <RouteWithLoading element={<CallForPapers />} />
           </ProtectedRoute>
         } />
         <Route path="/submit-paper" element={
@@ -102,17 +101,20 @@ const AppRoutes = () => {
             <RouteWithLoading element={<SubmitPaperForm isOpen={true} onClose={() => {}} embedded={false} onSubmissionSuccess={() => {}} />} />
           </ProtectedRoute>
         } />
-        <Route path="*" element={<Navigate to="/" replace />} />
         <Route path="/registrations" element={
           <ProtectedRoute>
             <RouteWithLoading element={<Registrations />} />
           </ProtectedRoute>
         } />
+        
+        {/* Add loading effect to EditSubmission route */}
         <Route path="/edit-submission/:submissionId" element={
           <ProtectedRoute>
-            <RouteWithLoading element={<EditSubmissionForm />} />
+            <RouteWithLoading element={<EditSubmission />} />
           </ProtectedRoute>
         } />
+        
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       <Footer/>
     </>

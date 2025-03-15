@@ -18,10 +18,8 @@ const Home = () => {
         <div className="relative bg-gradient-to-r from-blue-900 to-[#F5A051] text-white">
           <div className="absolute inset-0 bg-black opacity-50"></div>
           <div className="relative z-10 container mx-auto px-4 py-16 text-center">
-            {/* Add logo at the top of hero section */}
-            <div className="flex justify-center mb-6">
-              <img src={SmallLogo} alt="Conference Logo" className="h-82 object-contain rounded-lg" />
-            </div>
+           
+           
             
             <h1 className="text-3xl md:text-5xl font-bold mb-4 leading-tight">
               International Conference on Multidisciplinary Breakthroughs and NextGen Technologies

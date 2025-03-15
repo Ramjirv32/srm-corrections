@@ -283,9 +283,9 @@ const Navbar: React.FC = () => {
             <div className="hidden lg:block flex-grow mx-4">
               <ul className="flex items-center justify-center space-x-1 xl:space-x-4">
                 <li><Link to="/" className={`py-2 px-2 hover:text-[#F5A051] transition-colors text-sm xl:text-base ${isActive('/')}`}>Home</Link></li>
+                <li><Link to="/call-for-papers" className={`py-2 px-2 hover:text-[#F5A051] transition-colors text-sm xl:text-base ${isActive('/call-for-papers')}`}>Call For Papers</Link></li>
                 {isLoggedIn && (
                   <>
-                    <li><Link to="/call-for-papers" className={`py-2 px-2 hover:text-[#F5A051] transition-colors text-sm xl:text-base ${isActive('/call-for-papers')}`}>Call For Papers</Link></li>
                     <li><Link to="/paper-submission" className={`py-2 px-2 hover:text-[#F5A051] transition-colors text-sm xl:text-base ${isActive('/paper-submission')}`}>Paper Submission</Link></li>
                     <li><Link to="/Registrations" className="py-2 px-2 hover:text-[#F5A051] transition-colors text-sm xl:text-base">Registrations</Link></li>
                   </>
@@ -330,16 +330,16 @@ const Navbar: React.FC = () => {
                   Home
                 </Link>
               </li>
+              <li>
+                <Link 
+                  to="/call-for-papers" 
+                  className={`block py-2.5 px-4 hover:bg-gray-800 rounded-md transition-colors ${isActive('/call-for-papers')}`}
+                >
+                  Call For Papers
+                </Link>
+              </li>
               {isLoggedIn && (
                 <>
-                  <li>
-                    <Link 
-                      to="/call-for-papers" 
-                      className={`block py-2.5 px-4 hover:bg-gray-800 rounded-md transition-colors ${isActive('/call-for-papers')}`}
-                    >
-                      Call For Papers
-                    </Link>
-                  </li>
                   <li>
                     <Link 
                       to="/paper-submission" 

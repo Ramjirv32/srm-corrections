@@ -1,8 +1,36 @@
-// import React from "react";
 import { FaCalendarAlt, FaFileAlt, FaExclamationTriangle } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const CallForPapers = () => {
+  const navigate = useNavigate();
+  
+  const handleSubmissionClick = () => {
+    const token = localStorage.getItem('token');
+    
+    if (!token) {
+      Swal.fire({
+        title: 'Login Required',
+        text: 'You need to login before submitting a paper',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#F5A051',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Login Now',
+        cancelButtonText: 'Sign Up'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate('/login');
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          navigate('/signin');
+        }
+      });
+    } else {
+      navigate('/paper-submission');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white">
       {/* Header Banner */}
@@ -85,13 +113,13 @@ const CallForPapers = () => {
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-              <Link 
-                to="/paper-submission" 
+              <button 
+                onClick={handleSubmissionClick}
                 className="inline-flex items-center bg-blue-900 text-white px-6 py-3 rounded-md hover:bg-blue-800 transition-colors duration-300"
               >
                 <FaFileAlt className="mr-2" />
                 Quick Abstract Submission
-              </Link>
+              </button>
             </div>
           </div>
         </section>
