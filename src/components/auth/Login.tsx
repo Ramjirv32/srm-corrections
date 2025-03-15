@@ -39,7 +39,7 @@ const Login = () => {
   const verifyEmail = async (token: string) => {
     try {
       setVerificationStatus({});
-      const apiUrl = 'https://final-srm-back.vercel.app';
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://final-srm-back.vercel.app';
       
       // Log request details for debugging
       console.log(`Sending verification request to ${apiUrl}/verify-email with token: ${token}`);
@@ -88,7 +88,7 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      const apiUrl = 'https://final-srm-back.vercel.app';
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://final-srm-back.vercel.app';
       const response = await axios.post(`${apiUrl}/login`, {
         email,
         password
@@ -163,7 +163,7 @@ const Login = () => {
   const resendVerificationEmail = async (email: string) => {
     setIsLoading(true);
     try {
-      const apiUrl = 'https://final-srm-back.vercel.app';
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://final-srm-back.vercel.app';
       const response = await axios.post(`${apiUrl}/resend-verification`, { email });
 
       if (response.data.success) {

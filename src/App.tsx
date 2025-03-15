@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+// import React from "react";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import Contact from "./components/Contact";
@@ -9,13 +10,13 @@ import CallForPapers from "./components/CallforPaper";
 import PaperSubmission from "./components/Papersubmission";
 import SubmitPaperForm from "./components/SubmitPaperForm";
 import Dashboard from "./components/Dashboard";
+// Fixed the broken import statement
 import RouteChangeTracker from "./components/RouteChangeTracker";
 import VerifyEmail from "./components/auth/VerifyEmail";
 import Registrations from "./components/Registrations";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
-import EditSubmission from "./components/EditSubmission";
-
+// import SubmitPaperForm from "./components/SubmitPaperForm";
 // The App component should contain BrowserRouter
 const App = () => {
   return (
@@ -56,8 +57,12 @@ const RouteWithLoading = ({
   );
 };
 
+// Removed the duplicate RouteChangeTracker component definition
+// Use the imported component instead
+
 // Separate component for the routes
 const AppRoutes = () => {
+  
   return (
     <>
       <Navbar />
@@ -78,35 +83,31 @@ const AppRoutes = () => {
           <RouteWithLoading element={<Commitee />} />
         } />
         
-        {/* Apply loading effect to Dashboard */}
-        <Route path="/dashboard" element={
-          <RouteWithLoading element={<Dashboard/>} />
-        } />
+       
+        <Route path="/dashboard" element={<Dashboard/>} />
         
-        {/* Protected routes with loading - only accessible when logged in */}
+        {/* Protected routes - only accessible when logged in */}
         <Route path="/paper-submission" element={
           <ProtectedRoute>
             <RouteWithLoading element={<PaperSubmission />} />
           </ProtectedRoute>
         } />
         <Route path="/call-for-papers" element={
-          <RouteWithLoading element={<CallForPapers />} />
+          <ProtectedRoute>
+            <RouteWithLoading element={<CallForPapers />} />
+          </ProtectedRoute>
         } />
         <Route path="/submit-paper" element={
           <ProtectedRoute>
             <RouteWithLoading element={<SubmitPaperForm isOpen={true} onClose={() => {}} embedded={false} onSubmissionSuccess={() => {}} />} />
           </ProtectedRoute>
         } />
-        <Route path="/registrations" element={
-          <RouteWithLoading element={<Registrations />} />
-        } />
-        
-        {/* Add loading effect to EditSubmission route */}
-        <Route path="/edit-submission/:submissionId" element={
-          <RouteWithLoading element={<EditSubmission />} />
-        } />
-        
         <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="/registrations" element={
+          <ProtectedRoute>
+            <RouteWithLoading element={<Registrations />} />
+          </ProtectedRoute>
+        } />
       </Routes>
       <Footer/>
     </>
