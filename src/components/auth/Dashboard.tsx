@@ -45,6 +45,7 @@ const Dashboard = () => {
           confirmButtonColor: '#F5A051'
         }).then(() => {
           navigate('/login');
+          window.location.reload();
         });
       } finally {
         setLoading(false);
