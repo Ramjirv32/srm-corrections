@@ -232,7 +232,7 @@ const Navbar: React.FC = () => {
                         </Link>
                       )}
                       <Link 
-                        to="#" 
+                        to="/venue" 
                         className="block px-4 py-2 text-sm hover:bg-gray-800"
                       >
                         Venue
@@ -291,9 +291,9 @@ const Navbar: React.FC = () => {
                   </>
                 )}
                 <li><Link to="/commitee" className={`py-2 px-2 hover:text-[#F5A051] transition-colors text-sm xl:text-base ${isActive('/commitee')}`}>Committee</Link></li>
-                <li><Link to="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors text-sm xl:text-base">Keynote speakers</Link></li>
+                <li><Link to="/keynote-speakers" className={`py-2 px-2 hover:text-[#F5A051] transition-colors text-sm xl:text-base ${isActive('/keynote-speakers')}`}>Keynote speakers</Link></li>
                 <li><Link to="/contact" className={`py-2 px-2 hover:text-[#F5A051] transition-colors text-sm xl:text-base ${isActive('/contact')}`}>Contact</Link></li>
-                <li><Link to="#" className="py-2 px-2 hover:text-[#F5A051] transition-colors text-sm xl:text-base">Venue</Link></li>
+                <li><Link to="/venue" className="py-2 px-2 hover:text-[#F5A051] transition-colors text-sm xl:text-base">Venue</Link></li>
               </ul>
             </div>
 
@@ -368,8 +368,8 @@ const Navbar: React.FC = () => {
               </li>
               <li>
                 <Link 
-                  to="#" 
-                  className="block py-2.5 px-4 hover:bg-gray-800 rounded-md transition-colors"
+                  to="/keynote-speakers" 
+                  className={`block py-2.5 px-4 hover:bg-gray-800 rounded-md transition-colors ${isActive('/keynote-speakers')}`}
                 >
                   Keynote speakers
                 </Link>
@@ -384,7 +384,7 @@ const Navbar: React.FC = () => {
               </li>
               <li>
                 <Link 
-                  to="#" 
+                  to="/venue" 
                   className="block py-2.5 px-4 hover:bg-gray-800 rounded-md transition-colors"
                 >
                   Venue

@@ -62,11 +62,11 @@ const committeeMembers: CommitteeMember[] = [
   },
   {
     id: 4,
-    name: "Dr. Vishnu Kumar Kaliappan",
+    name: "Prof. Dr. Vishnu Kumar Kaliappan",
     role: "Conference Co-Chair",
-    affiliation: "School of Computer Science and Engineering, Konkuk University",
-    country: "South Korea",
-    designation: "Research Professor",
+    affiliation: "Department of Computer Science and Engineering, KPR Institute of Engineering and Technology",
+    country: "India",
+    designation: "Professor",
     image: "/placeholder.svg?height=300&width=300"
   },
   {

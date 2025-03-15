@@ -36,7 +36,7 @@ export default function Signup() {
         return;
       }
 
-      // Add password validation
+    
       if (password.length < 6) {
         Swal.fire({
           icon: 'error',

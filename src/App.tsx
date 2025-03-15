@@ -17,6 +17,9 @@ import Registrations from "./components/Registrations";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
 import EditSubmission from "./components/EditSubmission";
+import Venue from './components/Venue';
+import KeynoteSpeakers from './components/KeynoteSpeakers';
+import SpeakerProfile from './components/SpeakerProfile';
 // import SubmitPaperForm from "./components/SubmitPaperForm";
 // The App component should contain BrowserRouter
 const App = () => {
@@ -112,6 +115,17 @@ const AppRoutes = () => {
           <ProtectedRoute>
             <RouteWithLoading element={<EditSubmission />} />
           </ProtectedRoute>
+        } />
+        
+        {/* Add loading effects to keynote and venue routes */}
+        <Route path="/venue" element={
+          <RouteWithLoading element={<Venue />} loadingTime={600} />
+        } />
+        <Route path="/keynote-speakers" element={
+          <RouteWithLoading element={<KeynoteSpeakers />} loadingTime={600} />
+        } />
+        <Route path="/keynote-speakers/:speakerId" element={
+          <RouteWithLoading element={<SpeakerProfile />} loadingTime={500} />
         } />
         
         <Route path="*" element={<Navigate to="/" replace />} />

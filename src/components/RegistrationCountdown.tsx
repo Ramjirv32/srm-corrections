@@ -21,34 +21,34 @@ const RegistrationCountdown: React.FC = () => {
   const [deadlines, setDeadlines] = useState<Deadline[]>([]);
 
   useEffect(() => {
-    // Define important dates
+    // Define important dates - aligned with Timeline.tsx
     const initialDeadlines: Deadline[] = [
       {
-        name: 'Paper Submission Deadline',
-        date: new Date('2025-04-12T23:59:59'),
+        name: 'Manuscript Submission Deadline',
+        date: new Date('2025-03-25T23:59:59'),
         icon: <FileText className="text-blue-600" />,
         description: 'Last date for submitting your research papers',
         status: 'upcoming'
       },
       {
-        name: 'Early Bird Registration',
-        date: new Date('2025-03-15T23:59:59'),
-        icon: <CalendarIcon className="text-green-600" />,
-        description: 'Register early for special rates',
-        status: 'upcoming'
-      },
-      {
-        name: 'Standard Registration',
+        name: 'Acceptance Notification',
         date: new Date('2025-04-05T23:59:59'),
-        icon: <CalendarIcon className="text-yellow-600" />,
-        description: 'Regular registration period',
+        icon: <AlertCircle className="text-purple-600" />,
+        description: 'Authors will be notified about acceptance',
         status: 'upcoming'
       },
       {
-        name: 'Conference Date',
+        name: 'Registration Deadline',
+        date: new Date('2025-04-12T23:59:59'),
+        icon: <CalendarIcon className="text-yellow-600" />,
+        description: 'Last date for conference registration',
+        status: 'upcoming'
+      },
+      {
+        name: 'Conference Dates',
         date: new Date('2025-04-26T09:00:00'),
         icon: <Calendar className="text-red-600" />,
-        description: 'ICMBNT-2025 Conference begins',
+        description: 'ICMBNT-2025 Conference (April 26-27)',
         status: 'upcoming'
       }
     ];
@@ -69,13 +69,21 @@ const RegistrationCountdown: React.FC = () => {
 
     setDeadlines(updatedDeadlines);
 
-    // Find the next upcoming deadline
-    const upcomingDeadlines = updatedDeadlines
-      .filter(d => d.status !== 'passed')
-      .sort((a, b) => a.date.getTime() - b.date.getTime());
+    // Find the April 5th Acceptance Notification deadline
+    const acceptanceDeadline = updatedDeadlines.find(d => d.name === 'Acceptance Notification');
     
-    if (upcomingDeadlines.length > 0) {
-      setCurrentDeadline(upcomingDeadlines[0]);
+    if (acceptanceDeadline) {
+      // Set the focus to April 5th (Acceptance Notification) instead of the next upcoming deadline
+      setCurrentDeadline(acceptanceDeadline);
+    } else {
+      // Fallback to the next upcoming deadline if for some reason the acceptance deadline isn't found
+      const upcomingDeadlines = updatedDeadlines
+        .filter(d => d.status !== 'passed')
+        .sort((a, b) => a.date.getTime() - b.date.getTime());
+      
+      if (upcomingDeadlines.length > 0) {
+        setCurrentDeadline(upcomingDeadlines[0]);
+      }
     }
 
     // You can set registration status based on your business logic

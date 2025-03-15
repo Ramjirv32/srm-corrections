@@ -61,26 +61,34 @@ const Dashboard: React.FC = () => {
                     <ul className="border border-gray-200 rounded-md divide-y divide-gray-200">
                       <li className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
                         <div className="w-0 flex-1 flex items-center">
-                          <span className="flex-1 w-0 truncate">Abstract Submission Deadline</span>
+                          <span className="flex-1 w-0 truncate">Manuscript Submission Deadline</span>
                         </div>
                         <div className="ml-4 flex-shrink-0">
-                          <span className="font-medium">April 30, 2023</span>
+                          <span className="font-medium">25 March 2025</span>
                         </div>
                       </li>
                       <li className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
                         <div className="w-0 flex-1 flex items-center">
-                          <span className="flex-1 w-0 truncate">Full Paper Submission</span>
+                          <span className="flex-1 w-0 truncate">Acceptance Notification</span>
                         </div>
                         <div className="ml-4 flex-shrink-0">
-                          <span className="font-medium">May 15, 2023</span>
+                          <span className="font-medium">5 April 2025</span>
                         </div>
                       </li>
                       <li className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
                         <div className="w-0 flex-1 flex items-center">
-                          <span className="flex-1 w-0 truncate">Notification of Acceptance</span>
+                          <span className="flex-1 w-0 truncate">Registration Deadline</span>
                         </div>
                         <div className="ml-4 flex-shrink-0">
-                          <span className="font-medium">June 30, 2023</span>
+                          <span className="font-medium">12 April 2025</span>
+                        </div>
+                      </li>
+                      <li className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
+                        <div className="w-0 flex-1 flex items-center">
+                          <span className="flex-1 w-0 truncate">Conference Dates</span>
+                        </div>
+                        <div className="ml-4 flex-shrink-0">
+                          <span className="font-medium">26-27 April 2025</span>
                         </div>
                       </li>
                     </ul>

@@ -243,7 +243,7 @@ const Registrations: React.FC = () => {
                 
                 <div className="flex flex-wrap gap-4 mt-6">
                   <a 
-                    href="#" 
+                    href="/assets/e.docx" 
                     className="flex items-center text-blue-700 bg-blue-50 hover:bg-blue-100 transition-colors px-4 py-2 rounded-lg"
                   >
                     <Download size={18} className="mr-2" />
