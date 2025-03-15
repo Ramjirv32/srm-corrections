@@ -3,9 +3,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import Swal from 'sweetalert2';
-import { auth } from "../config/firebase";
-import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import axios from 'axios';
+// Remove unused imports
+// import { auth } from "../config/firebase";
+// import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+// import axios from 'axios';
 import { Mail, Lock } from 'react-feather'; 
 import PageTransition from '../PageTransition';
 
@@ -105,68 +106,8 @@ export default function Signup() {
     }
   };
 
-  const handleGoogleSignIn = async () => {
-    try {
-      const provider = new GoogleAuthProvider();
-      provider.setCustomParameters({
-        prompt: 'select_account'
-      });
-      
-      const result = await signInWithPopup(auth, provider);
-      
-      const response = await axios.post(`https://final-srm-back.vercel.app/signin`, {
-        email: result.user.email,
-        password: result.user.uid
-      });
-
-
-      if (response.data.success) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Signed in with Google!',
-          text: `Please Login to continue`,
-          timer: 1500,
-        });
-        if (response.data.token) {
-          localStorage.setItem('token', response.data.token);
-        }
-        navigate('/membership-form');
-      } else {
-        throw new Error(response.data.message || 'Login failed');
-      }
-    } catch (error: any) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Google Sign-In Failed',
-        text: getErrorMessage(error),
-        timer: 3000,
-      });
-    }
-  };
-
-  const getErrorMessage = (error: any) => {
-    if (axios.isAxiosError(error)) {
-      console.error("Axios Error Response:", error.response);
-      return `API Error: ${error.response?.data?.message || error.message}`;
-    }
-    
-    switch (error.code) {
-      case 'auth/user-not-found':
-      case 'auth/wrong-password':
-        return 'Invalid email or password';
-      case 'auth/too-many-requests':
-        return 'Too many failed login attempts. Please try again later.';
-      case 'auth/operation-not-allowed':
-        return 'This sign-in method is not enabled. Please contact the administrator.';
-      case 'auth/popup-blocked':
-        return 'The sign-in popup was blocked by your browser. Please allow popups for this site.';
-      case 'auth/popup-closed-by-user':
-      case 'auth/cancelled-popup-request':
-        return 'The sign-in popup was closed before authentication could complete. Please try again.';
-      default:
-        return `An unexpected error occurred: ${error.message}. Please try again.`;
-    }
-  };
+  // Delete the unused Google sign-in functions
+  // handleGoogleSignIn and getErrorMessage functions removed
 
   return (
     <PageTransition>
@@ -186,6 +127,7 @@ export default function Signup() {
               </p>
             </div>
 
+            {/* Commented out Google sign-in functionality
             <div className="mb-6">
               <button
                 onClick={handleGoogleSignIn}
@@ -195,13 +137,14 @@ export default function Signup() {
                 Sign up with Google
               </button>
             </div>
+            */}
 
             <div className="relative mb-6">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-gray-300"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">Or sign up with email</span>
+                <span className="px-2 bg-white text-gray-500">Sign up with email</span>
               </div>
             </div>
 
