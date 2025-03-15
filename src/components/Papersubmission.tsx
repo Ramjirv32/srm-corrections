@@ -88,9 +88,11 @@ const PaperSubmission = () => {
     });
   };
   
-  // Function to handle edit navigation
+  // Function to handle edit navigation - Fix the navigation
   const handleEditSubmission = () => {
     if (existingSubmission) {
+      console.log("Navigating to edit page with ID:", existingSubmission.submissionId);
+      // Use absolute path to avoid relative path issues
       navigate(`/edit-submission/${existingSubmission.submissionId}`);
     }
   };

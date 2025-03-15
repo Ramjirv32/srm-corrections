@@ -5,6 +5,9 @@ import './index.css'
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
+// Import necessary components for route configuration
+import EditSubmission from './components/EditSubmission.tsx'
+
 // Initialize AOS
 AOS.init({
   duration: 800,

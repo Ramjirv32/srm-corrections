@@ -25,10 +25,11 @@ const Dashboard: React.FC = () => {
     const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
     
-    if (!token) {
-      navigate('/login');
-      return;
-    }
+    // Remove authentication check
+    // if (!token) {
+    //   navigate('/login');
+    //   return;
+    // }
 
     if (userData && userData !== 'undefined' && userData !== 'null') {
       try {
@@ -36,17 +37,20 @@ const Dashboard: React.FC = () => {
         if (parsedUser && typeof parsedUser === 'object') {
           setUser(parsedUser);
           
-          // Fetch user's submission status
-          fetchUserSubmission(token);
+          // Fetch user's submission status if token exists
+          if (token) {
+            fetchUserSubmission(token);
+          } else {
+            setLoading(false);
+          }
         } else {
           throw new Error('Invalid user data format');
         }
       } catch (e) {
         console.error("Error parsing user data:", e);
-        // Clear invalid data
+        // Clear invalid data but don't navigate away
         localStorage.removeItem('user');
-        localStorage.removeItem('token');
-        navigate('/login');
+        setLoading(false);
       }
     } else {
       setLoading(false);
@@ -83,6 +87,8 @@ const Dashboard: React.FC = () => {
 
   const handleEditSubmission = () => {
     if (submission) {
+      console.log("Navigating to edit page with ID:", submission.submissionId);
+      // Use absolute path to avoid relative path issues
       navigate(`/edit-submission/${submission.submissionId}`);
     }
   };
@@ -100,7 +106,12 @@ const Dashboard: React.FC = () => {
               <header className="mb-8">
                 <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
                 <p className="mt-2 text-lg text-gray-600">
-                  Welcome back, {user.username || 'User'}!
+                  {user.username ? 
+                    `Welcome back, ${user.username}!` : 
+                    <span>
+                      Welcome! Please <Link to="/login" className="text-[#F5A051] hover:underline">login</Link> to see your submissions.
+                    </span>
+                  }
                 </p>
               </header>
 
@@ -184,41 +195,57 @@ const Dashboard: React.FC = () => {
                 <div className="bg-white p-6 rounded-lg shadow-md mb-8">
                   <div className="text-center py-8">
                     <FiFileText className="mx-auto h-12 w-12 text-gray-400" />
-                    <h3 className="mt-2 text-xl font-medium text-gray-900">No paper submissions yet</h3>
+                    <h3 className="mt-2 text-xl font-medium text-gray-900">
+                      {localStorage.getItem('token') ?
+                        "No paper submissions yet" :
+                        "Please log in to view your submissions"
+                      }
+                    </h3>
                     <p className="mt-1 text-sm text-gray-500">
-                      You haven't submitted any papers for the conference.
+                      {localStorage.getItem('token') ?
+                        "You haven't submitted any papers for the conference." :
+                        "You need to be logged in to submit and view papers."
+                      }
                     </p>
                     <div className="mt-6">
-                      <Link
-                        to="/submit-paper"
-                        className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#F5A051] hover:bg-[#e08c3e] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F5A051]"
-                      >
-                        Submit a Paper
-                      </Link>
+                      {localStorage.getItem('token') ? (
+                        <Link
+                          to="/submit-paper"
+                          className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#F5A051] hover:bg-[#e08c3e] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F5A051]"
+                        >
+                          Submit a Paper
+                        </Link>
+                      ) : (
+                        <Link
+                          to="/login"
+                          className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#F5A051] hover:bg-[#e08c3e] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F5A051]"
+                        >
+                          Login
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </div>
               )}
 
               <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {!submission && (
-                  <div className="bg-white overflow-hidden shadow rounded-lg">
-                    <div className="p-5">
-                      <div className="flex items-center">
-                        <div className="flex-shrink-0 bg-indigo-500 rounded-md p-3">
-                          <FiFileText className="h-6 w-6 text-white" />
-                        </div>
-                        <div className="ml-5 w-0 flex-1">
-                          <dt className="text-lg font-medium text-gray-900 truncate">Submit a Paper</dt>
-                          <dd className="mt-1 text-sm text-gray-500">Submit your abstract or full paper</dd>
-                        </div>
+                {/* Info cards section - always show these regardless of login status */}
+                <div className="bg-white overflow-hidden shadow rounded-lg">
+                  <div className="p-5">
+                    <div className="flex items-center">
+                      <div className="flex-shrink-0 bg-indigo-500 rounded-md p-3">
+                        <FiFileText className="h-6 w-6 text-white" />
                       </div>
-                      <div className="mt-4">
-                        <Link to="/submit-paper" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">Submit now &rarr;</Link>
+                      <div className="ml-5 w-0 flex-1">
+                        <dt className="text-lg font-medium text-gray-900 truncate">Submit a Paper</dt>
+                        <dd className="mt-1 text-sm text-gray-500">Submit your abstract or full paper</dd>
                       </div>
                     </div>
+                    <div className="mt-4">
+                      <Link to="/submit-paper" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">Submit now &rarr;</Link>
+                    </div>
                   </div>
-                )}
+                </div>
 
                 <div className="bg-white overflow-hidden shadow rounded-lg">
                   <div className="p-5">

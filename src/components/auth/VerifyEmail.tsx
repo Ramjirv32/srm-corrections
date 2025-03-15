@@ -75,17 +75,9 @@ const VerifyEmail: React.FC = () => {
       } catch (error: any) {
         console.error("Verification error:", error);
         
-        setVerificationStatus({
-          success: false,
-          message: error.message || 'An error occurred during verification'
-        });
+      
 
-        await Swal.fire({
-          icon: 'error',
-          title: 'Verification Failed',
-          text: error.message || 'An error occurred during verification',
-          confirmButtonColor: '#F5A051'
-        });
+       
       } finally {
         setIsVerifying(false);
       }

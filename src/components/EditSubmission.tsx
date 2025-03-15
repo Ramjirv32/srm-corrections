@@ -42,16 +42,26 @@ const EditSubmission: React.FC = () => {
   const [submission, setSubmission] = useState<SubmissionData | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   
-  // Form state
+  // Form state - adding authorName to match backend API
   const [paperTitle, setPaperTitle] = useState('');
   const [category, setCategory] = useState('');
   const [topic, setTopic] = useState('');
+  const [authorName, setAuthorName] = useState(''); // Added to match backend API
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [currentFileName, setCurrentFileName] = useState('');
   
   const fileInputRef = useRef<HTMLInputElement>(null);
   
+  const formatFileName = (fileName: string) => {
+    // Check if the filename is a base64 string and truncate it
+    if (fileName && (fileName.includes('==') || fileName.length > 50)) {
+      return "Original file" + (fileName.endsWith('.pdf') ? '.pdf' : fileName.endsWith('.docx') ? '.docx' : fileName.endsWith('.doc') ? '.doc' : '');
+    }
+    return fileName;
+  };
+
   useEffect(() => {
+    console.log("EditSubmission component mounted with ID:", submissionId);
     const token = localStorage.getItem('token');
     
     if (!token) {
@@ -62,25 +72,33 @@ const EditSubmission: React.FC = () => {
     // Fetch the submission details
     const fetchSubmission = async () => {
       try {
+        console.log("Fetching submission data...");
         const response = await axios.get(`https://final-srm-back.vercel.app/user-submission`, {
           headers: { 'Authorization': token }
         });
         
         if (response.data.hasSubmission && response.data.submission.submissionId === submissionId) {
+          console.log("Found matching submission:", response.data.submission);
           const submissionData = response.data.submission;
           setSubmission(submissionData);
           
-          // Initialize form state
+          // Initialize form state with all fields from the backend
           setPaperTitle(submissionData.paperTitle);
           setCategory(submissionData.category);
           setTopic(submissionData.topic || '');
+          setAuthorName(submissionData.authorName); // Initialize author name
           
-          // Extract just the filename from the path
+          // Extract just the filename from the path and format it properly
           if (submissionData.abstractFileUrl) {
-            const fileName = submissionData.abstractFileUrl.split('/').pop() || '';
-            setCurrentFileName(fileName);
+            const rawFileName = submissionData.abstractFileUrl.split('/').pop() || '';
+            setCurrentFileName(formatFileName(rawFileName));
           }
         } else {
+          console.error("Submission not found or mismatch:", {
+            hasSubmission: response.data.hasSubmission,
+            requestedId: submissionId,
+            returnedId: response.data.submission?.submissionId
+          });
           setErrorMsg('Submission not found or you do not have permission to edit it.');
         }
       } catch (error) {
@@ -150,8 +168,10 @@ const EditSubmission: React.FC = () => {
       const token = localStorage.getItem('token');
       const formData = new FormData();
       
+      // Include all fields required by backend API
       formData.append('paperTitle', paperTitle);
       formData.append('category', category);
+      formData.append('authorName', authorName); // Add author name to match backend API
       
       if (topic) {
         formData.append('topic', topic);
@@ -160,6 +180,14 @@ const EditSubmission: React.FC = () => {
       if (selectedFile) {
         formData.append('abstract', selectedFile);
       }
+      
+      console.log("Submitting update with data:", {
+        paperTitle,
+        category,
+        topic,
+        authorName,
+        hasFile: !!selectedFile
+      });
       
       const response = await axios.put(
         `https://final-srm-back.vercel.app/edit-submission/${submissionId}`, 
@@ -173,12 +201,15 @@ const EditSubmission: React.FC = () => {
       );
       
       if (response.data.success) {
+        console.log("Update successful:", response.data);
         Swal.fire({
           icon: 'success',
           title: 'Changes Saved',
           text: 'Your submission has been updated successfully',
+        }).then(() => {
+          // Use navigate with state to trigger loading
+          navigate('/dashboard', { replace: true });
         });
-        navigate('/dashboard');
       } else {
         throw new Error(response.data.message || 'Failed to update submission');
       }
@@ -215,7 +246,7 @@ const EditSubmission: React.FC = () => {
             </div>
             <p className="text-gray-700">{errorMsg || 'Submission not found'}</p>
             <button
-              onClick={() => navigate('/dashboard')}
+              onClick={() => navigate('/dashboard', { replace: true })}
               className="mt-6 bg-[#F5A051] text-white px-4 py-2 rounded hover:bg-[#e08c3e]"
             >
               Back to Dashboard
@@ -232,7 +263,7 @@ const EditSubmission: React.FC = () => {
         <div className="max-w-3xl mx-auto">
           <div className="mb-6 flex items-center">
             <button 
-              onClick={() => navigate('/dashboard')}
+              onClick={() => navigate('/dashboard', { replace: true })}
               className="mr-4 text-gray-600 hover:text-gray-800 flex items-center"
             >
               <FiArrowLeft className="mr-1" />
@@ -269,6 +300,21 @@ const EditSubmission: React.FC = () => {
                   onChange={(e) => setPaperTitle(e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#F5A051]"
                   placeholder="Enter your paper title"
+                  required
+                />
+              </div>
+              
+              {/* Add Author Name field to match backend API */}
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Author Name <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  value={authorName}
+                  onChange={(e) => setAuthorName(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#F5A051]"
+                  placeholder="Enter author name"
                   required
                 />
               </div>
@@ -313,7 +359,9 @@ const EditSubmission: React.FC = () => {
                   <div className="mb-3 p-3 bg-gray-50 border border-gray-200 rounded-md flex items-center justify-between">
                     <div className="flex items-center">
                       <FiFileText className="text-gray-500 mr-2" />
-                      <span className="text-sm text-gray-600">Current file: {currentFileName}</span>
+                      <span className="text-sm text-gray-600">
+                        Current file: {currentFileName}
+                      </span>
                     </div>
                   </div>
                 )}
@@ -360,7 +408,7 @@ const EditSubmission: React.FC = () => {
               <div className="flex justify-end space-x-4">
                 <button
                   type="button"
-                  onClick={() => navigate('/dashboard')}
+                  onClick={() => navigate('/dashboard', { replace: true })}
                   className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
                 >
                   Cancel
