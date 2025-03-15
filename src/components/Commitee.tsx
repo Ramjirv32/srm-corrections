@@ -476,31 +476,24 @@ const ConferenceCommittee: React.FC = () => {
                 className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow"
               >
                 <div className="p-6">
-                  <div className="flex items-start">
-                    <img
-                      src={member.image || "/placeholder.svg"}
-                      alt={member.name}
-                      className="w-20 h-20 rounded-full object-cover mr-4"
-                    />
-                    <div>
-                      <h3 className="text-xl font-bold text-gray-800">{member.name}</h3>
-                      <div className="bg-[#F5A051]/20 text-[#F5A051] text-xs font-semibold px-2.5 py-0.5 rounded inline-block mb-1">
-                        {member.role}
-                      </div>
-                      {member.designation && (
-                        <p className="text-gray-700 text-sm font-medium">{member.designation}</p>
-                      )}
-                      <p className="text-gray-600 text-sm flex items-center mt-1">
-                        <Building className="w-3 h-3 mr-1" />
-                        {member.affiliation}
-                      </p>
-                      {member.country && (
-                        <p className="text-gray-600 text-sm flex items-center mt-1">
-                          <MapPin className="w-3 h-3 mr-1" />
-                          {member.country}
-                        </p>
-                      )}
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-800">{member.name}</h3>
+                    <div className="bg-[#F5A051]/20 text-[#F5A051] text-xs font-semibold px-2.5 py-0.5 rounded inline-block mb-1">
+                      {member.role}
                     </div>
+                    {member.designation && (
+                      <p className="text-gray-700 text-sm font-medium">{member.designation}</p>
+                    )}
+                    <p className="text-gray-600 text-sm flex items-center mt-1">
+                      <Building className="w-3 h-3 mr-1" />
+                      {member.affiliation}
+                    </p>
+                    {member.country && (
+                      <p className="text-gray-600 text-sm flex items-center mt-1">
+                        <MapPin className="w-3 h-3 mr-1" />
+                        {member.country}
+                      </p>
+                    )}
                   </div>
 
                   {/* Social Links - Only show if links are provided */}

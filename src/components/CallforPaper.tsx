@@ -1,5 +1,5 @@
 import { FaCalendarAlt, FaFileAlt, FaExclamationTriangle } from "react-icons/fa";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
@@ -117,8 +117,10 @@ const CallForPapers = () => {
                 onClick={handleSubmissionClick}
                 className="inline-flex items-center bg-blue-900 text-white px-6 py-3 rounded-md hover:bg-blue-800 transition-colors duration-300"
               >
+                <Link to="/paper-submission" className="flex items-center">
                 <FaFileAlt className="mr-2" />
-                Quick Abstract Submission
+                Paper  Submission
+                </Link>
               </button>
             </div>
           </div>
