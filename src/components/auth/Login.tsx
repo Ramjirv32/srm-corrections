@@ -6,6 +6,8 @@ import 'aos/dist/aos.css';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import PageTransition from '../PageTransition';
+import { auth } from "../config/firebase";
+import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -113,7 +115,6 @@ const Login = () => {
         return;
       }
 
-      // If login was successful and user is verified
       if (response.data.success && response.data.verified) {
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('user', JSON.stringify({
@@ -121,7 +122,7 @@ const Login = () => {
           username: response.data.username
         }));
         
-        // Trigger the auth state change event
+     
         window.dispatchEvent(new Event('authStateChanged'));
         
         Swal.fire({
@@ -154,7 +155,7 @@ const Login = () => {
           }
         });
       } else if (error.response?.status === 400) {
-        // Handle incorrect password or invalid user
+    
         const errorMessage = error.response.data.message || 'Invalid credentials';
         
         Swal.fire({
@@ -319,6 +320,107 @@ const Login = () => {
     });
   };
 
+  const handleGoogleLogin = async () => {
+    setIsLoading(true);
+    try {
+      const provider = new GoogleAuthProvider();
+      provider.setCustomParameters({
+        prompt: 'select_account'
+      });
+      
+      const result = await signInWithPopup(auth, provider);
+      const email = result.user.email;
+      
+      if (!email) {
+        throw new Error('Failed to get email from Google account');
+      }
+      
+      // Now authenticate with your backend
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://final-srm-back.vercel.app';
+      const response = await axios.post(`${apiUrl}/google-login`, {
+        email: email,
+        googleId: result.user.uid,
+        displayName: result.user.displayName || ''
+      });
+  
+      if (response.data.success) {
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('user', JSON.stringify({
+          email: response.data.email,
+          username: response.data.username || result.user.displayName || email.split('@')[0]
+        }));
+        
+        // Trigger the auth state change event
+        window.dispatchEvent(new Event('authStateChanged'));
+        
+        Swal.fire({
+          icon: 'success',
+          title: 'Login Successful',
+          text: 'You are now logged in',
+          timer: 1500,
+          showConfirmButton: false
+        }).then(() => {
+          navigate('/dashboard');
+        });
+      } else if (response.data.needsRegistration) {
+        // User doesn't exist, register first
+        Swal.fire({
+          icon: 'info',
+          title: 'Account Not Found',
+          text: 'We need to create an account for you first.',
+          confirmButtonColor: '#F5A051',
+          confirmButtonText: 'Create Account'
+        }).then(async (swalResult) => {
+        if (swalResult.isConfirmed) {
+          try {
+            // Register the Google user using the Firebase user data that we already have
+            const registerResponse = await axios.post(`${apiUrl}/signin`, {
+              email: email,
+              password: result.user.uid, // Use UID as password for Google users
+              googleId: result.user.uid,
+              username: result.user.displayName || email.split('@')[0]
+            });
+              
+              if (registerResponse.data.success) {
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Account Created',
+                  text: 'You can now login with Google',
+                  timer: 2000,
+                  showConfirmButton: false
+                }).then(() => {
+                  // Try logging in again
+                  handleGoogleLogin();
+                });
+              }
+            } catch (regError) {
+              console.error('Registration error:', regError);
+              Swal.fire({
+                icon: 'error',
+                title: 'Registration Failed',
+                text: 'Could not create account. Please try again.',
+                confirmButtonColor: '#F5A051'
+              });
+            }
+          }
+        });
+      } else {
+        throw new Error(response.data.message || 'Login failed');
+      }
+    } catch (error: any) {
+      console.error("Google login error:", error);
+      
+      Swal.fire({
+        icon: 'error',
+        title: 'Google Login Failed',
+        text: error.message || 'An error occurred while logging in with Google',
+        confirmButtonColor: '#F5A051'
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   if (isVerifying) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
@@ -442,6 +544,31 @@ const Login = () => {
                 )}
               </button>
             </form>
+
+            <div className="mt-6">
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-300"></div>
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-2 bg-white text-gray-500">
+                    Or continue with
+                  </span>
+                </div>
+              </div>
+            
+              <div className="mt-6">
+                <button
+                  type="button"
+                  onClick={handleGoogleLogin}
+                  disabled={isLoading}
+                  className="w-full inline-flex justify-center items-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F5A051]"
+                >
+                  <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5 mr-2" />
+                  Sign in with Google
+                </button>
+              </div>
+            </div>
 
             {/* Verification help section */}
             <div className="mt-6 pt-4 border-t border-gray-200">
