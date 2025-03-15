@@ -130,7 +130,7 @@ const Login = () => {
         });
 
         navigate('/dashboard');
-        window.location.reload();
+        // window.location.reload();
       } else {
         throw new Error(response.data.message || 'Login failed');
       }
