@@ -14,6 +14,7 @@ import {
   ExternalLink,
   AlertCircle
 } from 'lucide-react';
+import RegistrationCountdown from './RegistrationCountdown';
 
 const Registrations: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'fee' | 'form'>('fee');
@@ -106,6 +107,11 @@ const Registrations: React.FC = () => {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-8 sm:py-12 md:py-16">
+        {/* Registration Timeline and Status */}
+        <div className="mb-12">
+          <RegistrationCountdown />
+        </div>
+        
         {/* Navigation Tabs */}
         <div className="flex mb-8 border-b border-gray-200">
           <button
