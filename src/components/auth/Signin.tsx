@@ -35,6 +35,18 @@ export default function Signup() {
         return;
       }
 
+      // Add password validation
+      if (password.length < 6) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Password Too Short',
+          text: 'Password must be at least 6 characters long',
+          confirmButtonColor: '#F5A051',
+        });
+        setIsSubmitting(false);
+        return;
+      }
+
       const response = await fetch(`https://final-srm-back.vercel.app/signin`, {
         method: 'POST',
         headers: {
