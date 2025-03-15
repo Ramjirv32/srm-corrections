@@ -16,6 +16,7 @@ import VerifyEmail from "./components/auth/VerifyEmail";
 import Registrations from "./components/Registrations";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
+import EditSubmissionForm from "./components/EditSubmission";
 // import SubmitPaperForm from "./components/SubmitPaperForm";
 // The App component should contain BrowserRouter
 const App = () => {
@@ -57,10 +58,9 @@ const RouteWithLoading = ({
   );
 };
 
-// Removed the duplicate RouteChangeTracker component definition
-// Use the imported component instead
 
-// Separate component for the routes
+
+
 const AppRoutes = () => {
   
   return (
@@ -106,6 +106,11 @@ const AppRoutes = () => {
         <Route path="/registrations" element={
           <ProtectedRoute>
             <RouteWithLoading element={<Registrations />} />
+          </ProtectedRoute>
+        } />
+        <Route path="/edit-submission/:submissionId" element={
+          <ProtectedRoute>
+            <RouteWithLoading element={<EditSubmissionForm />} />
           </ProtectedRoute>
         } />
       </Routes>
