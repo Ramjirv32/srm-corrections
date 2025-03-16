@@ -1,4 +1,4 @@
-import  { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { 
   ArrowRight, 
   Download, 
@@ -14,6 +14,7 @@ import {
   ExternalLink,
   AlertCircle
 } from 'lucide-react';
+import Swal from 'sweetalert2';
 import RegistrationCountdown from './RegistrationCountdown';
 
 const Registrations: React.FC = () => {
@@ -44,13 +45,6 @@ const Registrations: React.FC = () => {
   
   const bankDetailsRef = useRef<HTMLDivElement>(null);
   
-  // eslint-disable-next-line no-unused-vars
-  // const handleCopy = (text: string, field: string) => {
-  //   navigator.clipboard.writeText(text);
-  //   setCopiedField(field);
-  //   setTimeout(() => setCopiedField(null), 2000);
-  // };
-  
   const copyAllBankDetails = () => {
     if (bankDetailsRef.current) {
       const allDetails = bankDetailsRef.current.innerText;
@@ -71,6 +65,65 @@ const Registrations: React.FC = () => {
     setSelectedCategory(e.target.value);
   };
   
+  const handleDownload = (url: string, filename: string) => {
+    // Show loading indicator
+    Swal.fire({
+      title: 'Downloading...',
+      text: `Preparing ${filename} for download`,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+      allowOutsideClick: false,
+      showConfirmButton: false
+    });
+    
+    fetch(url)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Failed to download file (Status: ${response.status})`);
+        }
+        return response.blob();
+      })
+      .then(blob => {
+        // Close loading indicator
+        Swal.close();
+        
+        // Create download link
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        
+        // Clean up
+        document.body.removeChild(link);
+        URL.revokeObjectURL(link.href);
+        
+        // Show success message
+        Swal.fire({
+          icon: 'success',
+          title: 'Download Started',
+          text: `${filename} is being downloaded`,
+          timer: 2000,
+          showConfirmButton: false
+        });
+      })
+      .catch(error => {
+        console.error('Download error:', error);
+        
+        // Close loading indicator
+        Swal.close();
+        
+        // Show error message
+        Swal.fire({
+          icon: 'error',
+          title: 'Download Failed',
+          text: `${error.message}. Please try again later or contact support.`,
+          confirmButtonColor: '#3085d6'
+        });
+      });
+  };
+  
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Handle form submission - can be implemented with API calls
@@ -82,9 +135,9 @@ const Registrations: React.FC = () => {
   
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
-      {/* Header Banner */}
+     
       <div className="relative bg-gradient-to-r from-blue-900 via-blue-800 to-[#F5A051] text-white py-12 sm:py-16 md:py-24 overflow-hidden">
-        {/* Decorative elements */}
+       
         <div className="absolute top-0 left-0 w-full h-full opacity-10">
           <div className="absolute top-10 left-10 w-20 h-20 md:w-32 md:h-32 border-4 border-white rounded-full"></div>
           <div className="absolute bottom-10 right-10 w-24 h-24 md:w-40 md:h-40 border-4 border-white rounded-full"></div>
@@ -105,15 +158,14 @@ const Registrations: React.FC = () => {
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="container mx-auto px-4 py-8 sm:py-12 md:py-16">
-        {/* Registration Timeline and Status */}
         <div className="mb-12">
           <RegistrationCountdown />
         </div>
         
-        {/* Navigation Tabs */}
+      
         <div className="flex mb-8 border-b border-gray-200">
+         
           <button
             onClick={() => setActiveTab('fee')}
             className={`pb-4 px-4 text-base sm:text-lg font-medium ${
@@ -139,6 +191,7 @@ const Registrations: React.FC = () => {
         {/* Fee Information Tab */}
         {activeTab === 'fee' && (
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+            {/* ...existing fee section code... */}
             <div className="p-6 sm:p-8 md:p-10 border-b border-gray-100">
               <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-gray-800 flex items-start">
                 <CreditCard className="text-blue-800 mr-3 mt-1" size={28} />
@@ -241,22 +294,23 @@ const Registrations: React.FC = () => {
                   The payee is accountable for all bank charges.
                 </p>
                 
+                {/* Updated download buttons */}
                 <div className="flex flex-wrap gap-4 mt-6">
-                  <a 
-                    href="/assets/e.docx" 
-                    className="flex items-center text-blue-700 bg-blue-50 hover:bg-blue-100 transition-colors px-4 py-2 rounded-lg"
-                  >
-                    <Download size={18} className="mr-2" />
-                    <span>Download Registration Form</span>
-                  </a>
-                  
-                  <a 
-                    href="#" 
+                  <button 
+                    onClick={() => handleDownload('/documents/e.pdf', 'ICMBNT_Copyright_Form.pdf')}
                     className="flex items-center text-blue-700 bg-blue-50 hover:bg-blue-100 transition-colors px-4 py-2 rounded-lg"
                   >
                     <Download size={18} className="mr-2" />
                     <span>Download Copyright Form</span>
-                  </a>
+                  </button>
+                  
+                  <button 
+                    onClick={() => handleDownload('/documents/r.pdf', 'ICMBNT_Registration_Form.pdf')}
+                    className="flex items-center text-blue-700 bg-blue-50 hover:bg-blue-100 transition-colors px-4 py-2 rounded-lg"
+                  >
+                    <Download size={18} className="mr-2" />
+                    <span>Download Registration Form</span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -337,6 +391,7 @@ const Registrations: React.FC = () => {
         {/* Registration Form Tab */}
         {activeTab === 'form' && (
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+            {/* ...existing form section code... */}
             <div className="p-6 sm:p-8 md:p-10">
               <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-gray-800 flex items-center">
                 <FileText className="text-blue-800 mr-3" size={28} />
@@ -344,6 +399,7 @@ const Registrations: React.FC = () => {
               </h2>
               
               <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Form content remains the same */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Personal Information */}
                   <div>
