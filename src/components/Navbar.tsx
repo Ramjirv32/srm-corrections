@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Facebook, Twitter, Linkedin, Instagram, Youtube, MessageCircle, LogOut, Menu, X, ChevronDown, LayoutDashboard } from 'lucide-react';
-import Logo from "./images/lo.png"
+import { Facebook, Twitter, Linkedin, Instagram, Youtube, MessageCircle, LogOut, Menu, X, LayoutDashboard } from 'lucide-react';
+// import Logo from "./images/lo.png"
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 // Create a custom event for auth state changes
@@ -100,13 +100,6 @@ const Navbar: React.FC = () => {
     return location.pathname === path ? 'text-[#F5A051]' : '';
   };
 
-  const toggleDropdown = (name: string) => {
-    if (activeDropdown === name) {
-      setActiveDropdown(null);
-    } else {
-      setActiveDropdown(name);
-    }
-  };
 
   return (
     <header className={`w-full bg-white sticky top-0 z-50 ${scrolled ? 'shadow-md' : 'shadow-sm'} transition-all duration-300`}>
