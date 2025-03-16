@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Facebook, Twitter, Linkedin, Instagram, Youtube, MessageCircle, LogOut, Menu, X, ChevronDown } from 'lucide-react';
+import { Facebook, Twitter, Linkedin, Instagram, Youtube, MessageCircle, LogOut, Menu, X, ChevronDown, LayoutDashboard } from 'lucide-react';
 import Logo from "./images/lo.png"
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
@@ -141,143 +141,30 @@ const Navbar: React.FC = () => {
       <nav className="bg-black text-white py-1 sm:py-2">
         <div className="container mx-auto px-3 sm:px-4">
           <div className="flex items-center justify-between h-14 sm:h-16 relative">
-            {/* Logo and Title Section */}
-            <div className="flex items-center">
+            {/* Logo */}
+            <div className="flex-shrink-0 flex items-center">
               <Link to="/" className="flex items-center">
-                <img 
-                  src={Logo}
-                  alt="Society for Cyber Intelligent Systems" 
-                  className="h-10 sm:h-12 md:h-14" 
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.onerror = null;
-                    target.src = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='60' viewBox='0 0 160 60'%3E%3Cg fill='%23F5A051'%3E%3Ccircle cx='120' cy='30' r='15'/%3E%3C/g%3E%3C/svg%3E";
-                  }}
-                />
-                {/* Logo text - optimize for medium screens */}
-                <span className="ml-2 text-white font-medium text-xs sm:text-sm md:text-base lg:text-lg truncate max-w-[120px] sm:max-w-[160px] md:max-w-[200px] lg:max-w-none hidden sm:inline">
-                  Society for Cyber Intelligent Systems
-                </span>
+                <span className="text-lg sm:text-xl md:text-2xl font-bold text-white">ICMBNT</span>
+                <span className="text-xs md:text-sm font-medium ml-1 bg-[#F5A051] text-white px-1.5 py-0.5 rounded">2025</span>
               </Link>
             </div>
 
-            {/* Medium screens: Simplified navigation with dropdowns */}
-            <div className="hidden md:block lg:hidden">
-              <div className="flex items-center space-x-1">
-                <Link to="/" className={`py-2 px-2 hover:text-[#F5A051] transition-colors text-sm ${isActive('/')}`}>
-                  Home
-                </Link>
-                
-                {/* Research dropdown for medium screens */}
-                <div className="relative">
-                  <button 
-                    onClick={() => toggleDropdown('research')}
-                    className="py-2 px-2 text-sm hover:text-[#F5A051] transition-colors flex items-center"
-                  >
-                    Research <ChevronDown size={14} className={`ml-1 transition-transform ${activeDropdown === 'research' ? 'rotate-180' : ''}`} />
-                  </button>
-                  
-                  <Link 
-                            to="/call-for-papers" 
-                            className={`block px-4 py-2 text-sm hover:bg-gray-800 ${isActive('/call-for-papers')}`}
-                          >
-                            Call For Papers
-                          </Link>
-                          <Link 
-                            to="/paper-submission" 
-                            className={`block px-4 py-2 text-sm hover:bg-gray-800 ${isActive('/paper-submission')}`}
-                          >
-                            Paper Submission
-                          </Link>
-                  {activeDropdown === 'research' && (
-                    <div className="absolute left-0 top-full mt-1 w-48 bg-gray-900 rounded-md shadow-lg py-1 z-20">
-                      {isLoggedIn && (
-                        <>
-                          
-                        </>
-                      )}
-                      <Link 
-                        to="#" 
-                        className="block px-4 py-2 text-sm hover:bg-gray-800"
-                      >
-                        Keynote Speakers
-                      </Link>
-                    </div>
-                  )}
-                </div>
-                
-                {/* About dropdown for medium screens */}
-                <div className="relative">
-                  <button 
-                    onClick={() => toggleDropdown('about')}
-                    className="py-2 px-2 text-sm hover:text-[#F5A051] transition-colors flex items-center"
-                  >
-                    About <ChevronDown size={14} className={`ml-1 transition-transform ${activeDropdown === 'about' ? 'rotate-180' : ''}`} />
-                  </button>
-                  
-                  {activeDropdown === 'about' && (
-                    <div className="absolute left-0 top-full mt-1 w-48 bg-gray-900 rounded-md shadow-lg py-1 z-20">
-                      <Link 
-                        to="/commitee" 
-                        className={`block px-4 py-2 text-sm hover:bg-gray-800 ${isActive('/commitee')}`}
-                      >
-                        Committee
-                      </Link>
-                      {isLoggedIn && (
-                        <Link 
-                          to="#" 
-                          className="block px-4 py-2 text-sm hover:bg-gray-800"
-                        >
-                          Registrations
-                        </Link>
-                      )}
-                      <Link 
-                        to="/venue" 
-                        className="block px-4 py-2 text-sm hover:bg-gray-800"
-                      >
-                        Venue
-                      </Link>
-                    </div>
-                  )}
-                </div>
-                
+            {/* Dashboard Link (Left side, visible when logged in) */}
+            {isLoggedIn && (
+              <div className="hidden md:flex items-center ml-6 mr-3">
                 <Link 
-                  to="/contact" 
-                  className={`py-2 px-2 hover:text-[#F5A051] transition-colors text-sm ${isActive('/contact')}`}
+                  to="/dashboard" 
+                  className={`flex items-center py-2 px-3 rounded-md transition-colors ${
+                    location.pathname === '/dashboard' 
+                      ? 'bg-[#F5A051] text-white' 
+                      : 'text-white hover:bg-gray-800'
+                  }`}
                 >
-                  Contact
+                  <LayoutDashboard size={18} className="mr-2" />
+                  <span className="font-medium">Dashboard</span>
                 </Link>
-                
-                {/* Auth for medium screens */}
-                {isLoggedIn ? (
-                  <button 
-                    onClick={handleLogout}
-                    className="ml-1 py-1.5 px-3 flex items-center bg-[#F5A051] text-white rounded-md hover:bg-[#e08c3e] transition-all duration-300 text-xs"
-                  >
-                    <LogOut size={14} className="mr-1" /> Log Out
-                  </button>
-                ) : (
-                  <Link 
-                    to="/login" 
-                    className="ml-1 py-1.5 px-3 bg-[#F5A051] text-white rounded-md hover:bg-[#e08c3e] transition-all duration-300 text-xs"
-                  >
-                    Log In
-                  </Link>
-                )}
               </div>
-            </div>
-
-            {/* Mobile menu button */}
-            <button 
-              className="md:hidden text-white p-2 rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-600 transition-colors"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-            >
-              {isMenuOpen ? 
-                <X size={24} className="transition-transform duration-300 transform rotate-0" /> : 
-                <Menu size={24} className="transition-transform duration-300 transform rotate-0" />
-              }
-            </button>
+            )}
 
             {/* Desktop Navigation (Large screens only) */}
             <div className="hidden lg:block flex-grow mx-4">
@@ -297,25 +184,36 @@ const Navbar: React.FC = () => {
               </ul>
             </div>
 
-            {/* Auth Buttons - Desktop only (Large screens) */}
-            <div className="hidden lg:flex items-center space-x-2">
+            {/* User Actions */}
+            <div className="flex items-center">
               {isLoggedIn ? (
-                <button 
+                <button
                   onClick={handleLogout}
-                  className="py-1.5 px-3 flex items-center bg-[#F5A051] text-white rounded-md hover:bg-[#e08c3e] transition-all duration-300 text-sm"
+                  className="flex items-center text-white px-3 py-1.5 rounded-md hover:bg-gray-800 transition-colors"
                 >
-                  <LogOut size={16} className="mr-1" /> Log Out
+                  <LogOut size={16} className="mr-1.5" />
+                  <span className="hidden sm:inline">Logout</span>
                 </button>
               ) : (
-                <>
-                  <Link to="/login" className="py-1.5 px-3 bg-transparent border border-[#F5A051] text-[#F5A051] rounded-md hover:bg-[#F5A051] hover:text-white transition-all duration-300 text-sm">Log In</Link>
-                  <Link to="/signin" className="py-1.5 px-3 bg-[#F5A051] text-white rounded-md hover:bg-[#e08c3e] transition-all duration-300 text-sm">Sign Up</Link>
-                </>
+                <Link
+                  to="/login"
+                  className="flex items-center justify-center bg-[#F5A051] hover:bg-[#e08c3e] text-white px-3 sm:px-4 py-1.5 rounded-md transition-colors"
+                >
+                  <span>Login / Register</span>
+                </Link>
               )}
+
+              {/* Mobile menu button */}
+              <button
+                className="ml-2 md:ml-4 lg:hidden flex items-center justify-center p-2 rounded-md text-white hover:bg-gray-800 focus:outline-none"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+              >
+                {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
             </div>
           </div>
 
-          {/* Mobile Navigation - Improved animation */}
+          {/* Mobile Menu */}
           <div 
             className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
               isMenuOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
@@ -330,6 +228,22 @@ const Navbar: React.FC = () => {
                   Home
                 </Link>
               </li>
+              
+              {/* Dashboard link in mobile menu (only when logged in) */}
+              {isLoggedIn && (
+                <li>
+                  <Link 
+                    to="/dashboard" 
+                    className={`block py-2.5 px-4 hover:bg-gray-800 rounded-md transition-colors ${isActive('/dashboard')}`}
+                  >
+                    <div className="flex items-center">
+                      <LayoutDashboard size={16} className="mr-2" />
+                      Dashboard
+                    </div>
+                  </Link>
+                </li>
+              )}
+              
               <li>
                 <Link 
                   to="/call-for-papers" 
@@ -338,6 +252,7 @@ const Navbar: React.FC = () => {
                   Call For Papers
                 </Link>
               </li>
+              
               {isLoggedIn && (
                 <>
                   <li>
@@ -350,14 +265,15 @@ const Navbar: React.FC = () => {
                   </li>
                   <li>
                     <Link 
-                      to="/registrations" 
-                      className="block py-2.5 px-4 hover:bg-gray-800 rounded-md transition-colors"
+                      to="/Registrations" 
+                      className={`block py-2.5 px-4 hover:bg-gray-800 rounded-md transition-colors ${isActive('/Registrations')}`}
                     >
                       Registrations
                     </Link>
                   </li>
                 </>
               )}
+              
               <li>
                 <Link 
                   to="/commitee" 
@@ -366,14 +282,16 @@ const Navbar: React.FC = () => {
                   Committee
                 </Link>
               </li>
+              
               <li>
                 <Link 
                   to="/keynote-speakers" 
                   className={`block py-2.5 px-4 hover:bg-gray-800 rounded-md transition-colors ${isActive('/keynote-speakers')}`}
                 >
-                  Keynote speakers
+                  Keynote Speakers
                 </Link>
               </li>
+              
               <li>
                 <Link 
                   to="/contact" 
@@ -382,64 +300,16 @@ const Navbar: React.FC = () => {
                   Contact
                 </Link>
               </li>
+              
               <li>
                 <Link 
                   to="/venue" 
-                  className="block py-2.5 px-4 hover:bg-gray-800 rounded-md transition-colors"
+                  className={`block py-2.5 px-4 hover:bg-gray-800 rounded-md transition-colors ${isActive('/venue')}`}
                 >
                   Venue
                 </Link>
               </li>
             </ul>
-            
-            {/* Auth buttons - Mobile */}
-            <div className="flex space-x-2 mt-2 mb-2 px-4">
-              {isLoggedIn ? (
-                <button 
-                  onClick={handleLogout}
-                  className="flex-1 flex justify-center items-center py-2.5 px-4 bg-[#F5A051] text-white rounded-md text-center hover:bg-[#e08c3e] transition-colors"
-                >
-                  <LogOut size={16} className="mr-2" /> Log Out
-                </button>
-              ) : (
-                <>
-                  <Link 
-                    to="/login" 
-                    className="flex-1 py-2.5 px-4 border border-[#F5A051] text-[#F5A051] bg-transparent rounded-md text-center hover:bg-gray-800 transition-colors"
-                  >
-                    Log In
-                  </Link>
-                  <Link 
-                    to="/signin" 
-                    className="flex-1 py-2.5 px-4 bg-[#F5A051] text-white rounded-md text-center hover:bg-[#e08c3e] transition-colors"
-                  >
-                    Sign Up
-                  </Link>
-                </>
-              )}
-            </div>
-            
-            {/* Mobile Social Icons */}
-            <div className="grid grid-cols-6 gap-2 px-4 py-3 border-t border-gray-700">
-              <a href="#" className="flex justify-center items-center h-10 rounded-md bg-gray-800 text-white hover:text-[#F5A051] transition-colors">
-                <Facebook size={18} />
-              </a>
-              <a href="#" className="flex justify-center items-center h-10 rounded-md bg-gray-800 text-white hover:text-[#F5A051] transition-colors">
-                <Twitter size={18} />
-              </a>
-              <a href="#" className="flex justify-center items-center h-10 rounded-md bg-gray-800 text-white hover:text-[#F5A051] transition-colors">
-                <Linkedin size={18} />
-              </a>
-              <a href="#" className="flex justify-center items-center h-10 rounded-md bg-gray-800 text-white hover:text-[#F5A051] transition-colors">
-                <Instagram size={18} />
-              </a>
-              <a href="#" className="flex justify-center items-center h-10 rounded-md bg-gray-800 text-white hover:text-[#F5A051] transition-colors">
-                <Youtube size={18} />
-              </a>
-              <a href="#" className="flex justify-center items-center h-10 rounded-md bg-gray-800 text-white hover:text-[#F5A051] transition-colors">
-                <MessageCircle size={18} />
-              </a>
-            </div>
           </div>
         </div>
       </nav>
