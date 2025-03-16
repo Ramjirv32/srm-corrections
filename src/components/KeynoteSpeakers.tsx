@@ -1,4 +1,4 @@
-import { Scroll, Globe, Mail, BookOpen, Award } from 'lucide-react';
+import { Scroll, Globe, Mail, BookOpen, Award, Linkedin } from 'lucide-react';
 import PageTransition from './PageTransition';
 import { Link } from 'react-router-dom';
 import G from "./images/g.jpg"
@@ -84,6 +84,15 @@ const KeynoteSpeakers = () => {
                         aria-label="Sam Goundar's website"
                       >
                         <Globe className="w-5 h-5" />
+                      </a>
+                      <a
+                        href="https://www.linkedin.com/in/sam-goundar-1928223a/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[#F5A051] hover:text-[#e08c3e]"
+                        aria-label="Sam Goundar's LinkedIn profile"
+                      >
+                        <Linkedin className="w-5 h-5" />
                       </a>
                     </div>
                     

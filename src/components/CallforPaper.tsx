@@ -165,7 +165,7 @@ const CallForPapers = () => {
               </li>
             </ol>
             <div className="mt-6 py-2 px-4 bg-blue-50 border-l-4 border-[#F5A051] text-gray-700">
-              <p><strong>Manuscript Submission Deadline:</strong> 15 March 2025</p>
+              <p><strong>Manuscript Submission Deadline:</strong> 25 March 2025</p>
             </div>
           </div>
         </section>

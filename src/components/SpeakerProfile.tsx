@@ -1,4 +1,4 @@
-import { ArrowLeft, Mail, Globe, BookOpen, Award, Calendar } from 'lucide-react';
+import { ArrowLeft, Mail, Globe, BookOpen, Award, Calendar, Linkedin } from 'lucide-react';
 import PageTransition from './PageTransition';
 import { Link, useParams } from 'react-router-dom';
 import G from "./images/g.jpg"
@@ -12,6 +12,7 @@ const speakersData = {
     image: G,
     email: 'sam.goundar@rmit.edu.vn',
     website: 'https://www.rmit.edu.vn/faculty/goundar-sam',
+    linkedin: 'https://www.linkedin.com/in/sam-goundar-1928223a/',
     bio: [
       "Professor Dr. Sam Goundar is an international academic and researcher with over 35 years of teaching experience across 13 universities in 11 different countries. He specializes in emerging technologies such as Artificial Intelligence, Blockchain, Educational Technologies, Data Science, and Cyber Security. As Editor-in-Chief of multiple international journals, including the International Journal of Blockchains and Cryptocurrencies and the International Journal of Fog Computing, he has made significant contributions to academic publishing.",
       "Dr. Goundar has authored and edited 20 books and published over 140 research articles in reputable journals and book chapters. His research excellence is reflected in his global collaborations and innovative contributions to advancing technology-driven education. He is renowned for his work in equitable and transformative education."
@@ -111,6 +112,20 @@ const SpeakerProfile = () => {
                         className="text-blue-600 hover:underline"
                       >
                         Faculty Profile
+                      </a>
+                    </div>
+                  )}
+                  
+                  {speaker.linkedin && (
+                    <div className="flex items-center">
+                      <Linkedin className="w-5 h-5 text-[#F5A051] mr-3" />
+                      <a 
+                        href={speaker.linkedin} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="text-blue-600 hover:underline"
+                      >
+                        LinkedIn Profile
                       </a>
                     </div>
                   )}
