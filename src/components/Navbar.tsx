@@ -26,7 +26,6 @@ localStorage.removeItem = function(key) {
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
@@ -68,11 +67,10 @@ const Navbar: React.FC = () => {
   }, []);
 
   // Close mobile menu when route changes
+  // Close mobile menu when route changes
   useEffect(() => {
     setIsMenuOpen(false);
-    setActiveDropdown(null);
   }, [location.pathname]);
-
   // Close menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
