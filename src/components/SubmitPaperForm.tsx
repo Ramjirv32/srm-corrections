@@ -613,7 +613,7 @@ const SubmitPaperForm: React.FC<SubmitPaperFormProps> = ({ isOpen, onClose, embe
           {/* File Upload - Abstract with improved UI */}
           <div className="form-group">
             <label className="block mb-2 font-medium text-gray-700">
-              Attach the MS Word file of your abstract according to the abstract template of ICMBNT 2025 *
+              Attach the MS Word file of your paper according to the paper template of ICMBNT 2025 *
               <span className="block text-sm font-normal text-gray-500">(Maximum Upload File Size 3MB & Please upload in (docx, doc, pdf) format)</span>
             </label>
             <div className="border-2 border-dashed border-gray-300 rounded-md p-4 text-center hover:bg-gray-50">
