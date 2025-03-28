@@ -163,7 +163,19 @@ const Registrations: React.FC = () => {
           <RegistrationCountdown />
         </div>
         
-      
+        <div className="mb-6 bg-blue-50 border-l-4 border-blue-500 p-4">
+          <div className="flex">
+            <div className="flex-shrink-0">
+              <AlertCircle className="h-5 w-5 text-blue-500" />
+            </div>
+            <div className="ml-3">
+              <p className="text-sm text-blue-700">
+                <span className="font-medium">Deadline Extended:</span> The registration deadline has been extended from <span className="line-through">12 April 2025</span> to <span className="font-bold">20 April 2025</span>. Don't miss this opportunity!
+              </p>
+            </div>
+          </div>
+        </div>
+        
         <div className="flex mb-8 border-b border-gray-200">
          
           <button

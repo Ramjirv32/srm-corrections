@@ -64,7 +64,10 @@ const Dashboard: React.FC = () => {
                           <span className="flex-1 w-0 truncate">Manuscript Submission Deadline</span>
                         </div>
                         <div className="ml-4 flex-shrink-0">
-                          <span className="font-medium">25 March 2025</span>
+                          <span className="font-medium">
+                            <span className="line-through text-gray-500">25 March 2025</span>
+                            <span className="text-red-600 ml-1">15 April 2025</span>
+                          </span>
                         </div>
                       </li>
                       <li className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
@@ -80,7 +83,10 @@ const Dashboard: React.FC = () => {
                           <span className="flex-1 w-0 truncate">Registration Deadline</span>
                         </div>
                         <div className="ml-4 flex-shrink-0">
-                          <span className="font-medium">12 April 2025</span>
+                          <span className="font-medium">
+                            <span className="line-through text-gray-500">12 April 2025</span>
+                            <span className="text-red-600 ml-1">20 April 2025</span>
+                          </span>
                         </div>
                       </li>
                       <li className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
@@ -109,11 +115,16 @@ const Dashboard: React.FC = () => {
                   </div>
                   <div className="ml-5 w-0 flex-1">
                     <dt className="text-lg font-medium text-gray-900 truncate">Submit a Paper</dt>
-                    <dd className="mt-1 text-sm text-gray-500">Submit your abstract or full paper</dd>
+                    <dd className="mt-1 text-sm text-gray-500">
+                      Submit your abstract or full paper
+                      <span className="block text-red-600 font-medium mt-1">
+                        Extended deadline: 15 April 2025
+                      </span>
+                    </dd>
                   </div>
                 </div>
                 <div className="mt-4">
-                  <a href="/submit-paper" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">Submit now &rarr;</a>
+                  <a href="/paper-submission" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">Submit now &rarr;</a>
                 </div>
               </div>
             </div>
@@ -147,11 +158,16 @@ const Dashboard: React.FC = () => {
                   </div>
                   <div className="ml-5 w-0 flex-1">
                     <dt className="text-lg font-medium text-gray-900 truncate">Register for Event</dt>
-                    <dd className="mt-1 text-sm text-gray-500">Complete your registration for the conference</dd>
+                    <dd className="mt-1 text-sm text-gray-500">
+                      Complete your registration for the conference
+                      <span className="block text-red-600 font-medium mt-1">
+                        Extended deadline: 20 April 2025
+                      </span>
+                    </dd>
                   </div>
                 </div>
                 <div className="mt-4">
-                  <a href="#" className="text-sm font-medium text-[#F5A051] hover:text-[#e08c3e]">Register now &rarr;</a>
+                  <a href="/registrations" className="text-sm font-medium text-[#F5A051] hover:text-[#e08c3e]">Register now &rarr;</a>
                 </div>
               </div>
             </div>

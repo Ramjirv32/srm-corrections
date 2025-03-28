@@ -79,7 +79,10 @@ const CallForPapers = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <DateCard 
               title="Manuscript Submission Deadline" 
-              date="25 March 2025" 
+              date={<>
+                <span className="line-through text-gray-500">25 March 2025</span>
+                <span className="text-red-600 block">Extended to 15 April 2025</span>
+              </>} 
               isHighlighted={true} 
             />
             <DateCard 
@@ -88,7 +91,10 @@ const CallForPapers = () => {
             />
             <DateCard 
               title="Registration Date" 
-              date="12 April 2025" 
+              date={<>
+                <span className="line-through text-gray-500">12 April 2025</span>
+                <span className="text-red-600 block">Extended to 20 April 2025</span>
+              </>}
             />
             <DateCard 
               title="Date of Conference" 
@@ -177,7 +183,7 @@ const CallForPapers = () => {
 // DateCard Component
 interface DateCardProps {
   title: string;
-  date: string;
+  date: React.ReactNode;
   isHighlighted?: boolean;
 }
 

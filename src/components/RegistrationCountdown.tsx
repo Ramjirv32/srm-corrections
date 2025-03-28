@@ -25,9 +25,9 @@ const RegistrationCountdown: React.FC = () => {
     const initialDeadlines: Deadline[] = [
       {
         name: 'Manuscript Submission Deadline',
-        date: new Date('2025-03-25T23:59:59'),
+        date: new Date('2025-04-15T23:59:59'), // Updated date
         icon: <FileText className="text-blue-600" />,
-        description: 'Last date for submitting your research papers',
+        description: 'Last date for submitting your research papers (Extended)',
         status: 'upcoming'
       },
       {
@@ -39,9 +39,9 @@ const RegistrationCountdown: React.FC = () => {
       },
       {
         name: 'Registration Deadline',
-        date: new Date('2025-04-12T23:59:59'),
+        date: new Date('2025-04-20T23:59:59'), // Updated date
         icon: <CalendarIcon className="text-yellow-600" />,
-        description: 'Last date for conference registration',
+        description: 'Last date for conference registration (Extended)',
         status: 'upcoming'
       },
       {
